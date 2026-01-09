@@ -6,4 +6,6 @@
 
     {{ $slot }}
 
+{{-- Footer Section --}}
+    <x-layouts.footer />
 </x-layouts.base>
