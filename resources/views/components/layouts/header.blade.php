@@ -47,7 +47,7 @@
             <ul class="dropdown-menu custom-dropdown" aria-labelledby="networksDropdown">
               <li><a class="dropdown-item" href="/netbundlemtn"><i class="bi bi-phone me-2 text-warning"></i>MTN</a></li>
               <li><a class="dropdown-item" href="/netbundleat"><i class="bi bi-phone me-2 text-warning"></i>AirtelTigo</a></li>
-              <li><a class="dropdown-item" href="/telecel"><i class="bi bi-phone me-2 text-warning"></i>Telecel</a></li>
+              <li><a class="dropdown-item" href="/netbundletelecel"><i class="bi bi-phone me-2 text-warning"></i>Telecel</a></li>
             </ul>
           </li>
           <li class="nav-item">
