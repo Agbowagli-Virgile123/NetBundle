@@ -48,7 +48,7 @@
 
 .nav-link-custom:hover {
   color: #EBB866 !important;
-  background: rgba(235, 184, 102, 0.1);
+  background: rgba(235, 184, 102, 0.1) !important;
 }
 
 .nav-link-custom:hover::before {
@@ -73,7 +73,8 @@
 }
 
 .btn-apply:hover {
-  background: linear-gradient(135deg, #d9a555 0%, #EBB866 100%) !important;
+  /* background: linear-gradient(135deg, #d9a555 0%, #EBB866 100%) !important; */
+  background: #0a0d61 !important;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(235, 184, 102, 0.4);
   border-color: #EBB866;

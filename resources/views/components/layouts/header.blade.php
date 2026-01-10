@@ -34,12 +34,15 @@
       <div class="collapse navbar-collapse" id="navbarContent">
         <!-- Center: Navigation Links -->
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <a class="nav-link nav-link-custom" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link nav-link-custom" href="/about">About</a>
-          </li>
+            <li class="nav-item">
+                <x-header-nav-link path="/" name="Home"/>
+            </li>
+
+            <li class="nav-item">
+                <x-header-nav-link path="/about" name="About"/>
+            </li>
+
+
           <li class="nav-item dropdown">
             <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="networksDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Networks
@@ -50,12 +53,14 @@
               <li><a class="dropdown-item" href="/netbundletelecel"><i class="bi bi-phone me-2 text-warning"></i>Telecel</a></li>
             </ul>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link nav-link-custom" href="/pricing">Pricing</a>
+             <x-header-nav-link path="/pricing" name="Pricing"/>
           </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-custom" href="/contact">Contact</a>
+             <x-header-nav-link path="/contact" name="Contact"/>
           </li>
+
           <li class="nav-item">
             <a class="nav-link nav-link-custom btn-apply" href="/apply-agent">
               <i class="bi bi-briefcase me-1"></i>Become Agent
