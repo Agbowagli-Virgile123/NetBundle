@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Privacy">
 <!-- Privacy Policy Hero -->
 <section class="policy-hero-section">
   <div class="container">

@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="FAQ">
 <!-- FAQ Hero Section -->
 <section class="faq-hero-section">
   <div class="container">

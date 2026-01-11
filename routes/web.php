@@ -53,3 +53,17 @@ Route::get('/terms', function () {
 Route::get('/refund', function () {
     return view('pages.refund');
 });
+
+//Login Route
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+
+// Route::get('/admin', function () {
+//     return view('admin.dashboard');
+// })->middleware('auth')->name('admin.dashboard');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+});

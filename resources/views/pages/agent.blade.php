@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Agent">
     <!-- Agent Hero Section -->
 <section class="agent-hero-section">
   <div class="container">

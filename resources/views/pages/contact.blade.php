@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Contact">
     <!-- Contact Hero Section -->
 <section class="contact-hero-section">
   <div class="container">

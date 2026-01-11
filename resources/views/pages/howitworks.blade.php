@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="How it works">
     <!-- How It Works Hero Section -->
 <section class="how-hero-section">
   <div class="container">

@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Pricing">
     <!-- Pricing Hero Section -->
 <section class="pricing-hero-section">
   <div class="container">
