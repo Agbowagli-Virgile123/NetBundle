@@ -3947,7 +3947,7 @@ body {
 .sidebar-toggle {
   background: transparent;
   border: none;
-  color: white;
+  color: #EBB866;
   font-size: 1.5rem;
   cursor: pointer;
   padding: 5px;
@@ -4385,7 +4385,7 @@ body {
 }
 
 /* Dashboard Content */
-.dashboard-content {
+.cms-content {
   flex: 1;
   padding: 30px;
   background: #f8f9fa;
@@ -4459,7 +4459,7 @@ body {
     padding: 15px 20px;
   }
 
-  .dashboard-content {
+  .cms-content {
     padding: 20px 15px;
   }
 

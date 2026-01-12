@@ -200,19 +200,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // User Type Detection (Admin vs Agent)
   // This would typically come from your backend/session
-  const userType = 'admin'; // Change to 'agent' to see agent view
+//   const userType = 'admin'; // Change to 'agent' to see agent view
 
-  if (userType === 'agent') {
-    document.body.classList.add('user-agent');
+//   if (userType === 'agent') {
+//     document.body.classList.add('user-agent');
 
-    // Update user role display
-    const userRole = document.querySelector('.user-role');
-    if (userRole) {
-      userRole.classList.remove('admin-role');
-      userRole.classList.add('agent-role');
-      userRole.textContent = 'Agent';
-    }
-  }
+//     // Update user role display
+//     const userRole = document.querySelector('.user-role');
+//     if (userRole) {
+//       userRole.classList.remove('admin-role');
+//       userRole.classList.add('agent-role');
+//       userRole.textContent = 'Agent';
+//     }
+//   }
 
   // Smooth Scrolling for Sidebar
   const sidebarNav = document.querySelector('.dashboard-sidebar');
@@ -271,20 +271,20 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Page Title Update
-  function updatePageTitle(title) {
-    const pageTitle = document.querySelector('.page-title');
-    if (pageTitle) {
-      pageTitle.textContent = title;
-    }
-    document.title = `${title} - Net Bundle Dashboard`;
-  }
+//   function updatePageTitle(title) {
+//     const pageTitle = document.querySelector('.page-title');
+//     if (pageTitle) {
+//       pageTitle.textContent = title;
+//     }
+//     document.title = `${title} - Net Bundle Dashboard`;
+//   }
 
   // Example: Update page title based on current page
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      const title = this.querySelector('span:not(.nav-badge)').textContent;
-      updatePageTitle(title);
-    });
-  });
+//   navLinks.forEach(link => {
+//     link.addEventListener('click', function(e) {
+//       const title = this.querySelector('span:not(.nav-badge)').textContent;
+//       updatePageTitle(title);
+//     });
+//   });
 
 });

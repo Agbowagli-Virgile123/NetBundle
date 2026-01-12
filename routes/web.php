@@ -67,3 +67,13 @@ Route::get('/login', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 });
+
+Route::get('/admin/users', function(){
+    return view('admin.users');
+});
+
+
+//Agent Routes
+Route::get('/agent/dashboard', function () {
+    return view('agent.dashboard');
+});
