@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -65,4 +66,17 @@ class AuthController
         return redirect()->route('admin/dashboard');
     }
 
+=======
+use Illuminate\Validation\Validator;
+use App\Http\Controller; 
+
+class AuthController extends Controller
+{
+    public function UserLogin(Request $request){
+
+        $validated = Validator::make($request->all(),[
+
+        ]);
+    }
+>>>>>>> 91170f612c8a536e6eb1c1e9a0603472b322b191
 }
