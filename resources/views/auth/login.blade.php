@@ -49,7 +49,8 @@
                       <p class="text-muted">Enter your credentials to continue</p>
                     </div>
 
-                    <form class="login-form" id="loginForm">
+                    <form method="POST" class="login-form" action="{{ route('login') }}" >
+                        @csrf
                       <!-- User Type Selection -->
                       <div class="mb-4">
                         <label class="form-label fw-bold">Login As <span class="text-danger">*</span></label>
@@ -78,8 +79,11 @@
                           <span class="input-group-text">
                             <i class="bi bi-envelope"></i>
                           </span>
-                          <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                          <input type="email" name="email" value="{{old('email')}}" class="form-control" id="email" placeholder="Enter your email">
                         </div>
+                          @error('email')
+                            <div class="form-text text-danger fst-italic" id="basic-addon4">{{$message}}</div>
+                          @enderror
                       </div>
 
                       <!-- Password Input -->
@@ -89,11 +93,14 @@
                           <span class="input-group-text">
                             <i class="bi bi-lock"></i>
                           </span>
-                          <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                          <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password">
                           <button class="btn btn-outline-secondary toggle-password" type="button">
                             <i class="bi bi-eye"></i>
                           </button>
                         </div>
+                          @error('password')
+                            <div class="form-text text-danger fst-italic" id="basic-addon4">{{ $message }}</div>
+                          @enderror
                       </div>
 
                       <!-- Remember Me & Forgot Password -->
