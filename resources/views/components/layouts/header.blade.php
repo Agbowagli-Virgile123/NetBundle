@@ -8,7 +8,7 @@
 
       <!-- Profile Dropdown - Always visible on mobile (right side) -->
       <div class="dropdown d-lg-none ms-auto">
-        <button class="btn btn-link p-0 border-0" type="button" id="profileDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-link p-0 border-0 " type="button" id="profileDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
           <div class="profile-icon rounded-circle d-flex align-items-center justify-content-center">
             <i class="bi bi-person-fill text-warning fs-5"></i>
           </div>

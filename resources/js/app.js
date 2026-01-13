@@ -67,86 +67,86 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Form Submission
-  // loginForm.addEventListener('submit', function(e) {
-  //   e.preventDefault();
-  //
-  //   // Remove any existing error messages
-  //   const existingError = document.querySelector('.error-message');
-  //   if (existingError) {
-  //     existingError.remove();
-  //   }
-  //
-  //   // Get form values
-  //   const email = document.getElementById('email').value;
-  //   const password = document.getElementById('password').value;
-  //   const userType = document.querySelector('input[name="userType"]:checked').value;
-  //   const rememberMe = document.getElementById('rememberMe').checked;
-  //
-  //   // Basic validation
-  //   if (!email || !password) {
-  //     showError('Please fill in all fields');
-  //     return;
-  //   }
-  //
-  //   // Email validation
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   if (!emailRegex.test(email)) {
-  //     showError('Please enter a valid email address');
-  //     return;
-  //   }
-  //
-  //   // Show loading state
-  //   const submitBtn = loginForm.querySelector('button[type="submit"]');
-  //   const originalBtnText = submitBtn.innerHTML;
-  //   submitBtn.classList.add('btn-loading');
-  //   submitBtn.innerHTML = 'Signing In...';
-  //   submitBtn.disabled = true;
-  //
-  //   // Simulate API call (Replace with actual API call)
-  //   setTimeout(() => {
-  //     // Example login logic - Replace with actual authentication
-  //     if (email && password) {
-  //       // Success
-  //       showSuccess('Login successful! Redirecting...');
-  //
-  //       setTimeout(() => {
-  //         // Redirect based on user type
-  //         if (userType === 'admin') {
-  //           window.location.href = '/admin/dashboard';
-  //         } else {
-  //           window.location.href = '/agent/dashboard';
-  //         }
-  //       }, 1500);
-  //     } else {
-  //       // Error
-  //       submitBtn.classList.remove('btn-loading');
-  //       submitBtn.innerHTML = originalBtnText;
-  //       submitBtn.disabled = false;
-  //       showError('Invalid email or password');
-  //     }
-  //   }, 2000);
-  // });
-  //
-  // // Show Error Message
-  // function showError(message) {
-  //   const errorDiv = document.createElement('div');
-  //   errorDiv.className = 'error-message show';
-  //   errorDiv.innerHTML = `<i class="bi bi-exclamation-circle me-2"></i>${message}`;
-  //   loginForm.insertBefore(errorDiv, loginForm.firstChild);
-  //
-  //   setTimeout(() => {
-  //     errorDiv.classList.remove('show');
-  //     setTimeout(() => errorDiv.remove(), 300);
-  //   }, 5000);
-  // }
-  //
-  // // Show Success Message
-  // function showSuccess(message) {
-  //   const successDiv = document.createElement('div');
-  //   successDiv.className = 'success-message show';
-  //   successDiv.innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
-  //   loginForm.insertBefore(successDiv, loginForm.firstChild);
-  // }
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Remove any existing error messages
+    const existingError = document.querySelector('.error-message');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Get form values
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const userType = document.querySelector('input[name="userType"]:checked').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
+
+    // Basic validation
+    if (!email || !password) {
+      showError('Please fill in all fields');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showError('Please enter a valid email address');
+      return;
+    }
+
+    // Show loading state
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.classList.add('btn-loading');
+    submitBtn.innerHTML = 'Signing In...';
+    submitBtn.disabled = true;
+
+    // Simulate API call (Replace with actual API call)
+    setTimeout(() => {
+      // Example login logic - Replace with actual authentication
+      if (email && password) {
+        // Success
+        showSuccess('Login successful! Redirecting...');
+
+        setTimeout(() => {
+          // Redirect based on user type
+          if (userType === 'admin') {
+            window.location.href = '/admin/dashboard';
+          } else {
+            window.location.href = '/agent/dashboard';
+          }
+        }, 1500);
+      } else {
+        // Error
+        submitBtn.classList.remove('btn-loading');
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+        showError('Invalid email or password');
+      }
+    }, 2000);
+  });
+
+  // Show Error Message
+  function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message show';
+    errorDiv.innerHTML = `<i class="bi bi-exclamation-circle me-2"></i>${message}`;
+    loginForm.insertBefore(errorDiv, loginForm.firstChild);
+
+    setTimeout(() => {
+      errorDiv.classList.remove('show');
+      setTimeout(() => errorDiv.remove(), 300);
+    }, 5000);
+  }
+
+  // Show Success Message
+  function showSuccess(message) {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'success-message show';
+    successDiv.innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
+    loginForm.insertBefore(successDiv, loginForm.firstChild);
+  }
 
   //Autofocus first input
   document.getElementById('email').focus();
@@ -200,19 +200,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // User Type Detection (Admin vs Agent)
   // This would typically come from your backend/session
-//   const userType = 'admin'; // Change to 'agent' to see agent view
+  const userType = 'admin'; // Change to 'agent' to see agent view
 
-//   if (userType === 'agent') {
-//     document.body.classList.add('user-agent');
+  if (userType === 'agent') {
+    document.body.classList.add('user-agent');
 
-//     // Update user role display
-//     const userRole = document.querySelector('.user-role');
-//     if (userRole) {
-//       userRole.classList.remove('admin-role');
-//       userRole.classList.add('agent-role');
-//       userRole.textContent = 'Agent';
-//     }
-//   }
+    // Update user role display
+    const userRole = document.querySelector('.user-role');
+    if (userRole) {
+      userRole.classList.remove('admin-role');
+      userRole.classList.add('agent-role');
+      userRole.textContent = 'Agent';
+    }
+  }
 
   // Smooth Scrolling for Sidebar
   const sidebarNav = document.querySelector('.dashboard-sidebar');
@@ -271,20 +271,20 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Page Title Update
-//   function updatePageTitle(title) {
-//     const pageTitle = document.querySelector('.page-title');
-//     if (pageTitle) {
-//       pageTitle.textContent = title;
-//     }
-//     document.title = `${title} - Net Bundle Dashboard`;
-//   }
+  function updatePageTitle(title) {
+    const pageTitle = document.querySelector('.page-title');
+    if (pageTitle) {
+      pageTitle.textContent = title;
+    }
+    document.title = `${title} - Net Bundle Dashboard`;
+  }
 
-  // Example: Update page title based on current page
-//   navLinks.forEach(link => {
-//     link.addEventListener('click', function(e) {
-//       const title = this.querySelector('span:not(.nav-badge)').textContent;
-//       updatePageTitle(title);
-//     });
-//   });
+  //Example: Update page title based on current page
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const title = this.querySelector('span:not(.nav-badge)').textContent;
+      updatePageTitle(title);
+    });
+  });
 
 });
