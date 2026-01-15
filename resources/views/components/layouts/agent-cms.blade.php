@@ -118,10 +118,14 @@
 
       <!-- Sidebar Footer -->
       <div class="sidebar-footer">
-        <a href="/logout" class="logout-btn">
-          <i class="bi bi-box-arrow-right"></i>
-          <span>Logout</span>
-        </a>
+          <form action="{{ route('logout') }}" method="post">
+              @csrf
+              <a class="dropdown-item text-danger" href="{{route('logout')}}"
+                 onclick="event.preventDefault(); this.closest('form').submit();"
+              >
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+              </a>
+          </form>
       </div>
     </aside>
 
@@ -219,9 +223,14 @@
                 <i class="bi bi-question-circle me-2"></i>Help Center
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-danger" href="/logout">
-                <i class="bi bi-box-arrow-right me-2"></i>Logout
-              </a>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <a class="dropdown-item text-danger" href="{{route('logout')}}"
+                       onclick="event.preventDefault(); this.closest('form').submit();"
+                    >
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </a>
+                </form>
             </div>
           </div>
         </div>

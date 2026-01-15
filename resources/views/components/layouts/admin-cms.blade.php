@@ -1,4 +1,4 @@
-@props(['title' => '', 'role' => ''])
+@props(['title' => ''])
 
 <x-layouts.base :$title>
       <!-- Dashboard Container -->
@@ -24,7 +24,7 @@
         </div>
         <div class="user-info">
           <h6 class="user-name">John Doe</h6>
-          <span @class(['user-role', Str::lower($role).'-role' => $role ])>{{$role}}</span>
+          <span @class(['user-role', 'admin-role'])>ADMIN</span>
           <!-- For Agent: <span class="user-role agent-role">Agent</span> -->
         </div>
       </div>
@@ -133,10 +133,14 @@
 
       <!-- Sidebar Footer -->
       <div class="sidebar-footer">
-        <a href="/logout" class="logout-btn">
-          <i class="bi bi-box-arrow-right"></i>
-          <span>Logout</span>
-        </a>
+          <form action="{{ route('logout') }}" method="post">
+              @csrf
+              <a class="dropdown-item text-danger" href="{{route('logout')}}"
+                 onclick="event.preventDefault(); this.closest('form').submit();"
+              >
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+              </a>
+          </form>
       </div>
     </aside>
 
@@ -149,7 +153,7 @@
           <button class="sidebar-toggle d-lg-none" id="sidebarToggle">
             <i class="bi bi-list"></i>
           </button>
-          <h5 class="page-title mb-0">Dashboard</h5>
+          <h5 class="page-title mb-0">{{$title}}</h5>
         </div>
 
         <div class="header-right">
@@ -234,9 +238,14 @@
                 <i class="bi bi-question-circle me-2"></i>Help Center
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-danger" href="/logout">
-                <i class="bi bi-box-arrow-right me-2"></i>Logout
-              </a>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <a class="dropdown-item text-danger" href="{{route('logout')}}"
+                       onclick="event.preventDefault(); this.closest('form').submit();"
+                    >
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </a>
+                </form>
             </div>
           </div>
         </div>

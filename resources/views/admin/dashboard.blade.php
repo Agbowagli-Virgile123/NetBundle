@@ -1,4 +1,4 @@
-<x-layouts.admin-cms title="Admin Dashboard" role="Admin">
+<x-layouts.admin-cms title="Dashboard">
     <!-- Page will be dynamically loaded here -->
     <div id="pageContent">
       <!-- Dashboard content goes here -->

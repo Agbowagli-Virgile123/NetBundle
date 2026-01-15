@@ -3,6 +3,20 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
+//Auth Routes
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+
+
+//Website Routes
 Route::get('/', function () {
     return view('pages.home');
 });
@@ -55,23 +69,28 @@ Route::get('/refund', function () {
     return view('pages.refund');
 });
 
-//Login Route
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
 
-Route::post('/login', [AuthController::class, 'login']);
+//Admin Cms Routes
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth:web']);
+    Route::get('/admin/users', function(){
+        return view('admin.users');
+    });
 
-Route::get('/admin/users', function(){
-    return view('admin.users');
+    Route::get('/admin/networks', function(){
+        return view('admin.networks');
+    });
 });
 
 
-//Agent Routes
-Route::get('/agent/dashboard', function () {
-    return view('agent.dashboard');
-})->middleware(['auth:agent']);
+
+//Agent Cms Routes
+Route::middleware(['auth:agent'])->group(function () {
+    Route::get('/agent/dashboard', function () {
+        return view('agent.dashboard');
+    });
+});
+

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Agent;
+use App\Models\Network;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
         Agent::create([
             'first_name' => 'Virgile',
             'last_name' => 'Agbowagli',
-            'email' => 'virgile@example.com',
+            'email' => 'virgile@gmail.com',
             'password' => '123',
 
             'phone_number' => '22990000000',
@@ -51,6 +52,35 @@ class DatabaseSeeder extends Seeder
             'have_sale_experience' => true,
             'way_of_hearing_us' => 'website'
         ]);
+
+
+        $networks = [
+            [
+                'name' => 'MTN',
+                'code' => 'mtn',
+                'color' => '#FFCC00',
+                'sort_order' => 1,
+            ],
+
+            [
+                'name' => 'Airtel Tigo',
+                'code' => 'airteltigo',
+                'color' => '#ED1C24',
+                'sort_order' => 2,
+            ],
+
+            [
+                'name' => 'Telecom',
+                'code' => 'telecel',
+                'color' => '#E60000',
+                'sort_order' => 3,
+            ],
+        ];
+
+
+        foreach ($networks as $network) {
+            Network::create($network);
+        }
 
     }
 }
