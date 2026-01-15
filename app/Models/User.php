@@ -17,20 +17,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    //Disable created_at and updated_at
+    public  $timestamps = false;
     protected $fillable = [
-<<<<<<< HEAD
         'first_name',
         'last_name',
-=======
-        'firstname',
-        'lastname',
->>>>>>> 91170f612c8a536e6eb1c1e9a0603472b322b191
         'email',
         'phone',
         'address',
-        'image',
+        'image_path',
         'password',
-        'img'
     ];
 
     /**protected $guarded=[];

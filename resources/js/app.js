@@ -66,90 +66,102 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  //Disable the Button when clicing the Signin buton
+    document.getElementById('loginForm').addEventListener('submit', function () {
+        const btn = document.getElementById('loginBtn');
+        const text = document.getElementById('loginText');
+        const spinner = document.getElementById('loginSpinner');
+
+        btn.disabled = true;
+        text.textContent = 'Logging in...';
+        spinner.classList.remove('d-none');
+    });
+
+
   // Form Submission
-  loginForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+//   loginForm.addEventListener('submit', function(e) {
+//     e.preventDefault();
 
-    // Remove any existing error messages
-    const existingError = document.querySelector('.error-message');
-    if (existingError) {
-      existingError.remove();
-    }
+//     // Remove any existing error messages
+//     const existingError = document.querySelector('.error-message');
+//     if (existingError) {
+//       existingError.remove();
+//     }
 
-    // Get form values
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const userType = document.querySelector('input[name="userType"]:checked').value;
-    const rememberMe = document.getElementById('rememberMe').checked;
+//     // Get form values
+//     const email = document.getElementById('email').value;
+//     const password = document.getElementById('password').value;
+//     const userType = document.querySelector('input[name="userType"]:checked').value;
+//     const rememberMe = document.getElementById('rememberMe').checked;
 
-    // Basic validation
-    if (!email || !password) {
-      showError('Please fill in all fields');
-      return;
-    }
+//     // Basic validation
+//     if (!email || !password) {
+//       showError('Please fill in all fields');
+//       return;
+//     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      showError('Please enter a valid email address');
-      return;
-    }
+//     // Email validation
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailRegex.test(email)) {
+//       showError('Please enter a valid email address');
+//       return;
+//     }
 
-    // Show loading state
-    const submitBtn = loginForm.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerHTML;
-    submitBtn.classList.add('btn-loading');
-    submitBtn.innerHTML = 'Signing In...';
-    submitBtn.disabled = true;
+//     // Show loading state
+//     const submitBtn = loginForm.querySelector('button[type="submit"]');
+//     const originalBtnText = submitBtn.innerHTML;
+//     submitBtn.classList.add('btn-loading');
+//     submitBtn.innerHTML = 'Signing In...';
+//     submitBtn.disabled = true;
 
-    // Simulate API call (Replace with actual API call)
-    setTimeout(() => {
-      // Example login logic - Replace with actual authentication
-      if (email && password) {
-        // Success
-        showSuccess('Login successful! Redirecting...');
+//     // Simulate API call (Replace with actual API call)
+//     setTimeout(() => {
+//       // Example login logic - Replace with actual authentication
+//       if (email && password) {
+//         // Success
+//         showSuccess('Login successful! Redirecting...');
 
-        setTimeout(() => {
-          // Redirect based on user type
-          if (userType === 'admin') {
-            window.location.href = '/admin/dashboard';
-          } else {
-            window.location.href = '/agent/dashboard';
-          }
-        }, 1500);
-      } else {
-        // Error
-        submitBtn.classList.remove('btn-loading');
-        submitBtn.innerHTML = originalBtnText;
-        submitBtn.disabled = false;
-        showError('Invalid email or password');
-      }
-    }, 2000);
-  });
+//         setTimeout(() => {
+//           // Redirect based on user type
+//           if (userType === 'admin') {
+//             window.location.href = '/admin/dashboard';
+//           } else {
+//             window.location.href = '/agent/dashboard';
+//           }
+//         }, 1500);
+//       } else {
+//         // Error
+//         submitBtn.classList.remove('btn-loading');
+//         submitBtn.innerHTML = originalBtnText;
+//         submitBtn.disabled = false;
+//         showError('Invalid email or password');
+//       }
+//     }, 2000);
+//   });
 
   // Show Error Message
-  function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message show';
-    errorDiv.innerHTML = `<i class="bi bi-exclamation-circle me-2"></i>${message}`;
-    loginForm.insertBefore(errorDiv, loginForm.firstChild);
+//   function showError(message) {
+//     const errorDiv = document.createElement('div');
+//     errorDiv.className = 'error-message show';
+//     errorDiv.innerHTML = `<i class="bi bi-exclamation-circle me-2"></i>${message}`;
+//     loginForm.insertBefore(errorDiv, loginForm.firstChild);
 
-    setTimeout(() => {
-      errorDiv.classList.remove('show');
-      setTimeout(() => errorDiv.remove(), 300);
-    }, 5000);
-  }
+//     setTimeout(() => {
+//       errorDiv.classList.remove('show');
+//       setTimeout(() => errorDiv.remove(), 300);
+//     }, 5000);
+//   }
 
-  // Show Success Message
-  function showSuccess(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message show';
-    successDiv.innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
-    loginForm.insertBefore(successDiv, loginForm.firstChild);
-  }
+//   // Show Success Message
+//   function showSuccess(message) {
+//     const successDiv = document.createElement('div');
+//     successDiv.className = 'success-message show';
+//     successDiv.innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
+//     loginForm.insertBefore(successDiv, loginForm.firstChild);
+//   }
 
-  //Autofocus first input
-  document.getElementById('email').focus();
+//   //Autofocus first input
+//   document.getElementById('email').focus();
 });
 
 

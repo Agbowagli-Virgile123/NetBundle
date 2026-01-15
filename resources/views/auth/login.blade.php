@@ -49,7 +49,7 @@
                       <p class="text-muted">Enter your credentials to continue</p>
                     </div>
 
-                    <form method="POST" class="login-form" action="{{ route('login') }}" >
+                    <form method="POST" class="login-form" id="loginForm" action="{{ route('login') }}" >
                         @csrf
                       <!-- User Type Selection -->
                       <div class="mb-4">
@@ -115,8 +115,17 @@
                       </div>
 
                       <!-- Login Button -->
-                      <button type="submit" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
-                        <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                      <button type="submit" id="login" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
+                          <span id="loginText">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                          </span>
+                          <span
+                              id="loginSpinner"
+                              class="spinner-border spinner-border-sm d-none"
+                              role="status"
+                              aria-hidden="true"
+                          ></span>
+
                       </button>
 
                       <!-- Divider -->

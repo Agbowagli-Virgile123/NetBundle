@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Nette\Schema\ValidationException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController
 {
-    public function RegisterUser(Request $request){
+    public function Store(Request $request){
 
         $attributes = $request->validate([
             'first_name' => 'required|string',
@@ -19,24 +18,24 @@ class AuthController
             'password' => 'required|string',
             'phone' => 'required|string',
             'address' => 'string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         //Validate
         $imagePath = '';
         if($request->image){
 
-           $imagePath = $request->image->store('images', 'user');
+           $imagePath = $request->image->store('uploads', 'user');
         }
 
-        User::create([
+        $user = User::create([
             'first_name' => $attributes['first_name'],
             'last_name' => $attributes['last_name'],
             'email' => $attributes['email'],
             'password' => $attributes['password'],
             'phone' => $attributes['phone'],
             'address' => $attributes['address'],
-            'image' => $imagePath,
+            'image_path' => $imagePath,
         ]);
 
         return redirect()->route('login');
@@ -49,34 +48,44 @@ class AuthController
             'userType' => 'required|string',
         ]);
 
+        if($attributes['userType'] == 'admin'){
+            $guard = 'web';
+            $redirect = '/admin/dashboard';
+        }else{
+            $guard = 'agent';
+            $redirect = '/agent/dashboard';
+        }
 
-        $user = User::where('email', $attributes['email'])->first();
-
-        if(!$user){
-
-            throw \Illuminate\Validation\ValidationException::withMessages([
+        if(!Auth::guard($guard)->attempt([
+            'email' => $attributes['email'],
+            'password' => $attributes['password'],
+        ])){
+            throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        $request->session()->put('usertype', $attributes['userType']);
-
         $request->session()->regenerate();
 
-        return redirect()->route('admin/dashboard');
+        return redirect($redirect);
     }
 
-=======
-use Illuminate\Validation\Validator;
-use App\Http\Controller; 
 
-class AuthController extends Controller
-{
-    public function UserLogin(Request $request){
+    public  function logout(Request $request){
 
-        $validated = Validator::make($request->all(),[
+        Auth::guard('web')->logout();
+        Auth::guard('agent')->logout();
 
-        ]);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
->>>>>>> 91170f612c8a536e6eb1c1e9a0603472b322b191
+
 }
+
+
+//To get the user that logs in we do:
+//Auth::guard('web')->user();    // admin
+//Auth::guard('agent')->user();  // agent
+

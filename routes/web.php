@@ -62,14 +62,9 @@ Route::get('/login', function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 
-
-// Route::get('/admin', function () {
-//     return view('admin.dashboard');
-// })->middleware('auth')->name('admin.dashboard');
-
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
-})->middleware(['auth', 'admin']);
+})->middleware(['auth:web']);
 
 Route::get('/admin/users', function(){
     return view('admin.users');
@@ -79,4 +74,4 @@ Route::get('/admin/users', function(){
 //Agent Routes
 Route::get('/agent/dashboard', function () {
     return view('agent.dashboard');
-});
+})->middleware(['auth:agent']);

@@ -57,7 +57,7 @@
 
 .nav-link-custom.active {
   color: #EBB866 !important;
-  background: rgba(235, 184, 102, 0.15);
+  background: rgba(235, 184, 102, 0.15) !important;
 }
 
 /* Become Agent Button */
