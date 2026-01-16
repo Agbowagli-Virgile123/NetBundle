@@ -14,7 +14,7 @@ class NetworkController
     {
         $networks = Network::all();
 
-        return view('network.index', compact('networks'));
+        return view('admin.networks', compact('networks'));
     }
 
     /**

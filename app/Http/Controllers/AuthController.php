@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController
 {
-    public function Store(Request $request){
+    public function store(Request $request){
 
         $attributes = $request->validate([
             'first_name' => 'required|string',

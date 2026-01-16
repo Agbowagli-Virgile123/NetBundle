@@ -66,102 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  //Disable the Button when clicing the Signin buton
-    document.getElementById('loginForm').addEventListener('submit', function () {
-        const btn = document.getElementById('loginBtn');
-        const text = document.getElementById('loginText');
-        const spinner = document.getElementById('loginSpinner');
-
-        btn.disabled = true;
-        text.textContent = 'Logging in...';
-        spinner.classList.remove('d-none');
-    });
-
-
-  // Form Submission
-//   loginForm.addEventListener('submit', function(e) {
-//     e.preventDefault();
-
-//     // Remove any existing error messages
-//     const existingError = document.querySelector('.error-message');
-//     if (existingError) {
-//       existingError.remove();
-//     }
-
-//     // Get form values
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-//     const userType = document.querySelector('input[name="userType"]:checked').value;
-//     const rememberMe = document.getElementById('rememberMe').checked;
-
-//     // Basic validation
-//     if (!email || !password) {
-//       showError('Please fill in all fields');
-//       return;
-//     }
-
-//     // Email validation
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     if (!emailRegex.test(email)) {
-//       showError('Please enter a valid email address');
-//       return;
-//     }
-
-//     // Show loading state
-//     const submitBtn = loginForm.querySelector('button[type="submit"]');
-//     const originalBtnText = submitBtn.innerHTML;
-//     submitBtn.classList.add('btn-loading');
-//     submitBtn.innerHTML = 'Signing In...';
-//     submitBtn.disabled = true;
-
-//     // Simulate API call (Replace with actual API call)
-//     setTimeout(() => {
-//       // Example login logic - Replace with actual authentication
-//       if (email && password) {
-//         // Success
-//         showSuccess('Login successful! Redirecting...');
-
-//         setTimeout(() => {
-//           // Redirect based on user type
-//           if (userType === 'admin') {
-//             window.location.href = '/admin/dashboard';
-//           } else {
-//             window.location.href = '/agent/dashboard';
-//           }
-//         }, 1500);
-//       } else {
-//         // Error
-//         submitBtn.classList.remove('btn-loading');
-//         submitBtn.innerHTML = originalBtnText;
-//         submitBtn.disabled = false;
-//         showError('Invalid email or password');
-//       }
-//     }, 2000);
-//   });
-
-  // Show Error Message
-//   function showError(message) {
-//     const errorDiv = document.createElement('div');
-//     errorDiv.className = 'error-message show';
-//     errorDiv.innerHTML = `<i class="bi bi-exclamation-circle me-2"></i>${message}`;
-//     loginForm.insertBefore(errorDiv, loginForm.firstChild);
-
-//     setTimeout(() => {
-//       errorDiv.classList.remove('show');
-//       setTimeout(() => errorDiv.remove(), 300);
-//     }, 5000);
-//   }
-
-//   // Show Success Message
-//   function showSuccess(message) {
-//     const successDiv = document.createElement('div');
-//     successDiv.className = 'success-message show';
-//     successDiv.innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
-//     loginForm.insertBefore(successDiv, loginForm.firstChild);
-//   }
-
-//   //Autofocus first input
-//   document.getElementById('email').focus();
 });
 
 
@@ -245,58 +149,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Notification Mark as Read
-  const notificationItems = document.querySelectorAll('.notification-item');
-  notificationItems.forEach(item => {
-    item.addEventListener('click', function(e) {
-      e.preventDefault();
-      this.classList.remove('unread');
 
-      // Update notification count
-      updateNotificationCount();
-    });
-  });
+});
 
-  function updateNotificationCount() {
-    const unreadCount = document.querySelectorAll('.notification-item.unread').length;
-    const badge = document.querySelector('.notification-badge');
-    const headerBadge = document.querySelector('.dropdown-header .badge');
 
-    if (badge) {
-      if (unreadCount > 0) {
-        badge.textContent = unreadCount;
-        badge.style.display = 'block';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
-
-    if (headerBadge) {
-      headerBadge.textContent = `${unreadCount} New`;
-    }
-  }
-
-  // Initialize tooltips (if using Bootstrap tooltips)
-  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-  tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-  });
-
-  // Page Title Update
-  function updatePageTitle(title) {
-    const pageTitle = document.querySelector('.page-title');
-    if (pageTitle) {
-      pageTitle.textContent = title;
-    }
-    document.title = `${title} - Net Bundle Dashboard`;
-  }
-
-  //Example: Update page title based on current page
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      const title = this.querySelector('span:not(.nav-badge)').textContent;
-      updatePageTitle(title);
-    });
-  });
-
+//Spining when the submit btn is clicked
+document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('spinner').classList.remove('d-none');
+    document.getElementById('btnText').classList.add('d-none');
+    document.getElementById('loginBtn').disabled = true;
 });

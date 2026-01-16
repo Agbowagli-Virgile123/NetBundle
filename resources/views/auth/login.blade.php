@@ -115,12 +115,12 @@
                       </div>
 
                       <!-- Login Button -->
-                      <button type="submit" id="login" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
-                          <span id="loginText">
+                      <button type="submit" id="loginBtn" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
+                          <span id="btnText">
                                 <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
                           </span>
                           <span
-                              id="loginSpinner"
+                              id="spinner"
                               class="spinner-border spinner-border-sm d-none"
                               role="status"
                               aria-hidden="true"

@@ -1,6 +1,6 @@
 
 
-<x-layouts.admin-cms title="Networks">
+<x-layouts.admin-cms title="Networks Management">
     <!-- Networks Management Content -->
     <div class="dashboard-content">
         <div class="container-fluid">
@@ -9,8 +9,7 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h2 class="page-heading">Networks Management</h2>
-                        <p class="page-subheading text-muted">Manage telecom networks and their settings</p>
+
                     </div>
                     <div class="col-md-6 text-md-end">
                         <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addNetworkModal">
@@ -22,53 +21,33 @@
 
             <!-- Stats Cards -->
             <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-primary">
-                            <i class="bi bi-diagram-3"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">3</h3>
-                            <p class="stat-label">Total Networks</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="primary"
+                    icon="diagram-3"
+                    stat-number="3"
+                    label="Total Networks"
+                />
 
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-success">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">3</h3>
-                            <p class="stat-label">Active Networks</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="success"
+                    icon="check-circle"
+                    stat-number="3"
+                    label="Active Networks"
+                />
 
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-warning">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">0</h3>
-                            <p class="stat-label">Inactive Networks</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="warning"
+                    icon="clock-history"
+                    stat-number="0"
+                    label="Inactive Networks"
+                />
 
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-info">
-                            <i class="bi bi-box-seam"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">48</h3>
-                            <p class="stat-label">Total Bundles</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="info"
+                    icon="box-seam"
+                    stat-number="48"
+                    label="Total Bundles"
+                />
             </div>
 
             <!-- Networks Table Card -->
@@ -115,183 +94,17 @@
                             </thead>
                             <tbody>
 
-                            <!-- Network Row 1: MTN -->
-                            <tr>
-                                <td>
-                                    <div class="drag-handle">
-                                        <i class="bi bi-grip-vertical"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="network-info">
-                                        <div class="network-logo" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                            <span class="network-initial">M</span>
-                                        </div>
-                                        <div>
-                                            <div class="network-name">MTN</div>
-                                            <small class="text-muted">Mobile Telecommunications Network</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="code-badge">mtn</span>
-                                </td>
-                                <td>
-                                    <div class="color-preview-wrapper">
-                                        <div class="color-preview" style="background-color: #FFCC00;"></div>
-                                        <span class="color-code">#FFCC00</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="description-text">Ghana's leading mobile network operator</span>
-                                </td>
-                                <td>
-                                    <span class="sort-badge">1</span>
-                                </td>
-                                <td>
-                  <span class="status-badge status-active">
-                    <i class="bi bi-check-circle"></i> Active
-                  </span>
-                                </td>
-                                <td>
-                                    <div class="date-info">
-                                        <div class="date-primary">Jan 15, 2026</div>
-                                        <small class="date-time">10:30 AM</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-action btn-action-view" data-bs-toggle="tooltip" title="View Details">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn-action btn-action-edit" data-bs-toggle="modal" data-bs-target="#editNetworkModal" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn-action btn-action-delete" data-bs-toggle="tooltip" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Network Row 2: AirtelTigo -->
-                            <tr>
-                                <td>
-                                    <div class="drag-handle">
-                                        <i class="bi bi-grip-vertical"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="network-info">
-                                        <div class="network-logo" style="background: linear-gradient(135deg, #FF0000 0%, #DC143C 100%);">
-                                            <span class="network-initial">A</span>
-                                        </div>
-                                        <div>
-                                            <div class="network-name">AirtelTigo</div>
-                                            <small class="text-muted">Merged Network Provider</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="code-badge">airteltigo</span>
-                                </td>
-                                <td>
-                                    <div class="color-preview-wrapper">
-                                        <div class="color-preview" style="background-color: #FF0000;"></div>
-                                        <span class="color-code">#FF0000</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="description-text">Combined Airtel and Tigo network services</span>
-                                </td>
-                                <td>
-                                    <span class="sort-badge">2</span>
-                                </td>
-                                <td>
-                  <span class="status-badge status-active">
-                    <i class="bi bi-check-circle"></i> Active
-                  </span>
-                                </td>
-                                <td>
-                                    <div class="date-info">
-                                        <div class="date-primary">Jan 15, 2026</div>
-                                        <small class="date-time">10:32 AM</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-action btn-action-view" data-bs-toggle="tooltip" title="View Details">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn-action btn-action-edit" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn-action btn-action-delete" data-bs-toggle="tooltip" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Network Row 3: Telecel -->
-                            <tr>
-                                <td>
-                                    <div class="drag-handle">
-                                        <i class="bi bi-grip-vertical"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="network-info">
-                                        <div class="network-logo" style="background: linear-gradient(135deg, #00A650 0%, #008040 100%);">
-                                            <span class="network-initial">T</span>
-                                        </div>
-                                        <div>
-                                            <div class="network-name">Telecel</div>
-                                            <small class="text-muted">Formerly Vodafone Ghana</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="code-badge">telecel</span>
-                                </td>
-                                <td>
-                                    <div class="color-preview-wrapper">
-                                        <div class="color-preview" style="background-color: #00A650;"></div>
-                                        <span class="color-code">#00A650</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="description-text">Rebranded Vodafone network in Ghana</span>
-                                </td>
-                                <td>
-                                    <span class="sort-badge">3</span>
-                                </td>
-                                <td>
-                  <span class="status-badge status-active">
-                    <i class="bi bi-check-circle"></i> Active
-                  </span>
-                                </td>
-                                <td>
-                                    <div class="date-info">
-                                        <div class="date-primary">Jan 15, 2026</div>
-                                        <small class="date-time">10:35 AM</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-action btn-action-view" data-bs-toggle="tooltip" title="View Details">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn-action btn-action-edit" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn-action btn-action-delete" data-bs-toggle="tooltip" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
+                                @if($networks->hasAny(true))
+                                    @foreach($networks as $network)
+                                        <x-cms.network-row :network="$network" />
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="89" class="text-center">
+                                            No Network Found
+                                        </td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>

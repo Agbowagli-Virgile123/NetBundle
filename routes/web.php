@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NetworkController;
 use Illuminate\Support\Facades\Route;
 
 //Auth Routes
@@ -80,9 +81,7 @@ Route::middleware(['auth:web'])->group(function () {
         return view('admin.users');
     });
 
-    Route::get('/admin/networks', function(){
-        return view('admin.networks');
-    });
+    Route::get('/admin/networks', [NetworkController::class, 'index']);
 });
 
 

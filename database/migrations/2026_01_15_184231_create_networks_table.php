@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('logo')->nullable();
-            $table->string('color')->nullable();
+            $table->string('primary_color')->nullable();
+            $table->string('secondary_color')->nullable();
+            $table->string('short_description');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);

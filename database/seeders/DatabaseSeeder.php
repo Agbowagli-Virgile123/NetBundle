@@ -58,21 +58,30 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'MTN',
                 'code' => 'mtn',
-                'color' => '#FFCC00',
+                'primary_color' => '#FFCC00',
+                'secondary_color' => '#FFA500',
+                'short_description' => 'Mobile Telecommunications Network',
+                'description' => 'Ghana\'s leading mobile network operator',
                 'sort_order' => 1,
             ],
 
             [
                 'name' => 'Airtel Tigo',
                 'code' => 'airteltigo',
-                'color' => '#ED1C24',
+                'primary_color' => '#FF0000',
+                'secondary_color' => '#DC143C',
+                'short_description' => 'Merged Network Provider',
+                'description' => 'Combined Airtel and Tigo network services',
                 'sort_order' => 2,
             ],
 
             [
                 'name' => 'Telecom',
                 'code' => 'telecel',
-                'color' => '#E60000',
+                'primary_color' => '#00A650',
+                'secondary_color' => '#008040',
+                'short_description' => 'Formerly Vodafone Ghana',
+                'description' => 'Rebranded Vodafone network in Ghana',
                 'sort_order' => 3,
             ],
         ];

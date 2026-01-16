@@ -14,7 +14,9 @@ class Network extends Model
         'name',
         'code',
         'logo',
-        'color',
+        'primary_color_',
+        'secondary_color_',
+        'short_description',
         'description',
         'is_active',
         'sort_order'
@@ -22,6 +24,7 @@ class Network extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'sort_order' => 'integer'
+        'sort_order' => 'integer',
+        'created_at' => 'datetime',
     ];
 }
