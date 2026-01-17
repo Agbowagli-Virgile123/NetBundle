@@ -1,5 +1,3 @@
-
-
 <x-layouts.admin-cms title="Networks Management">
     <!-- Networks Management Content -->
     <div class="dashboard-content">
@@ -24,21 +22,21 @@
                 <x-cms.stats-card
                     bg-color="primary"
                     icon="diagram-3"
-                    stat-number="3"
+                    stat-number="{{$allcount}}"
                     label="Total Networks"
                 />
 
                 <x-cms.stats-card
                     bg-color="success"
                     icon="check-circle"
-                    stat-number="3"
+                    stat-number="{{$activecount}}"
                     label="Active Networks"
                 />
 
                 <x-cms.stats-card
                     bg-color="warning"
                     icon="clock-history"
-                    stat-number="0"
+                    stat-number="{{$inactivecount}}"
                     label="Inactive Networks"
                 />
 

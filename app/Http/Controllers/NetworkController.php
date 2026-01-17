@@ -14,7 +14,11 @@ class NetworkController
     {
         $networks = Network::all();
 
-        return view('admin.networks', compact('networks'));
+        $allcount = $networks->count();
+        $activecount = $networks->where('is_active', "=",1)->count();
+        $inactivecount = $networks->where('is_active',"=", 0)->count();
+
+        return view('admin.networks', compact(['networks', 'allcount', 'activecount', 'inactivecount']));
     }
 
     /**

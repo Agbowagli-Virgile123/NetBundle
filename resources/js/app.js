@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Login Form Handler
 document.addEventListener('DOMContentLoaded', function() {
-  const loginForm = document.getElementById('loginForm');
   const userTypeRadios = document.querySelectorAll('input[name="userType"]');
   const agentRegister = document.querySelector('.agent-register');
   const adminInfo = document.querySelector('.admin-info');
@@ -153,9 +152,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-//Spining when the submit btn is clicked
-document.querySelector('form').addEventListener('submit', function () {
-    document.getElementById('spinner').classList.remove('d-none');
-    document.getElementById('btnText').classList.add('d-none');
-    document.getElementById('loginBtn').disabled = true;
+//Spinning when submit btn is clicked
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('loginForm');
+
+    if (!form) return;
+
+    form.addEventListener('submit', () => {
+        document.getElementById('spinner').classList.remove('d-none');
+        document.getElementById('btnText').classList.add('d-none');
+        document.getElementById('loginBtn').disabled = true;
+    });
 });
+
