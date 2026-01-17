@@ -82,6 +82,7 @@ Route::middleware(['auth:web'])->group(function () {
     });
 
     Route::get('/admin/networks', [NetworkController::class, 'index']);
+    Route::post('/admin/networks', [NetworkController::class, 'store']);
 });
 
 

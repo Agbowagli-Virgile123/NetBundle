@@ -115,7 +115,7 @@
                       </div>
 
                       <!-- Login Button -->
-                      <button type="submit" id="loginBtn" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
+                      <button type="submit" form="loginForm" id="loginBtn" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
                           <span id="btnText">
                                 <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
                           </span>

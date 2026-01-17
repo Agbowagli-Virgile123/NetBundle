@@ -22,7 +22,7 @@
                 <x-cms.stats-card
                     bg-color="primary"
                     icon="diagram-3"
-                    stat-number="{{$allcount}}"
+                    stat-number="{{$networks->total()}}"
                     label="Total Networks"
                 />
 
@@ -79,7 +79,7 @@
                         <table class="table custom-table">
                             <thead>
                             <tr>
-                                <th width="50">#</th>
+                                <th style="width: 50px">#</th>
                                 <th>Network</th>
                                 <th>Code</th>
                                 <th>Color</th>
@@ -87,12 +87,12 @@
                                 <th>Sort Order</th>
                                 <th>Status</th>
                                 <th>Created</th>
-                                <th width="150">Actions</th>
+                                <th style="width: 150px">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                                @if($networks->hasAny(true))
+                                @if($networks)
                                     @foreach($networks as $network)
                                         <x-cms.network-row :network="$network" />
                                     @endforeach
@@ -109,24 +109,7 @@
 
                     <!-- Pagination -->
                     <div class="table-footer">
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <p class="mb-0 text-muted">Showing 1 to 3 of 3 entries</p>
-                            </div>
-                            <div class="col-md-6">
-                                <nav>
-                                    <ul class="pagination justify-content-md-end mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                        {{$networks->links()}}
                     </div>
                 </div>
             </div>
@@ -147,42 +130,81 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addNetworkForm">
+                    <form method="POST" action="" id="addNetworkForm">
                         <div class="row g-3">
 
                             <!-- Network Name -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" name="name" placeholder="e.g., MTN" required>
+                                <input type="text" class="form-control" name="name" placeholder="e.g., MTN">
+                                @error('name')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Network Code -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Code <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" name="code" placeholder="e.g., mtn" required>
-                                <small class="text-muted">Lowercase, no spaces</small>
+                                <input type="text" class="form-control" name="code" placeholder="e.g., mtn">
+                                @if($errors->has('code'))
+                                    @error('code')
+                                        <small class="text-danger fst-italic">{{ $message }}</small>
+                                    @enderror
+                                @else
+                                    <small class="text-muted">Lowercase, no spaces</small>
+                                @endif
                             </div>
 
                             <!-- Brand Color -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Brand Color <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Brand Colors <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="color" class="form-control form-control-color" name="color" value="#FFCC00" required>
-                                    <input type="text" class="form-control form-control-lg" name="color_code" value="#FFCC00" placeholder="#FFCC00" required>
+                                    <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
+                                    <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
+                                    @error(['primary_color','secondary_color'])
+                                        <small class="text-danger fst-italic">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
 
                             <!-- Sort Order -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control form-control-lg" name="sort_order" value="1" min="1" required>
-                                <small class="text-muted">Display order on website</small>
+                                <input type="number" class="form-control" name="sort_order" value="1" min="1">
+                                @if($errors->has('sort_order'))
+                                    @error('sort_order')
+                                        <small class="text-danger fst-italic">{{ $message }}</small>
+                                    @enderror
+                                @else
+                                    <small class="text-muted">Display order on website</small>
+                                @endif
+                            </div>
+
+                            <!-- Short Description -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Short Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="short_description" rows="1" placeholder="Brief description of the network..."></textarea>
+                                @error('short_description')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Description -->
                             <div class="col-12">
                                 <label class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" name="description" rows="3" placeholder="Brief description of the network..."></textarea>
+                                <textarea class="form-control" name="description" rows="3" placeholder="Long description of the network..."></textarea>
+                                @error('description')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Logo -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Logo </label>
+                                <input type="file" class="form-control" name="logo">
+                                @error('logo')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Status -->
@@ -195,7 +217,6 @@
                                     <small class="d-block text-muted">Enable this network for customers</small>
                                 </div>
                             </div>
-
                         </div>
                     </form>
                 </div>

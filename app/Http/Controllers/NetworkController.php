@@ -12,13 +12,12 @@ class NetworkController
      */
     public function index()
     {
-        $networks = Network::all();
+        $networks = Network::paginate(2);
 
-        $allcount = $networks->count();
-        $activecount = $networks->where('is_active', "=",1)->count();
-        $inactivecount = $networks->where('is_active',"=", 0)->count();
+        $activecount = Network::where('is_active', "=",1)->count();
+        $inactivecount = Network::where('is_active',"=", 0)->count();
 
-        return view('admin.networks', compact(['networks', 'allcount', 'activecount', 'inactivecount']));
+        return view('admin.networks', compact(['networks', 'activecount', 'inactivecount']));
     }
 
     /**
@@ -26,7 +25,7 @@ class NetworkController
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -34,7 +33,25 @@ class NetworkController
      */
     public function store(Request $request)
     {
-        //
+        $attributes = request()->validate([
+            'name' => 'required|string',
+            'code' => 'required|string|unique:networks',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'primary_color' => 'required|string',
+            'secondary_color' => 'required|string',
+            'short_description' => 'required|string',
+            'description' => 'required|string',
+            'is_active' => 'required|boolean',
+            'sort_order' => 'required|integer|unique:networks',
+        ]);
+
+        dd($attributes);
+
+        if ($request->hasFile('logo')) {
+            $logo = $request->logo->store('networks', 'public');
+        }
+
+
     }
 
     /**

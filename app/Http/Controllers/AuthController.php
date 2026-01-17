@@ -22,7 +22,6 @@ class AuthController
         ]);
 
         //Validate
-        $imagePath = '';
         if($request->image){
 
            $imagePath = $request->image->store('uploads', 'user');

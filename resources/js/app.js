@@ -5,7 +5,13 @@ import * as bootstrap from 'bootstrap';
 // Add scroll effect to header
 window.addEventListener('scroll', function() {
   const header = document.querySelector('.header-custom');
+
+  if (!header) {
+      return;
+  }
+
   if (window.scrollY > 50) {
+
     header.classList.add('scrolled');
   } else {
     header.classList.remove('scrolled');
