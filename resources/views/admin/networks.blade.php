@@ -130,7 +130,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="" id="addNetworkForm">
+                    <form method="POST" action="/admin/networks" id="addNetworkForm">
+                        @csrf
                         <div class="row g-3">
 
                             <!-- Network Name -->
@@ -222,6 +223,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
                     <button type="submit" form="addNetworkForm" class="btn btn-primary">
                         <i class="bi bi-check-circle me-2"></i>Add Network
                     </button>

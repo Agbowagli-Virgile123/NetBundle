@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Network;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class NetworkController
 {
@@ -34,7 +35,7 @@ class NetworkController
     public function store(Request $request)
     {
         $attributes = request()->validate([
-            'name' => 'required|string',
+            'name' => ['required','string'],
             'code' => 'required|string|unique:networks',
             'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'primary_color' => 'required|string',
@@ -47,8 +48,8 @@ class NetworkController
 
         dd($attributes);
 
-        if ($request->hasFile('logo')) {
-            $logo = $request->logo->store('networks', 'public');
+        if($request->hasFile('logo')) {
+            $logo = $request->logo->store('uploads', 'network');
         }
 
 
