@@ -115,18 +115,11 @@
                       </div>
 
                       <!-- Login Button -->
-                      <button type="submit" form="loginForm" id="loginBtn" class="btn btn-primary w-100 btn-lg fw-bold mb-3">
-                          <span id="btnText">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
-                          </span>
-                          <span
-                              id="spinner"
-                              class="spinner-border spinner-border-sm d-none"
-                              role="status"
-                              aria-hidden="true"
-                          ></span>
-
-                      </button>
+                      <x-submit-btn
+                        class-name="btn-primary w-100 btn-lg fw-bold mb-3"
+                        icon-class="bi-box-arrow-in-right me-2"
+                        btn-text="Sign In"
+                      />
 
                       <!-- Divider -->
                       <div class="divider my-4">

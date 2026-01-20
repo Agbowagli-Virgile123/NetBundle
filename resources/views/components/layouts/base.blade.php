@@ -9,7 +9,6 @@
     <!-- let load app.css and app.js using vite directives -->
     @vite(['resources/sass/app.scss',
             'resources/js/app.js',
-            'resources/js/cms.js',
             'resources/css/app.css',
             'resources/css/cms.css'
             ])

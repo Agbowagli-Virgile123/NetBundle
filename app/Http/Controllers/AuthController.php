@@ -24,7 +24,7 @@ class AuthController
         //Validate
         if($request->image){
 
-           $imagePath = $request->image->store('uploads', 'user');
+           $imagePath = $request->image->store('uploads/user', 'public');
         }
 
         $user = User::create([
@@ -34,7 +34,7 @@ class AuthController
             'password' => $attributes['password'],
             'phone' => $attributes['phone'],
             'address' => $attributes['address'],
-            'image_path' => $imagePath,
+            'image_path' => empty($imagePath) ? null : $imagePath,
         ]);
 
         return redirect()->route('login');

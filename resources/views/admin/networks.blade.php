@@ -55,8 +55,8 @@
                         <div class="col-md-6">
                             <h5 class="mb-0">All Networks</h5>
                         </div>
-                        <div class="col-md-6">
-                            <div class="d-flex gap-2 justify-content-md-end">
+                        <div class="col-12 col-md-6">
+                            <div class="d-flex gap-2 justify-content-md-end flex-column flex-md-row">
                                 <!-- Search -->
                                 <div class="search-box">
                                     <i class="bi bi-search"></i>
@@ -130,14 +130,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="/admin/networks" id="addNetworkForm">
+                    <form method="POST" action="/admin/networks" enctype="multipart/form-data" id="addNetworkForm">
                         @csrf
                         <div class="row g-3">
 
                             <!-- Network Name -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="name" placeholder="e.g., MTN">
+                                <input type="text" class="form-control" name="name"value="{{old('name')}}" placeholder="e.g., MTN">
                                 @error('name')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
@@ -146,7 +146,7 @@
                             <!-- Network Code -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Code <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="code" placeholder="e.g., mtn">
+                                <input type="text" class="form-control" name="code" value="{{old('code')}}" placeholder="e.g., mtn">
                                 @if($errors->has('code'))
                                     @error('code')
                                         <small class="text-danger fst-italic">{{ $message }}</small>
@@ -171,7 +171,7 @@
                             <!-- Sort Order -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="sort_order" value="1" min="1">
+                                <input type="number" class="form-control" name="sort_order" value="{{old('sort_order')}}" min="1">
                                 @if($errors->has('sort_order'))
                                     @error('sort_order')
                                         <small class="text-danger fst-italic">{{ $message }}</small>
@@ -184,7 +184,7 @@
                             <!-- Short Description -->
                             <div class="col-12">
                                 <label class="form-label fw-bold">Short Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control" name="short_description" rows="1" placeholder="Brief description of the network..."></textarea>
+                                <textarea class="form-control" name="short_description" rows="1" placeholder="Brief description of the network...">{{old('short_description')}}</textarea>
                                 @error('short_description')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
@@ -193,7 +193,7 @@
                             <!-- Description -->
                             <div class="col-12">
                                 <label class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" name="description" rows="3" placeholder="Long description of the network..."></textarea>
+                                <textarea class="form-control" name="description" rows="3" placeholder="Long description of the network...">{{old('description')}}</textarea>
                                 @error('description')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
@@ -211,7 +211,7 @@
                             <!-- Status -->
                             <div class="col-12">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" name="is_active" id="addIsActive" checked>
+                                    <input class="form-check-input" type="checkbox" name="is_active" value="1" id="addIsActive" {{old('is_active', true) ? 'checked' : ''}}>
                                     <label class="form-check-label fw-bold" for="addIsActive">
                                         Active Status
                                     </label>
@@ -223,10 +223,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-                    <button type="submit" form="addNetworkForm" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-2"></i>Add Network
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-primary"
+                        icon-class="check-circle me-2"
+                        btn-text="Add Network"
+                        form="addNetworkForm"
+                    />
                 </div>
             </div>
         </div>
@@ -441,3 +443,8 @@
         </div>
     </div>
 </x-layouts.admin-cms>
+
+
+@if ($errors->any())
+    <div id="openAddNetworkModal" data-open="true"></div>
+@endif

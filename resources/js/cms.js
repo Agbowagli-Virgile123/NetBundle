@@ -1,25 +1,21 @@
+import * as bootstrap from 'bootstrap';
+
 // Networks Management JavaScript
 document.addEventListener('DOMContentLoaded', function() {
+    const openModalFlag = document.getElementById('openAddNetworkModal');
+
+    if (openModalFlag) {
+        const modal = new bootstrap.Modal(
+            document.getElementById('addNetworkModal')
+        );
+        modal.show();
+    }
+
 
     // Initialize tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
-    // Color picker sync
-    const colorInputs = document.querySelectorAll('input[type="color"]');
-    colorInputs.forEach(colorInput => {
-        const textInput = colorInput.nextElementSibling;
-
-        colorInput.addEventListener('input', function() {
-            textInput.value = this.value.toUpperCase();
-        });
-
-        textInput.addEventListener('input', function() {
-            if (/^#[0-9A-F]{6}$/i.test(this.value)) {
-                colorInput.value = this.value;
-            }
-        });
-    });
 
     // View button click
     const viewButtons = document.querySelectorAll('.btn-action-view');
@@ -80,56 +76,5 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
-    // Drag and drop for reordering (basic example)
-    let draggedRow = null;
-
-    const tableBody = document.querySelector('.custom-table tbody');
-    if (tableBody) {
-        tableBody.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'TR') {
-                draggedRow = e.target;
-                e.target.style.opacity = '0.5';
-            }
-        });
-
-        tableBody.addEventListener('dragend', function(e) {
-            if (e.target.tagName === 'TR') {
-                e.target.style.opacity = '';
-                draggedRow = null;
-            }
-        });
-
-        tableBody.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            const afterElement = getDragAfterElement(tableBody, e.clientY);
-            if (afterElement == null) {
-                tableBody.appendChild(draggedRow);
-            } else {
-                tableBody.insertBefore(draggedRow, afterElement);
-            }
-        });
-    }
-
-    function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll('tr:not(.dragging)')];
-
-        return draggableElements.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
-
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
-            }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
-
-    // Make rows draggable
-    const tableRows = document.querySelectorAll('.custom-table tbody tr');
-    tableRows.forEach(row => {
-        row.setAttribute('draggable', 'true');
-    });
 
 });

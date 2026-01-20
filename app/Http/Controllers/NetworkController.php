@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Network;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use JetBrains\PhpStorm\NoReturn;
 
 class NetworkController
 {
@@ -32,6 +33,7 @@ class NetworkController
     /**
      * Store a newly created resource in storage.
      */
+    #[NoReturn]
     public function store(Request $request)
     {
         $attributes = request()->validate([
@@ -42,15 +44,28 @@ class NetworkController
             'secondary_color' => 'required|string',
             'short_description' => 'required|string',
             'description' => 'required|string',
-            'is_active' => 'required|boolean',
+            'is_active' => 'boolean',
             'sort_order' => 'required|integer|unique:networks',
         ]);
 
-        dd($attributes);
-
         if($request->hasFile('logo')) {
-            $logo = $request->logo->store('uploads', 'network');
+            $logo = $request->logo->store('uploads/network', 'public');
         }
+
+
+        Network::create([
+            'name' => $attributes['name'],
+            'code' => $attributes['code'],
+            'logo' =>  empty($logo) ? null : $logo,
+            'primary_color' => $attributes['primary_color'],
+            'secondary_color' => $attributes['secondary_color'],
+            'short_description' => $attributes['short_description'],
+            'description' => $attributes['description'],
+            'is_active' => $attributes['is_active'],
+            'sort_order' => $attributes['sort_order']
+        ]);
+
+        return redirect('/admin/networks');
 
 
     }

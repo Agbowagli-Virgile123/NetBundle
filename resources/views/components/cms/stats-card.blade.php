@@ -5,7 +5,7 @@
     'label' => ''
 ])
 
-<div class="col-md-3">
+<div class="col-12 col-md-3">
     <div class="stat-card">
         <div class="stat-icon bg-{{$bgColor}}">
             <i class="bi bi-{{$icon}}"></i>

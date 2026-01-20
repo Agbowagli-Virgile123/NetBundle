@@ -398,6 +398,8 @@
     color: #999;
 }
 
+
+
 /* ========================================
    MODAL STYLES
 ======================================== */
@@ -574,19 +576,70 @@
         font-size: 1.5rem;
     }
 
-    .stat-card {
-        flex-direction: column;
+    .page-header .row{
         text-align: center;
     }
 
+    .page-header .btn-primary {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .stat-card {
+        flex-direction: row;
+        /*text-align: center;*/
+        padding: 15px;
+    }
+
     .stat-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 1.8rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
     }
 
     .stat-number {
         font-size: 1.8rem;
+    }
+
+    .card-header-custom .d-flex {
+        flex-direction: column !important;
+        gap: 10px;
+    }
+
+    .search-box,
+    .form-select {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Hide less important columns on mobile */
+    .custom-table th:nth-child(4), /* Color column */
+                  .custom-table td:nth-child(4),
+                  .custom-table th:nth-child(5), /* Description column */
+                  .custom-table td:nth-child(5),
+                  .custom-table th:nth-child(6), /* Sort order column */
+                  .custom-table td:nth-child(6) {
+                      display: none;
+                  }
+
+    /* Make network name smaller */
+    .network-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .network-initial {
+        font-size: 1.2rem;
+    }
+
+    .network-name {
+        font-size: 0.95rem;
+    }
+
+    /* Stack action buttons vertically */
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
     }
 
     .table-footer .row {
@@ -597,5 +650,34 @@
 
     .pagination {
         justify-content: center !important;
+    }
+}
+
+
+/* MOBILE RESPONSIVE FIXES */
+@media (max-width: 575.98px) {
+    /* Force horizontal scroll for table */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Smaller fonts */
+    .page-heading {
+        font-size: 1.3rem;
+    }
+
+    /* Full width buttons */
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Smaller padding */
+    .card-header-custom,
+    .card-body-custom,
+    .table-footer {
+        padding: 15px;
     }
 }

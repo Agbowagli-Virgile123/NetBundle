@@ -14,8 +14,8 @@ class Network extends Model
         'name',
         'code',
         'logo',
-        'primary_color_',
-        'secondary_color_',
+        'primary_color',
+        'secondary_color',
         'short_description',
         'description',
         'is_active',
@@ -27,4 +27,5 @@ class Network extends Model
         'sort_order' => 'integer',
         'created_at' => 'datetime',
     ];
+
 }

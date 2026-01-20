@@ -1,6 +1,6 @@
 import './bootstrap';
 import * as bootstrap from 'bootstrap';
-
+import  './cms.js'
 
 // Add scroll effect to header
 window.addEventListener('scroll', function() {
@@ -159,15 +159,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //Spinning when submit btn is clicked
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('loginForm');
+// document.addEventListener('DOMContentLoaded', () => {
+//     const form = document.querySelector('#loginForm');
+//
+//     if (!form) return;
+//
+//     form.addEventListener('submit', () => {
+//         document.getElementById('spinner').classList.remove('d-none');
+//         document.getElementById('btnText').classList.add('d-none');
+//         document.getElementById('loginBtn').disabled = true;
+//     });
+// });
 
-    if (!form) return;
 
-    form.addEventListener('submit', () => {
-        document.getElementById('spinner').classList.remove('d-none');
-        document.getElementById('btnText').classList.add('d-none');
-        document.getElementById('loginBtn').disabled = true;
-    });
-});
+document.addEventListener('submit', function (e) {
+    const form = e.target;
+    if (!(form instanceof HTMLFormElement)) return;
+
+    // Find the submit button that triggered  submit
+    const submitBtn = document.activeElement;
+
+    if (
+        submitBtn &&
+        (submitBtn.matches('button[type="submit"]') ||
+            submitBtn.matches('input[type="submit"]'))
+    ) {
+        submitBtn.disabled = true;
+
+        // Spinner support (optional)
+        const spinner = submitBtn.querySelector('.spinner-border');
+        const text = submitBtn.querySelector('[id="btnText"], .btn-text');
+
+        if (spinner) spinner.classList.remove('d-none');
+        if (text) text.classList.add('d-none');
+    }
+}, true);
+
 
