@@ -3412,7 +3412,7 @@ FAQ PAGE STYLES
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 40px 0;
+  /*padding: 5px 0;*/
   position: relative;
   overflow: hidden;
 }
