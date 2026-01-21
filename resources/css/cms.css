@@ -5,8 +5,8 @@
 
 /* Page Header */
 .page-header {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #f1f1f1;
 }
 
@@ -364,7 +364,7 @@
 
 /* Table Footer */
 .table-footer {
-    padding: 20px 30px;
+    padding: 5px 30px;
     border-top: 2px solid #f8f9fa;
     background: white;
 }

@@ -23,7 +23,7 @@
           <i class="bi bi-person-circle"></i>
         </div>
         <div class="user-info">
-          <h6 class="user-name">John Doe</h6>
+          <h6 class="user-name">{{auth()->user()->first_name ?? ''}} {{auth()->user()->last_name ?? ''}}</h6>
           <span @class(['user-role', 'admin-role'])>ADMIN</span>
           <!-- For Agent: <span class="user-role agent-role">Agent</span> -->
         </div>
@@ -215,7 +215,7 @@
               <div class="user-avatar-small">
                 <i class="bi bi-person-circle"></i>
               </div>
-              <span class="d-none d-md-inline">John Doe</span>
+              <span class="d-none d-md-inline">{{auth()->user()->first_name ?? ''}} {{auth()->user()->last_name ?? ''}}</span>
             </button>
             <div class="dropdown-menu dropdown-menu-end user-dropdown">
               <div class="dropdown-header">
@@ -223,8 +223,8 @@
                   <i class="bi bi-person-circle"></i>
                 </div>
                 <div>
-                  <h6 class="mb-0">John Doe</h6>
-                  <small class="text-muted">admin@netbundle.com</small>
+                  <h6 class="mb-0">{{auth()->user()->first_name ?? ''}} {{auth()->user()->last_name ?? ''}}</h6>
+                  <small class="text-muted">{{auth()->user()->email ?? ''}}</small>
                 </div>
               </div>
               <div class="dropdown-divider"></div>

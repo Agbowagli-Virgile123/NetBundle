@@ -2,6 +2,13 @@
     <!-- Networks Management Content -->
     <div class="dashboard-content">
         <div class="container-fluid">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
             <!-- Page Header -->
             <div class="page-header">
@@ -138,7 +145,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="name" value="{{old('name')}}" placeholder="e.g., MTN">
-                                @error('name')
+                                @error('name', 'addNetwork')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -147,13 +154,14 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Code <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="code" value="{{old('code')}}" placeholder="e.g., mtn">
-                                @if($errors->has('code'))
-                                    @error('code')
-                                        <small class="text-danger fst-italic">{{ $message }}</small>
-                                    @enderror
+                                @if($errors->addNetwork->has('code'))
+                                    <small class="text-danger fst-italic">
+                                        {{ $errors->addNetwork->first('code') }}
+                                    </small>
                                 @else
                                     <small class="text-muted">Lowercase, no spaces</small>
                                 @endif
+
                             </div>
 
                             <!-- Brand Color -->
@@ -162,9 +170,16 @@
                                 <div class="input-group">
                                     <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
                                     <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
-                                    @error(['primary_color','secondary_color'])
-                                        <small class="text-danger fst-italic">{{ $message }}</small>
-                                    @enderror
+                                    @if(
+                                        $errors->addNetwork->has('primary_color') ||
+                                        $errors->addNetwork->has('secondary_color')
+                                    )
+                                        <small class="text-danger fst-italic">
+                                            {{ $errors->addNetwork->first('primary_color')
+                                                ?? $errors->addNetwork->first('secondary_color') }}
+                                        </small>
+                                    @endif
+
                                 </div>
                             </div>
 
@@ -172,10 +187,8 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" name="sort_order" value="{{old('sort_order')}}" min="1">
-                                @if($errors->has('sort_order'))
-                                    @error('sort_order')
-                                        <small class="text-danger fst-italic">{{ $message }}</small>
-                                    @enderror
+                                @if($errors->addNetwork->has('sort_order'))
+                                    <small class="text-danger fst-italic">{{ $errors->addNetwork->first('sort_order') }}</small>
                                 @else
                                     <small class="text-muted">Display order on website</small>
                                 @endif
@@ -185,7 +198,7 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Short Description <span class="text-danger">*</span></label>
                                 <textarea class="form-control" name="short_description" rows="1" placeholder="Brief description of the network...">{{old('short_description')}}</textarea>
-                                @error('short_description')
+                                @error('short_description', 'addNetwork')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -194,7 +207,7 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Description</label>
                                 <textarea class="form-control" name="description" rows="3" placeholder="Long description of the network...">{{old('description')}}</textarea>
-                                @error('description')
+                                @error('description', 'addNetwork')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -203,7 +216,7 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Logo </label>
                                 <input type="file" class="form-control" name="logo">
-                                @error('logo')
+                                @error('logo', 'addNetwork')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -247,65 +260,106 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editNetworkForm">
-                        <input type="hidden" name="id" value="1">
-
+                    <form method="POST" enctype="multipart/form-data" id="editNetworkForm"  >
+                        @csrf
+                        @method('PATCH')
                         <div class="row g-3">
 
                             <!-- Network Name -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" name="name" value="MTN" required>
+                                <input type="text" class="form-control" name="name" value="{{old('name')}}" placeholder="e.g., MTN">
+                                @error('name')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Network Code -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Code <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" name="code" value="mtn" required>
-                                <small class="text-muted">Lowercase, no spaces</small>
+                                <input type="text" class="form-control" name="code" value="{{old('code')}}" placeholder="e.g., mtn">
+                                @if($errors->has('code'))
+                                    @error('code')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                    @enderror
+                                @else
+                                    <small class="text-muted">Lowercase, no spaces</small>
+                                @endif
                             </div>
 
                             <!-- Brand Color -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Brand Color <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Brand Colors <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="color" class="form-control form-control-color" name="color" value="#FFCC00" required>
-                                    <input type="text" class="form-control form-control-lg" name="color_code" value="#FFCC00" required>
+                                    <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
+                                    <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
+                                    @error(['primary_color','secondary_color'])
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
 
                             <!-- Sort Order -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control form-control-lg" name="sort_order" value="1" min="1" required>
-                                <small class="text-muted">Display order on website</small>
+                                <input type="number" class="form-control" name="sort_order" value="{{old('sort_order')}}" min="1">
+                                @if($errors->has('sort_order'))
+                                    @error('sort_order')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                    @enderror
+                                @else
+                                    <small class="text-muted">Display order on website</small>
+                                @endif
+                            </div>
+
+                            <!-- Short Description -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Short Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="short_description" rows="1" placeholder="Brief description of the network...">{{old('short_description')}}</textarea>
+                                @error('short_description')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Description -->
                             <div class="col-12">
                                 <label class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" name="description" rows="3">Ghana's leading mobile network operator</textarea>
+                                <textarea class="form-control" name="description" rows="3" placeholder="Long description of the network...">{{old('description')}}</textarea>
+                                @error('description')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Logo -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Logo </label>
+                                <input type="file" class="form-control" name="logo">
+                                @error('logo')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Status -->
                             <div class="col-12">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" name="is_active" id="editIsActive" checked>
-                                    <label class="form-check-label fw-bold" for="editIsActive">
+                                    <input class="form-check-input" type="checkbox" name="is_active" value="1" id="addIsActive" {{old('is_active', true) ? 'checked' : ''}}>
+                                    <label class="form-check-label fw-bold" for="addIsActive">
                                         Active Status
                                     </label>
                                     <small class="d-block text-muted">Enable this network for customers</small>
                                 </div>
                             </div>
-
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="editNetworkForm" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-2"></i>Update Network
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-primary"
+                        icon-class="check-circle me-2"
+                        btn-text="Update Network"
+                        form="editNetworkForm"
+                    />
                 </div>
             </div>
         </div>
@@ -328,12 +382,12 @@
 
                         <!-- Network Header -->
                         <div class="network-detail-header text-center mb-4">
-                            <div class="network-logo-large mb-3" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                <span class="network-initial-large" id="first-letter" > </span>
+                            <div class="network-logo-large mb-3 " id="first-letter" style="">
+
                             </div>
-                            <h3 class="mb-2" id="network-name"> </h3>
-                            <span class="status-badge status-active" id="status">
-                              <i class="bi bi-check-circle"></i> <span class="">Active</span>
+                            <h3 class="mb-2" id="network-name"></h3>
+                            <span class="" id="status">
+{{--                              <i class="bi bi-check-circle"></i> <span class="">Active</span>--}}
                             </span>
                         </div>
 
@@ -343,7 +397,7 @@
                                 <div class="detail-item">
                                     <label class="detail-label" >Network Code</label>
                                     <p class="detail-value">
-                                        <span class="code-badge" id="network-code">mtn</span>
+                                        <span class="code-badge" id="network-code"></span>
                                     </p>
                                 </div>
                             </div>
@@ -351,12 +405,10 @@
                             <div class="col-md-6">
                                 <div class="detail-item">
                                     <label class="detail-label">Brand Color</label>
-                                    <p class="detail-value">
-                                    <div class="color-preview-wrapper">
-                                        <div class="color-preview" style="background-color: #FFCC00;"></div>
-                                        <span class="color-code" id="primary-code">#FFCC00</span>
-                                    </div>
+{{--                                    <p class="detail-value">--}}
+                                    <div class="color-preview-wrapper" id="color-preview">
 
+                                    </div>
                                 </div>
                             </div>
 
@@ -364,7 +416,7 @@
                                 <div class="detail-item">
                                     <label class="detail-label">Sort Order</label>
                                     <p class="detail-value">
-                                        <span class="sort-badge" id="sort-order" >1</span>
+                                        <span class="sort-badge" id="sort-order" ></span>
                                     </p>
                                 </div>
                             </div>
@@ -379,7 +431,9 @@
                             <div class="col-12">
                                 <div class="detail-item">
                                     <label class="detail-label">Description</label>
-                                    <p class="detail-value" id="description">Ghana's leading mobile network operator</p>
+                                    <p class="detail-value" id="description">
+
+                                    </p>
                                 </div>
                             </div>
 
@@ -402,7 +456,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editNetworkModal">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editNetworkModal" id="network-detail-editBtn">
                         <i class="bi bi-pencil me-2"></i>Edit Network
                     </button>
                 </div>
@@ -445,6 +499,12 @@
 </x-layouts.admin-cms>
 
 
-@if ($errors->any())
-    <div id="openAddNetworkModal" data-open="true"></div>
+@if ($errors->addNetwork->any())
+    <div id="openAddNetworkModal"></div>
 @endif
+
+@if ($errors->editNetwork->any())
+    <div id="openEditNetworkModal"></div>
+@endif
+
+

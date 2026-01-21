@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Network;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -14,7 +15,7 @@ class NetworkController
      */
     public function index()
     {
-        $networks = Network::paginate(2);
+        $networks = Network::paginate(3);
 
         $activecount = Network::where('is_active', "=",1)->count();
         $inactivecount = Network::where('is_active',"=", 0)->count();
@@ -36,37 +37,43 @@ class NetworkController
     #[NoReturn]
     public function store(Request $request)
     {
-        $attributes = request()->validate([
-            'name' => ['required','string'],
-            'code' => 'required|string|unique:networks',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+            'code' => 'required|string|unique:networks,code',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'primary_color' => 'required|string',
             'secondary_color' => 'required|string',
             'short_description' => 'required|string',
             'description' => 'required|string',
             'is_active' => 'boolean',
-            'sort_order' => 'required|integer|unique:networks',
+            'sort_order' => 'required|integer|unique:networks,sort_order',
         ]);
 
-        if($request->hasFile('logo')) {
-            $logo = $request->logo->store('uploads/network', 'public');
+        if ($validator->fails()) {
+            return redirect('/admin/networks')
+                ->withErrors($validator, 'addNetwork')
+                ->withInput();
         }
 
+        $logo = null;
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo')->store('uploads/network', 'public');
+        }
 
         Network::create([
-            'name' => $attributes['name'],
-            'code' => $attributes['code'],
-            'logo' =>  empty($logo) ? null : $logo,
-            'primary_color' => $attributes['primary_color'],
-            'secondary_color' => $attributes['secondary_color'],
-            'short_description' => $attributes['short_description'],
-            'description' => $attributes['description'],
-            'is_active' => $attributes['is_active'],
-            'sort_order' => $attributes['sort_order']
+            'name' => $request->name,
+            'code' => $request->code,
+            'logo' => $logo,
+            'primary_color' => $request->primary_color,
+            'secondary_color' => $request->secondary_color,
+            'short_description' => $request->short_description,
+            'description' => $request->description,
+            'is_active' => $request->boolean('is_active'),
+            'sort_order' => $request->sort_order,
         ]);
 
-        return redirect('/admin/networks');
-
+        return redirect('/admin/networks')
+            ->with('success', 'Network created successfully');
 
     }
 
