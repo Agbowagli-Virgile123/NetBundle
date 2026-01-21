@@ -137,7 +137,7 @@
                             <!-- Network Name -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="name"value="{{old('name')}}" placeholder="e.g., MTN">
+                                <input type="text" class="form-control" name="name" value="{{old('name')}}" placeholder="e.g., MTN">
                                 @error('name')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
@@ -329,21 +329,21 @@
                         <!-- Network Header -->
                         <div class="network-detail-header text-center mb-4">
                             <div class="network-logo-large mb-3" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                <span class="network-initial-large">M</span>
+                                <span class="network-initial-large" id="first-letter" > </span>
                             </div>
-                            <h3 class="mb-2">MTN</h3>
-                            <span class="status-badge status-active">
-              <i class="bi bi-check-circle"></i> Active
-            </span>
+                            <h3 class="mb-2" id="network-name"> </h3>
+                            <span class="status-badge status-active" id="status">
+                              <i class="bi bi-check-circle"></i> <span class="">Active</span>
+                            </span>
                         </div>
 
                         <!-- Network Info Grid -->
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="detail-item">
-                                    <label class="detail-label">Network Code</label>
+                                    <label class="detail-label" >Network Code</label>
                                     <p class="detail-value">
-                                        <span class="code-badge">mtn</span>
+                                        <span class="code-badge" id="network-code">mtn</span>
                                     </p>
                                 </div>
                             </div>
@@ -354,9 +354,9 @@
                                     <p class="detail-value">
                                     <div class="color-preview-wrapper">
                                         <div class="color-preview" style="background-color: #FFCC00;"></div>
-                                        <span class="color-code">#FFCC00</span>
+                                        <span class="color-code" id="primary-code">#FFCC00</span>
                                     </div>
-                                    </p>
+
                                 </div>
                             </div>
 
@@ -364,7 +364,7 @@
                                 <div class="detail-item">
                                     <label class="detail-label">Sort Order</label>
                                     <p class="detail-value">
-                                        <span class="sort-badge">1</span>
+                                        <span class="sort-badge" id="sort-order" >1</span>
                                     </p>
                                 </div>
                             </div>
@@ -379,23 +379,23 @@
                             <div class="col-12">
                                 <div class="detail-item">
                                     <label class="detail-label">Description</label>
-                                    <p class="detail-value">Ghana's leading mobile network operator</p>
+                                    <p class="detail-value" id="description">Ghana's leading mobile network operator</p>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="detail-item">
                                     <label class="detail-label">Created At</label>
-                                    <p class="detail-value">January 15, 2026 at 10:30 AM</p>
+                                    <p class="detail-value" id="created-at">January 15, 2026 at 10:30 AM</p>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="detail-item">
-                                    <label class="detail-label">Last Updated</label>
-                                    <p class="detail-value">January 15, 2026 at 10:30 AM</p>
-                                </div>
-                            </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="detail-item">--}}
+{{--                                    <label class="detail-label">Last Updated</label>--}}
+{{--                                    <p class="detail-value">January 15, 2026 at 10:30 AM</p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                         </div>
 
                     </div>

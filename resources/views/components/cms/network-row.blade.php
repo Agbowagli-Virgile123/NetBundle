@@ -41,12 +41,24 @@
     <td>
         <div class="date-info">
             <div class="date-primary">{{ $network->created_at->format('M d, Y') }}</div>
-            <small class="date-time">{{  (string)$network->created_at ->format('h:i A') }}</small>
+            <small class="date-time">{{  (string)$network->created_at->format('h:i A') }}</small>
         </div>
     </td>
     <td>
         <div class="action-buttons">
-            <button class="btn-action btn-action-view" data-bs-toggle="tooltip" title="View Details">
+            <button class="btn-action btn-action-view"
+                data-id="{{$network->id}}"
+                data-name="{{$network->name}}"
+                data-is_active="{{$network->is_active}}"
+                data-code="{{$network->code}}"
+                data-primary_color="{{$network->primary_color}}"
+                data-secondary_color="{{$network->secondary_color}}"
+                data-sort_order="{{$network->sort_order}}"
+                data-short_description="{{$network->short_description}}"
+                data-description="{{$network->description}}"
+                data-created_at="{{$network->created_at}}"
+                data-bs-toggle="tooltip"
+                title="View Details">
                 <i class="bi bi-eye"></i>
             </button>
             <button class="btn-action btn-action-edit" data-bs-toggle="modal" data-bs-target="#editNetworkModal" data-bs-toggle="tooltip" title="Edit">

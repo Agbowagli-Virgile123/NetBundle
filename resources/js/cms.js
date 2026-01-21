@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-
     // Search functionality
     const searchInput = document.querySelector('.search-box input');
     if (searchInput) {
@@ -76,5 +75,36 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+
+    //When View Modal Opens, store the network object globally
+    let currentNetwork = {};
+
+    document.getElementById('viewNetworkModal')
+        .addEventListener('show.bs.modal', function (event) {
+
+            const btn = event.relatedTarget;
+
+            currentNetwork = {
+                id: btn.dataset.id,
+                name: btn.dataset.name,
+                is_active: btn.dataset.is_active,
+                code: btn.dataset.code,
+                primary_color: btn.dataset.primary_color,
+                secondary_color: btn.dataset.secondary_color,
+                sort_order: btn.dataset.sort_order,
+                short_description: btn.dataset.short_description,
+                description: btn.dataset.description,
+                created_at: btn.dataset.created_at,
+            };
+
+            console.log(currentNetwork);
+
+            // Fill view modal
+            document.getElementById('first-letter').textContent = currentNetwork.name;
+            document.getElementById('network-name').textContent = currentNetwork.name;
+            document.getElementById('network-description').textContent = currentNetwork.description;
+        });
+
 
 });

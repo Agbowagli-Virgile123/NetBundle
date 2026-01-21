@@ -49,7 +49,7 @@
                       <p class="text-muted">Enter your credentials to continue</p>
                     </div>
 
-                    <form method="POST" class="login-form" id="loginForm" action="{{ route('login') }}" >
+                    <form method="POST" class="login-form" id="loginForm" action="/login" >
                         @csrf
                       <!-- User Type Selection -->
                       <div class="mb-4">
@@ -119,6 +119,7 @@
                         class-name="btn-primary w-100 btn-lg fw-bold mb-3"
                         icon-class="bi-box-arrow-in-right me-2"
                         btn-text="Sign In"
+                        form="loginForm"
                       />
 
                       <!-- Divider -->

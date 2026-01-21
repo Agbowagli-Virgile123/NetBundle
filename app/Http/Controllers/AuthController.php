@@ -47,6 +47,7 @@ class AuthController
             'userType' => 'required|string',
         ]);
 
+
         if($attributes['userType'] == 'admin'){
             $guard = 'web';
             $redirect = '/admin/dashboard';
