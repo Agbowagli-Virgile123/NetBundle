@@ -75,10 +75,10 @@
                     data-created_at="{{$network->created_at}}"
                     data-bs-toggle="modal"
                     data-bs-target="#editNetworkModal"
-                    data-bs-toggle="tooltip" title="Edit">
+                    title="Edit">
                 <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn-action btn-action-delete" data-bs-toggle="tooltip" title="Delete">
+            <button class="btn-action btn-action-delete"  data-id="{{$network->id}}" data-name="{{$network->name}}" data-bs-toggle="modal" data-bs-target="#deleteNetworkModal" title="Delete">
                 <i class="bi bi-trash"></i>
             </button>
         </div>

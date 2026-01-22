@@ -39,7 +39,7 @@ class NetworkController
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'code' => 'required|string|unique:networks,code',
+            'code' => 'required|string|unique:networks,code|regex:/^\S+$/',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'primary_color' => 'required|string',
             'secondary_color' => 'required|string',
@@ -49,21 +49,22 @@ class NetworkController
             'sort_order' => 'required|integer|unique:networks,sort_order',
         ]);
 
+
         if ($validator->fails()) {
             return redirect('/admin/networks')
                 ->withErrors($validator, 'addNetwork')
                 ->withInput();
         }
 
-        $logo = null;
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo')->store('uploads/network', 'public');
         }
 
+
         Network::create([
             'name' => $request->name,
             'code' => $request->code,
-            'logo' => $logo,
+            'logo' => $logo ?? null,
             'primary_color' => $request->primary_color,
             'secondary_color' => $request->secondary_color,
             'short_description' => $request->short_description,
@@ -98,14 +99,70 @@ class NetworkController
      */
     public function update(Request $request, Network $network)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+            'code' => ['required','string',Rule::unique('networks', 'code')->ignore($network->id),'regex:/^\S+$/'],
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'primary_color' => 'required|string',
+            'secondary_color' => 'required|string',
+            'short_description' => 'required|string',
+            'description' => 'required|string',
+            'is_active' => 'boolean',
+            'sort_order' => ['required','string',Rule::unique('networks', 'sort_order')->ignore($network->id)],
+        ]);
+
+
+        if ($validator->fails()) {
+            return redirect('/admin/networks')
+                ->withErrors($validator, 'editNetwork')
+                ->withInput();
+        }
+
+
+        if ($request->hasFile('logo')) {
+
+            if($network->logo){
+
+                unlink(storage_path('/app/public/'.$network->logo));
+            }
+
+            $logo = $request->file('logo')->store('uploads/network', 'public');
+
+        }else{
+
+            $logo = $network->logo;
+        }
+
+        $network->update([
+            'name' => $request->name,
+            'code' => $request->code,
+            'logo' => $logo ?? null,
+            'primary_color' => $request->primary_color,
+            'secondary_color' => $request->secondary_color,
+            'short_description' => $request->short_description,
+            'description' => $request->description,
+            'is_active' => $request->boolean('is_active'),
+            'sort_order' => $request->sort_order,
+        ]);
+
+        return redirect('/admin/networks')
+            ->with('success', 'Network updated successfully');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
+    #[NoReturn]
     public function destroy(Network $network)
     {
-        //
+
+        if($network->logo){
+            unlink(storage_path('/app/public/'.$network->logo));
+        }
+
+        $network->delete();
+
+        return redirect('/admin/networks')->with('success', 'Network deleted successfully');
     }
 }

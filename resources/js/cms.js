@@ -63,20 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
     ShowModalOnValidationFailed("openEditNetworkModal", "editNetworkModal");
 
 
-    // Initialize tooltips
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
-    // Delete button click
-    const deleteButtons = document.querySelectorAll('.btn-action-delete');
-    deleteButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const modal = new bootstrap.Modal(document.getElementById('deleteNetworkModal'));
-            modal.show();
-        });
-    });
-
-
     // Search functionality
     const searchInput = document.querySelector('.search-box input');
     if (searchInput) {
@@ -208,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentNetwork = {
                     id: btn.dataset.id,
                     name: btn.dataset.name,
-                    is_active: btn.dataset.is_active == 1,
+                    is_active: btn.dataset.is_active,
                     code: btn.dataset.code,
                     primary_color: btn.dataset.primary_color,
                     secondary_color: btn.dataset.secondary_color,
@@ -227,4 +213,19 @@ document.addEventListener('DOMContentLoaded', function() {
             fillEditModal(currentNetwork);
         });
 
+
+    //Delete Network Modal
+    document.getElementById('deleteNetworkModal')
+        .addEventListener('show.bs.modal', function (event) {
+
+            const btn = event.relatedTarget;
+
+            if (!btn) {
+                console.error('View modal opened without a trigger button');
+                return;
+            }
+
+            document.getElementById('deleteNetworkForm').action= `/admin/networks/${btn.dataset.id}`;
+            document.getElementById('deleteNetworkName').innerText= btn.dataset.name;
+        });
 });

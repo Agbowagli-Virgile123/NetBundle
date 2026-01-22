@@ -82,6 +82,8 @@ Route::middleware(['auth:web'])->group(function () {
     });
 
     Route::get('/admin/networks', [NetworkController::class, 'index']);
+    Route::patch('/admin/networks/{network}', [NetworkController::class, 'update']);
+    Route::delete('/admin/networks/{network}', [NetworkController::class, 'destroy']);
     Route::post('/admin/networks', [NetworkController::class, 'store']);
 });
 

@@ -269,7 +269,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="name" value="{{old('name')}}" placeholder="e.g., MTN">
-                                @error('name')
+                                @error('name', 'editNetwork')
                                 <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -278,10 +278,8 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network Code <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="code" value="{{old('code')}}" placeholder="e.g., mtn">
-                                @if($errors->has('code'))
-                                    @error('code')
-                                    <small class="text-danger fst-italic">{{ $message }}</small>
-                                    @enderror
+                                @if($errors->editNetwork->has('code'))
+                                    <small class="text-danger fst-italic">{{$errors->editNetwork->first('code')}}</small>
                                 @else
                                     <small class="text-muted">Lowercase, no spaces</small>
                                 @endif
@@ -293,9 +291,15 @@
                                 <div class="input-group">
                                     <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
                                     <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
-                                    @error(['primary_color','secondary_color'])
-                                    <small class="text-danger fst-italic">{{ $message }}</small>
-                                    @enderror
+                                    @if(
+                                        $errors->editNetwork->has('primary_color') ||
+                                        $errors->editNetwork->has('secondary_color')
+                                    )
+                                        <small class="text-danger fst-italic">
+                                            {{ $errors->editNetwork->first('primary_color')
+                                                ?? $errors->editNetwork->first('secondary_color') }}
+                                        </small>
+                                    @endif
                                 </div>
                             </div>
 
@@ -303,10 +307,8 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" name="sort_order" value="{{old('sort_order')}}" min="1">
-                                @if($errors->has('sort_order'))
-                                    @error('sort_order')
-                                    <small class="text-danger fst-italic">{{ $message }}</small>
-                                    @enderror
+                                @if($errors->editNetwork->has('sort_order'))
+                                    <small class="text-danger fst-italic">{{ $errors->editNetwork->first('sort_order') }}</small>
                                 @else
                                     <small class="text-muted">Display order on website</small>
                                 @endif
@@ -316,8 +318,8 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Short Description <span class="text-danger">*</span></label>
                                 <textarea class="form-control" name="short_description" rows="1" placeholder="Brief description of the network...">{{old('short_description')}}</textarea>
-                                @error('short_description')
-                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @error('short_description', 'editNetwork')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
 
@@ -325,7 +327,7 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Description</label>
                                 <textarea class="form-control" name="description" rows="3" placeholder="Long description of the network...">{{old('description')}}</textarea>
-                                @error('description')
+                                @error('description', 'editNetwork')
                                 <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -334,8 +336,8 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Logo </label>
                                 <input type="file" class="form-control" name="logo">
-                                @error('logo')
-                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @error('logo', 'editNetwork')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
 
@@ -481,7 +483,7 @@
                         <i class="bi bi-trash"></i>
                     </div>
                     <h5 class="mb-3">Delete Network?</h5>
-                    <p class="text-muted mb-0">Are you sure you want to delete <strong>MTN</strong>? This action cannot be undone.</p>
+                    <p class="text-muted mb-0">Are you sure you want to delete <strong id="deleteNetworkName"></strong>? This action cannot be undone.</p>
                     <div class="alert alert-warning mt-3" role="alert">
                         <i class="bi bi-exclamation-circle me-2"></i>
                         <strong>Warning:</strong> All associated bundles will also be affected.
@@ -489,10 +491,22 @@
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">
-                        <i class="bi bi-trash me-2"></i>Yes, Delete
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-danger"
+                        icon-class="bi-trash me-2"
+                        btn-text="Yes, Delete"
+                        form="deleteNetworkForm"
+                    />
                 </div>
+
+{{--                Delete form--}}
+                <div class="visually-hidden">
+                    <form method="POST" id="deleteNetworkForm" >
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
