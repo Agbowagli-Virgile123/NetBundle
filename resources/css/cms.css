@@ -681,3 +681,186 @@
         padding: 15px;
     }
 }
+
+
+
+/*////////////////////////////////////////////////////// Packages Styles///////////////////////////////////*/
+/* Bundle Cards Grid */
+.bundles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* Bundle Card */
+.bundle-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    overflow: hidden;
+}
+
+.bundle-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(10, 13, 97, 0.15);
+    border-color: rgba(235, 184, 102, 0.3);
+}
+
+.bundle-card.inactive-card {
+    opacity: 0.6;
+    filter: grayscale(0.3);
+}
+
+/* Bundle Card Header */
+.bundle-card-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.bundle-network-badge {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.network-initial {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+}
+
+.btn-bundle-action {
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-bundle-action:hover {
+    background: rgba(10, 13, 97, 0.1);
+    transform: rotate(90deg);
+}
+
+/* Bundle Card Body */
+.bundle-card-body {
+    padding: 0 20px 20px;
+}
+
+.bundle-size {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0a0d61;
+    margin-bottom: 5px;
+}
+
+.bundle-validity {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.bundle-type-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+.daily-badge {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.weekly-badge {
+    background: rgba(23, 162, 184, 0.1);
+    color: #17a2b8;
+    border: 1px solid rgba(23, 162, 184, 0.2);
+}
+
+.monthly-badge {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.bundle-pricing {
+    padding: 15px 0;
+    border-top: 2px solid #f8f9fa;
+    border-bottom: 2px solid #f8f9fa;
+    margin-bottom: 15px;
+}
+
+.price-main {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0a0d61;
+    margin-bottom: 5px;
+}
+
+.price-cost {
+    font-size: 0.9rem;
+}
+
+.bundle-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.bundle-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Bundle Card Footer */
+.bundle-card-footer {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bundle-popularity {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .bundles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bundle-size {
+        font-size: 2rem;
+    }
+
+    .price-main {
+        font-size: 1.5rem;
+    }
+}
+

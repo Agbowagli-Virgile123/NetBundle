@@ -229,3 +229,96 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('deleteNetworkName').innerText= btn.dataset.name;
         });
 });
+
+
+//Bundles Management JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+
+    // View Toggle (Grid/List)
+    const gridBtn = document.querySelector('.btn-group button:first-child');
+    const listBtn = document.querySelector('.btn-group button:last-child');
+    const bundlesGrid = document.querySelector('.bundles-grid');
+    const bundlesList = document.querySelector('.bundles-list');
+
+    if (gridBtn && listBtn) {
+        gridBtn.addEventListener('click', function() {
+            // Show grid view
+            bundlesGrid.style.display = 'grid';
+            bundlesList.style.display = 'none';
+
+            // Update button states
+            gridBtn.classList.add('active');
+            listBtn.classList.remove('active');
+        });
+
+        listBtn.addEventListener('click', function() {
+            // Show list view
+            bundlesGrid.style.display = 'none';
+            bundlesList.style.display = 'block';
+
+            // Update button states
+            listBtn.classList.add('active');
+            gridBtn.classList.remove('active');
+        });
+    }
+
+    // Edit Bundle - Populate form with data
+    document.querySelectorAll('.edit-bundle-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const bundleId = this.getAttribute('data-bundle-id');
+
+            // Here you would fetch bundle data and populate the form
+            console.log('Editing bundle:', bundleId);
+
+            // Example: populate form (you'd get this data from your backend)
+            // document.querySelector('#editBundleForm input[name="bundle_id"]').value = bundleId;
+        });
+    });
+
+// Delete Bundle - Show bundle name
+    document.querySelectorAll('.delete-bundle-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const bundleId = this.getAttribute('data-bundle-id');
+
+            // Update modal with bundle info
+            document.getElementById('deleteBundleName').textContent = '1GB MTN Daily'; // Get from data
+            document.getElementById('confirmDeleteBtn').setAttribute('data-bundle-id', bundleId);
+        });
+    });
+
+// Confirm Delete
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        const bundleId = this.getAttribute('data-bundle-id');
+
+        console.log('Deleting bundle:', bundleId);
+
+        // Here you would send delete request to backend
+        // After successful delete, close modal and remove card from view
+
+        alert('Bundle deleted successfully!');
+        bootstrap.Modal.getInstance(document.getElementById('deleteBundleModal')).hide();
+    });
+
+// View Bundle
+    document.querySelectorAll('.view-bundle-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const bundleId = this.getAttribute('data-bundle-id');
+            console.log('Viewing bundle:', bundleId);
+            // Open view modal or redirect to detail page
+        });
+    });
+
+// Duplicate Bundle
+    document.querySelectorAll('.duplicate-bundle-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const bundleId = this.getAttribute('data-bundle-id');
+            console.log('Duplicating bundle:', bundleId);
+            // Copy bundle data and open add modal with pre-filled data
+        });
+    });
+
+});
