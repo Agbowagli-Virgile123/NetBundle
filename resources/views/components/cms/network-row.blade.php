@@ -1,5 +1,3 @@
-
-
 <tr>
     <td>
         <div class="drag-handle">
@@ -48,15 +46,6 @@
         <div class="action-buttons">
             <button class="btn-action btn-action-view"
                 data-id="{{$network->id}}"
-                data-name="{{$network->name}}"
-                data-is_active="{{$network->is_active}}"
-                data-code="{{$network->code}}"
-                data-primary_color="{{$network->primary_color}}"
-                data-secondary_color="{{$network->secondary_color}}"
-                data-sort_order="{{$network->sort_order}}"
-                data-short_description="{{$network->short_description}}"
-                data-description="{{$network->description}}"
-                data-created_at="{{$network->created_at}}"
                 data-bs-toggle="modal"
                 data-bs-target="#viewNetworkModal"
                 title="View Details">
@@ -64,15 +53,6 @@
             </button>
             <button class="btn-action btn-action-edit" id="network-detail-editBtn"
                     data-id="{{$network->id}}"
-                    data-name="{{$network->name}}"
-                    data-is_active="{{$network->is_active}}"
-                    data-code="{{$network->code}}"
-                    data-primary_color="{{$network->primary_color}}"
-                    data-secondary_color="{{$network->secondary_color}}"
-                    data-sort_order="{{$network->sort_order}}"
-                    data-short_description="{{$network->short_description}}"
-                    data-description="{{$network->description}}"
-                    data-created_at="{{$network->created_at}}"
                     data-bs-toggle="modal"
                     data-bs-target="#editNetworkModal"
                     title="Edit">

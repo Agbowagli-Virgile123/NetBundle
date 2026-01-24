@@ -83,7 +83,7 @@ class NetworkController
      */
     public function show(Network $network)
     {
-        //
+        return response()->json($network);
     }
 
     /**

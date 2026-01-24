@@ -53,6 +53,17 @@ function ShowModalOnValidationFailed(flag, modalId){
     }
 }
 
+function showViewLoader() {
+    document.getElementById('view-network-loader').classList.remove('d-none');
+    document.getElementById('view-network-content').classList.add('d-none');
+}
+
+function hideViewLoader() {
+    document.getElementById('view-network-loader').classList.add('d-none');
+    document.getElementById('view-network-content').classList.remove('d-none');
+}
+
+
 // Networks Management JavaScript
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -105,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     //When View Modal Opens, store the network object globally
-    let currentNetwork = {};
+    let currentNetwork = null;
 
     document.getElementById('viewNetworkModal')
         .addEventListener('show.bs.modal', function (event) {
@@ -117,57 +128,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            currentNetwork = {
-                id: btn.dataset.id,
-                name: btn.dataset.name,
-                is_active: btn.dataset.is_active,
-                code: btn.dataset.code,
-                primary_color: btn.dataset.primary_color,
-                secondary_color: btn.dataset.secondary_color,
-                sort_order: btn.dataset.sort_order,
-                short_description: btn.dataset.short_description,
-                description: btn.dataset.description,
-                created_at: btn.dataset.created_at,
-            };
+            const networkId = btn.dataset.id;
 
-            // Fill view modal
-            const firstLetterEl = document.getElementById('first-letter');
+            showViewLoader();
 
-            firstLetterEl.innerHTML = `<span class="network-initial-large" >${currentNetwork.name.charAt(0)}</span>`;
-            firstLetterEl.style = `background: linear-gradient(135deg, ${currentNetwork.primary_color} 0%, ${currentNetwork.secondary_color} 100%)`;
+            fetch(`/admin/networks/${networkId}`)
+                .then(res => res.json())
+                .then(network => {
+                    currentNetwork = network;
+                    fillViewModal(network);
+                    hideViewLoader();
+                })
+                .catch(() => {
+                    hideViewLoader();
+                    document.getElementById('view-network-content').innerHTML =
+                    `<div class="alert alert-danger text-center">
+                        Failed to load network details.
+                     </div>`;
+                });
+    });
 
-            //Network Name
-            document.getElementById('network-name').textContent = currentNetwork.name;
+    function fillViewModal(network) {
+        const firstLetterEl = document.getElementById('first-letter');
+        firstLetterEl.innerHTML =
+            `<span class="network-initial-large">${network.name.charAt(0)}</span>`;
+        firstLetterEl.style.background =
+            `linear-gradient(135deg, ${network.primary_color}, ${network.secondary_color})`;
 
-            //Desc
-            document.getElementById('description').textContent = currentNetwork.description;
+            document.getElementById('network-name').textContent = network.name;
+            document.getElementById('description').textContent = network.description;
+            document.getElementById('network-code').textContent = network.code;
+            document.getElementById('sort-order').textContent = network.sort_order;
+            document.getElementById('created-at').textContent =
+            formatDateTime(network.created_at);
 
-            //code
-            document.getElementById('network-code').textContent = currentNetwork.code;
+        const statusEl = document.getElementById('status');
+        if (network.is_active) {
+            statusEl.className = 'status-badge status-active';
+            statusEl.innerHTML = '<i class="bi bi-check-circle"></i> Active';
+        } else {
+            statusEl.className = 'status-badge status-inactive';
+            statusEl.innerHTML = '<i class="bi bi-x-circle"></i> Inactive';
+        }
 
-            // Status
-            const statusEl = document.getElementById('status');
+        document.getElementById('color-preview').innerHTML = `
+        <div class="color-preview" style="background:${network.primary_color}"></div>
+        <span class="color-code">${network.primary_color}</span>`;
+    }
 
-            if (currentNetwork.is_active) {
-                statusEl.className = 'status-badge status-active';
-                statusEl.innerHTML = '<i class="bi bi-check-circle"></i> Active';
-            } else {
-                statusEl.className = 'status-badge status-inactive';
-                statusEl.innerHTML = '<i class="bi bi-x-circle"></i> Inactive';
-            }
-
-            //Preview Color
-            const previewColorEl = document.getElementById('color-preview');
-
-            previewColorEl.innerHTML = `<div class="color-preview" style="background-color: ${currentNetwork.primary_color};"></div>
-                                        <span class="color-code">${currentNetwork.primary_color}</span>`;
-
-            //Sort order
-            document.getElementById('sort-order').textContent = currentNetwork.sort_order;
-
-            //Create At
-            document.getElementById('created-at').textContent = `${formatDateTime(currentNetwork.created_at)}`;
-        });
 
     function fillEditModal(network) {
         const form = document.getElementById('editNetworkForm');
@@ -187,31 +195,28 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('editNetworkModal')
         .addEventListener('show.bs.modal', function (event) {
 
-            const btn = event.relatedTarget; // ✅ always correct
+            const btn = event.relatedTarget;
 
-            // Case 1: opened from LIST page
+            // 🔹 Case 1: Edit clicked from table
             if (btn && btn.classList.contains('btn-action-edit')) {
-                currentNetwork = {
-                    id: btn.dataset.id,
-                    name: btn.dataset.name,
-                    is_active: btn.dataset.is_active,
-                    code: btn.dataset.code,
-                    primary_color: btn.dataset.primary_color,
-                    secondary_color: btn.dataset.secondary_color,
-                    sort_order: btn.dataset.sort_order,
-                    short_description: btn.dataset.short_description,
-                    description: btn.dataset.description,
-                    created_at: btn.dataset.created_at,
-                };
+                const networkId = btn.dataset.id;
+
+                fetch(`/admin/networks/${networkId}`)
+                    .then(res => res.json())
+                    .then(network => {
+                        currentNetwork = network;
+                        fillEditModal(network);
+                    });
+
+                return;
             }
 
-            // Case 2: opened from VIEW modal
-            // currentNetwork is already set → do nothing
-
-            if (!currentNetwork.id) return;
-
-            fillEditModal(currentNetwork);
+            // 🔹 Case 2: Edit clicked from VIEW modal
+            if (currentNetwork) {
+                fillEditModal(currentNetwork);
+            }
         });
+
 
 
     //Delete Network Modal
@@ -227,7 +232,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('deleteNetworkForm').action= `/admin/networks/${btn.dataset.id}`;
             document.getElementById('deleteNetworkName').innerText= btn.dataset.name;
-        });
+    });
+
+
+    document.getElementById('viewNetworkModal')
+    .addEventListener('hidden.bs.modal', function () {
+
+        document.getElementById('view-network-content').classList.add('d-none');
+        document.getElementById('view-network-loader').classList.remove('d-none');
+    });
+
 });
 
 
@@ -289,17 +303,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 // Confirm Delete
-    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-        const bundleId = this.getAttribute('data-bundle-id');
-
-        console.log('Deleting bundle:', bundleId);
-
-        // Here you would send delete request to backend
-        // After successful delete, close modal and remove card from view
-
-        alert('Bundle deleted successfully!');
-        bootstrap.Modal.getInstance(document.getElementById('deleteBundleModal')).hide();
-    });
+//     document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+//         const bundleId = this.getAttribute('data-bundle-id');
+//
+//         console.log('Deleting bundle:', bundleId);
+//
+//         // Here you would send delete request to backend
+//         // After successful delete, close modal and remove card from view
+//
+//         alert('Bundle deleted successfully!');
+//         bootstrap.Modal.getInstance(document.getElementById('deleteBundleModal')).hide();
+//     });
 
 // View Bundle
     document.querySelectorAll('.view-bundle-btn').forEach(btn => {

@@ -380,7 +380,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="network-detail-view">
+
+                    <!-- Loading Spinner -->
+                    <div id="view-network-loader" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-3">Loading network details...</div>
+                    </div>
+
+
+                    <div class="network-detail-view  d-none" id="view-network-content">
 
                         <!-- Network Header -->
                         <div class="network-detail-header text-center mb-4">
