@@ -1,5 +1,17 @@
 @import "bootstrap-icons";
 
+.dropdown-toggle::after {
+    /*display: inline-block;*/
+    /*margin-left: 0.255em;*/
+    /*vertical-align: 0.255em;*/
+    content: none !important;
+    /*border-top: 0.3em solid;*/
+    /*border-right: 0.3em solid transparent;*/
+    /*border-bottom: 0;*/
+    /*border-left: 0.3em solid transparent;*/
+}
+
+
 /* Header Styling */
 .header-custom {
   background: linear-gradient(135deg, #0a0d61 0%, #0d1178 100%);
@@ -4519,9 +4531,6 @@ body.user-agent .agent-only {
 body.user-agent .admin-only {
   display: none;
 }
-
-
-
 
 
 

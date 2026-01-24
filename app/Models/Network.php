@@ -28,4 +28,25 @@ class Network extends Model
         'created_at' => 'datetime',
     ];
 
+    //Generate the sort_number
+    protected static function booted()
+    {
+        static::creating(function ($network) {
+
+            // If sort_order is already set, respect it
+            if (!is_null($network->sort_order)) {
+                return;
+            }
+
+            // Get next sort order safely
+            $network->sort_order = (self::max('sort_order') ?? 0) + 1;
+        });
+    }
+
+    //Relationship
+    public function packages(){
+
+        return $this->hasMany(Package::class);
+    }
+
 }

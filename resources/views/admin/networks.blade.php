@@ -166,17 +166,14 @@
 
                             <!-- Brand Color -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Brand Colors <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Primary Colors <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
-                                    <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
                                     @if(
-                                        $errors->addNetwork->has('primary_color') ||
-                                        $errors->addNetwork->has('secondary_color')
+                                        $errors->addNetwork->has('primary_color')
                                     )
                                         <small class="text-danger fst-italic">
-                                            {{ $errors->addNetwork->first('primary_color')
-                                                ?? $errors->addNetwork->first('secondary_color') }}
+                                            {{ $errors->addNetwork->first('primary_color')}}
                                         </small>
                                     @endif
 
@@ -185,8 +182,8 @@
 
                             <!-- Sort Order -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="sort_order" value="{{old('sort_order')}}" min="1">
+                                <label class="form-label fw-bold">Secondary Color <span class="text-danger">*</span></label>
+                                <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
                                 @if($errors->addNetwork->has('sort_order'))
                                     <small class="text-danger fst-italic">{{ $errors->addNetwork->first('sort_order') }}</small>
                                 @else

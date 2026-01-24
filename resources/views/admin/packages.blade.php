@@ -7,8 +7,7 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h2 class="page-heading">Bundles Management</h2>
-                        <p class="page-subheading text-muted">Manage data bundles and packages</p>
+
                     </div>
                     <div class="col-md-6 text-md-end">
                         <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addBundleModal">
@@ -20,53 +19,33 @@
 
             <!-- Stats Cards -->
             <div class="row g-4 mb-4">
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-primary">
-                            <i class="bi bi-box-seam"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">48</h3>
-                            <p class="stat-label">Total Bundles</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="primary"
+                    icon="box-seam"
+                    stat-number="48"
+                    label="Total Bundles"
+                />
 
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-success">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">45</h3>
-                            <p class="stat-label">Active Bundles</p>
-                        </div>
-                    </div>
-                </div>
+                 <x-cms.stats-card
+                    bg-color="success"
+                    icon="check-circle"
+                    stat-number="45"
+                    label="Actives Bundles"
+                />
 
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-warning">
-                            <i class="bi bi-star"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">12</h3>
-                            <p class="stat-label">Popular Bundles</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="warning"
+                    icon="star"
+                    stat-number="12"
+                    label="Popular Bundles"
+                />
 
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-info">
-                            <i class="bi bi-currency-dollar"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">GH₵ 8.5k</h3>
-                            <p class="stat-label">Total Revenue</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="info"
+                    icon="currency-dollar"
+                    stat-number="GH₵ 8.5k"
+                    label="Total Revenue"
+                />
             </div>
 
             <!-- Filters and Actions -->
@@ -143,7 +122,6 @@
 
                     <!-- Grid View -->
                     <div class="bundles-grid">
-
                         <!-- Bundle Card 1 -->
                         <div class="bundle-card">
                             <div class="bundle-card-header">
@@ -152,37 +130,32 @@
                                 </div>
                                 <div class="bundle-actions">
                                     <div class="dropdown">
-{{--                                        <button class="btn-bundle-action" data-bs-toggle="dropdown">--}}
-{{--                                            <i class="bi bi-three-dots-vertical"></i>--}}
-{{--                                        </button>--}}
-                                        <div class="dropdown">
-                                            <button class="btn-bundle-action" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-toggle dropdown-menu-end">
-                                                <li>
-                                                    <a class="dropdown-item view-bundle-btn" href="#" data-bundle-id="1">
-                                                        <i class="bi bi-eye me-2"></i>View
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item edit-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#editBundleModal" data-bundle-id="1">
-                                                        <i class="bi bi-pencil me-2"></i>Edit
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item duplicate-bundle-btn" href="#" data-bundle-id="1">
-                                                        <i class="bi bi-files me-2"></i>Duplicate
-                                                    </a>
-                                                </li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li>
-                                                    <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-bundle-id="1">
-                                                        <i class="bi bi-trash me-2"></i>Delete
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <button class="btn-bundle-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu  dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item view-bundle-btn" href="#" data-bundle-id="1">
+                                                    <i class="bi bi-eye me-2"></i>View
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item edit-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#editBundleModal" data-bundle-id="1">
+                                                    <i class="bi bi-pencil me-2"></i>Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item duplicate-bundle-btn" href="#" data-bundle-id="1">
+                                                    <i class="bi bi-files me-2"></i>Duplicate
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-bundle-id="1">
+                                                    <i class="bi bi-trash me-2"></i>Delete
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -210,14 +183,14 @@
                             </div>
 
                             <div class="bundle-card-footer">
-              <span class="status-badge status-active">
-                <i class="bi bi-check-circle"></i> Active
-              </span>
+                              <span class="status-badge status-active">
+                                <i class="bi bi-check-circle"></i> Active
+                              </span>
                                 <div class="bundle-popularity">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span class="text-muted small">Popular</span>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <span class="text-muted small">Popular</span>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
 
                         <!-- Bundle Card 2 -->
@@ -228,7 +201,7 @@
                                 </div>
                                 <div class="bundle-actions">
                                     <div class="dropdown">
-                                        <button class="btn-bundle-action" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn-bundle-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
@@ -493,9 +466,9 @@
                             </div>
 
                             <div class="bundle-card-footer">
-              <span class="status-badge status-inactive">
-                <i class="bi bi-x-circle"></i> Inactive
-              </span>
+                          <span class="status-badge status-inactive">
+                            <i class="bi bi-x-circle"></i> Inactive
+                          </span>
                             </div>
                         </div>
 
@@ -574,10 +547,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 
