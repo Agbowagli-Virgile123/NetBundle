@@ -15,7 +15,7 @@ class NetworkController
      */
     public function index()
     {
-        $networks = Network::paginate(3);
+        $networks = Network::paginate(5);
 
         $activecount = Network::where('is_active', "=",1)->count();
         $inactivecount = Network::where('is_active',"=", 0)->count();
@@ -46,7 +46,6 @@ class NetworkController
             'short_description' => 'required|string',
             'description' => 'required|string',
             'is_active' => 'boolean',
-            'sort_order' => 'required|integer|unique:networks,sort_order',
         ]);
 
 
@@ -70,7 +69,6 @@ class NetworkController
             'short_description' => $request->short_description,
             'description' => $request->description,
             'is_active' => $request->boolean('is_active'),
-            'sort_order' => $request->sort_order,
         ]);
 
         return redirect('/admin/networks')
@@ -108,7 +106,6 @@ class NetworkController
             'short_description' => 'required|string',
             'description' => 'required|string',
             'is_active' => 'boolean',
-            'sort_order' => ['required','string',Rule::unique('networks', 'sort_order')->ignore($network->id)],
         ]);
 
 
@@ -142,7 +139,6 @@ class NetworkController
             'short_description' => $request->short_description,
             'description' => $request->description,
             'is_active' => $request->boolean('is_active'),
-            'sort_order' => $request->sort_order,
         ]);
 
         return redirect('/admin/networks')

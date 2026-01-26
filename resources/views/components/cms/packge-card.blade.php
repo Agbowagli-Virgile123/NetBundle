@@ -1,7 +1,7 @@
-<div class="bundle-card">
+<div class="bundle-card {{$package->is_active ? '' : 'inactive-card'}} ">
     <div class="bundle-card-header">
-        <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-            <span class="network-initial">M</span>
+        <div class="bundle-network-badge" style="background: linear-gradient(135deg, {{$package->network->primary_color}} 0%, {{$package->network->secondary_color}} 100%);">
+            <span class="network-initial">{{Str::upper(Str::substr($package->network->name, 0, 1)) }}</span>
         </div>
         <div class="bundle-actions">
             <div class="dropdown">
@@ -36,34 +36,50 @@
     </div>
 
     <div class="bundle-card-body">
-        <div class="bundle-size">1GB</div>
-        <div class="bundle-validity">24 Hours</div>
-        <div class="bundle-type-badge daily-badge">Daily</div>
+        <div class="bundle-size">{{$package->data_amount}}</div>
+        <div class="bundle-validity">{{$package->validity}}</div>
+        @switch($package->validity_days)
+            @case(1)
+                <div class="bundle-type-badge daily-badge">Daily</div>
+                @break
+
+            @case(7)
+                <div class="bundle-type-badge weekly-badge">Weekly</div>
+                @break
+
+            @case(30)
+                <div class="bundle-type-badge monthly-badge">Monthly</div>
+                @break
+
+            @default
+                <div class="bundle-type-badge badge text-warning">Undefined</div>
+        @endswitch
+
 
         <div class="bundle-pricing">
-            <div class="price-main">GH₵ 5.00</div>
-            <div class="price-cost text-muted">Cost: GH₵ 4.20</div>
+            <div class="price-main">GH₵ {{$package->selling_price}}</div>
+            <div class="price-cost text-muted">Cost: GH₵ {{$package->cost_price}}</div>
         </div>
 
-        <div class="bundle-stats">
-            <div class="bundle-stat-item">
-                <i class="bi bi-cart-check text-success"></i>
-                <span>342 sales</span>
-            </div>
-            <div class="bundle-stat-item">
-                <i class="bi bi-eye text-info"></i>
-                <span>1.2k views</span>
-            </div>
-        </div>
+{{--        <div class="bundle-stats">--}}
+{{--            <div class="bundle-stat-item">--}}
+{{--                <i class="bi bi-cart-check text-success"></i>--}}
+{{--                <span>342 sales</span>--}}
+{{--            </div>--}}
+{{--            <div class="bundle-stat-item">--}}
+{{--                <i class="bi bi-eye text-info"></i>--}}
+{{--                <span>1.2k views</span>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </div>
 
     <div class="bundle-card-footer">
-      <span class="status-badge status-active">
-        <i class="bi bi-check-circle"></i> Active
+      <span class="status-badge {{$package->is_active ? 'status-active' : 'status-inactive'}}  ">
+        <i class="bi {{$package->is_active ? 'bi-check-circle' : 'bi-x-circle'}} "></i>{{$package->is_active ? 'Active' : 'Inactive'}}
       </span>
         <div class="bundle-popularity">
-            <i class="bi bi-star-fill text-warning"></i>
-            <span class="text-muted small">Popular</span>
+            <i class="bi bi-{{$package->packageTag->icon ?? ''}}" style="color: {{$package->packageTag->color ?? ''}}" ></i>
+            <span class="text-muted small">{{$package->packageTag->name}}</span>
         </div>
     </div>
 </div>

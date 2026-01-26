@@ -478,11 +478,11 @@
 
 /* Network Detail View */
 .network-detail-view {
-    padding: 20px;
+    padding: 10px 20px;
 }
 
 .network-detail-header {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #f1f1f1;
 }
 
@@ -715,7 +715,7 @@
 
 /* Bundle Card Header */
 .bundle-card-header {
-    padding: 20px;
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -803,7 +803,7 @@
 }
 
 .bundle-pricing {
-    padding: 15px 0;
+    padding: 5px 0;
     border-top: 2px solid #f8f9fa;
     border-bottom: 2px solid #f8f9fa;
     margin-bottom: 15px;
@@ -836,7 +836,7 @@
 
 /* Bundle Card Footer */
 .bundle-card-footer {
-    padding: 15px 20px;
+    padding: 10px 10px;
     background: #f8f9fa;
     display: flex;
     justify-content: space-between;
@@ -846,7 +846,7 @@
 .bundle-popularity {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 3px;
 }
 
 /* Responsive */

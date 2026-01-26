@@ -98,14 +98,13 @@
                             </tr>
                             </thead>
                             <tbody>
-
-                                @if($networks)
+                                @if($networks->count() > 0)
                                     @foreach($networks as $network)
                                         <x-cms.network-row :network="$network" />
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="89" class="text-center">
+                                        <td colspan="9" class="text-center">
                                             No Network Found
                                         </td>
                                     </tr>
@@ -164,9 +163,9 @@
 
                             </div>
 
-                            <!-- Brand Color -->
+                            <!-- Primary Color -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Primary Colors <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Primary Color <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
                                     @if(
@@ -180,15 +179,15 @@
                                 </div>
                             </div>
 
-                            <!-- Sort Order -->
+                            <!-- Secondary Color -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Secondary Color <span class="text-danger">*</span></label>
-                                <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
-                                @if($errors->addNetwork->has('sort_order'))
-                                    <small class="text-danger fst-italic">{{ $errors->addNetwork->first('sort_order') }}</small>
-                                @else
-                                    <small class="text-muted">Display order on website</small>
-                                @endif
+                                <div class="input-group">
+                                    <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
+                                    @if($errors->addNetwork->has('secondary_color'))
+                                        <small class="text-danger fst-italic">{{ $errors->addNetwork->first('secondary_color') }}</small>
+                                    @endif
+                                </div>
                             </div>
 
                             <!-- Short Description -->
@@ -257,7 +256,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" enctype="multipart/form-data" id="editNetworkForm"  >
+
+                    <!-- Loading Spinner -->
+                    <div id="edit-network-loader" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-3">Loading network details...</div>
+                    </div>
+
+                    <form method="POST" class="d-none" enctype="multipart/form-data" id="editNetworkForm"  >
                         @csrf
                         @method('PATCH')
                         <div class="row g-3">
@@ -282,32 +290,28 @@
                                 @endif
                             </div>
 
-                            <!-- Brand Color -->
+                            <!-- Primary Color -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Brand Colors <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Primary Color <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="color" class="form-control form-control-color" name="primary_color" value="#FFCC00">
-                                    <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
-                                    @if(
-                                        $errors->editNetwork->has('primary_color') ||
-                                        $errors->editNetwork->has('secondary_color')
-                                    )
+
+                                    @if($errors->editNetwork->has('primary_color'))
                                         <small class="text-danger fst-italic">
-                                            {{ $errors->editNetwork->first('primary_color')
-                                                ?? $errors->editNetwork->first('secondary_color') }}
+                                            {{ $errors->editNetwork->first('primary_color')}}
                                         </small>
                                     @endif
                                 </div>
                             </div>
 
-                            <!-- Sort Order -->
+                            <!-- Secondary Order -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Sort Order <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="sort_order" value="{{old('sort_order')}}" min="1">
-                                @if($errors->editNetwork->has('sort_order'))
-                                    <small class="text-danger fst-italic">{{ $errors->editNetwork->first('sort_order') }}</small>
-                                @else
-                                    <small class="text-muted">Display order on website</small>
+                                <label class="form-label fw-bold">Secondary Color <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="color" class="form-control form-control-color" name="secondary_color" value="#FFA500">
+                                </div>
+                                @if($errors->editNetwork->has('secondary_color'))
+                                    <small class="text-danger fst-italic">{{ $errors->editNetwork->first('secondary_color') }}</small>
                                 @endif
                             </div>
 
@@ -390,7 +394,7 @@
                     <div class="network-detail-view  d-none" id="view-network-content">
 
                         <!-- Network Header -->
-                        <div class="network-detail-header text-center mb-4">
+                        <div class="network-detail-header text-center mb-2">
                             <div class="network-logo-large mb-3 " id="first-letter" style="">
 
                             </div>
@@ -401,7 +405,7 @@
                         </div>
 
                         <!-- Network Info Grid -->
-                        <div class="row g-4">
+                        <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="detail-item">
                                     <label class="detail-label" >Network Code</label>
@@ -449,7 +453,7 @@
                             <div class="col-md-6">
                                 <div class="detail-item">
                                     <label class="detail-label">Created At</label>
-                                    <p class="detail-value" id="created-at">January 15, 2026 at 10:30 AM</p>
+                                    <p class="detail-value" id="created-at"></p>
                                 </div>
                             </div>
 

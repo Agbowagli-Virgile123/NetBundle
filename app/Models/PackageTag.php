@@ -26,6 +26,20 @@ class PackageTag extends Model
         'created_at' => 'datetime'
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($tag) {
+
+            // If sort_order is already set, respect it
+            if (!is_null($tag->sort_order)) {
+                return;
+            }
+
+            // Get next sort order safely
+            $tag->sort_order = (self::max('sort_order') ?? 0) + 1;
+        });
+    }
+
     public function packages(){
 
         return $this->hasMany(Package::class);

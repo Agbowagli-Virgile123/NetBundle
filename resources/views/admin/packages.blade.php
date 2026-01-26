@@ -22,21 +22,21 @@
                 <x-cms.stats-card
                     bg-color="primary"
                     icon="box-seam"
-                    stat-number="48"
+                    stat-number="{{$packages->total()}}"
                     label="Total Bundles"
                 />
 
                  <x-cms.stats-card
                     bg-color="success"
                     icon="check-circle"
-                    stat-number="45"
+                    stat-number="{{$activePackages}}"
                     label="Actives Bundles"
                 />
 
                 <x-cms.stats-card
                     bg-color="warning"
                     icon="star"
-                    stat-number="12"
+                    stat-number="{{$inactivePackages}}"
                     label="Popular Bundles"
                 />
 
@@ -122,356 +122,15 @@
 
                     <!-- Grid View -->
                     <div class="bundles-grid">
-                        <!-- Bundle Card 1 -->
-                        <div class="bundle-card">
-                            <div class="bundle-card-header">
-                                <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                    <span class="network-initial">M</span>
-                                </div>
-                                <div class="bundle-actions">
-                                    <div class="dropdown">
-                                        <button class="btn-bundle-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu  dropdown-menu-end">
-                                            <li>
-                                                <a class="dropdown-item view-bundle-btn" href="#" data-bundle-id="1">
-                                                    <i class="bi bi-eye me-2"></i>View
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item edit-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#editBundleModal" data-bundle-id="1">
-                                                    <i class="bi bi-pencil me-2"></i>Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item duplicate-bundle-btn" href="#" data-bundle-id="1">
-                                                    <i class="bi bi-files me-2"></i>Duplicate
-                                                </a>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-bundle-id="1">
-                                                    <i class="bi bi-trash me-2"></i>Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        @if($packages->count() > 0)
+                            @foreach($packages as $package)
+                                <x-cms.packge-card :package="$package" />
+                            @endforeach
+                        @else
+                            <div class="row">
+                                No Package Found
                             </div>
-
-                            <div class="bundle-card-body">
-                                <div class="bundle-size">1GB</div>
-                                <div class="bundle-validity">24 Hours</div>
-                                <div class="bundle-type-badge daily-badge">Daily</div>
-
-                                <div class="bundle-pricing">
-                                    <div class="price-main">GH₵ 5.00</div>
-                                    <div class="price-cost text-muted">Cost: GH₵ 4.20</div>
-                                </div>
-
-                                <div class="bundle-stats">
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-cart-check text-success"></i>
-                                        <span>342 sales</span>
-                                    </div>
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-eye text-info"></i>
-                                        <span>1.2k views</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-footer">
-                              <span class="status-badge status-active">
-                                <i class="bi bi-check-circle"></i> Active
-                              </span>
-                                <div class="bundle-popularity">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <span class="text-muted small">Popular</span>
-                                    </div>
-                                </div>
-                        </div>
-
-                        <!-- Bundle Card 2 -->
-                        <div class="bundle-card">
-                            <div class="bundle-card-header">
-                                <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                    <span class="network-initial">M</span>
-                                </div>
-                                <div class="bundle-actions">
-                                    <div class="dropdown">
-                                        <button class="btn-bundle-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <a class="dropdown-item view-bundle-btn" href="#" data-bundle-id="1">
-                                                    <i class="bi bi-eye me-2"></i>View
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item edit-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#editBundleModal" data-bundle-id="1">
-                                                    <i class="bi bi-pencil me-2"></i>Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item duplicate-bundle-btn" href="#" data-bundle-id="1">
-                                                    <i class="bi bi-files me-2"></i>Duplicate
-                                                </a>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-bundle-id="1">
-                                                    <i class="bi bi-trash me-2"></i>Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-body">
-                                <div class="bundle-size">2GB</div>
-                                <div class="bundle-validity">24 Hours</div>
-                                <div class="bundle-type-badge daily-badge">Daily</div>
-
-                                <div class="bundle-pricing">
-                                    <div class="price-main">GH₵ 9.00</div>
-                                    <div class="price-cost text-muted">Cost: GH₵ 7.50</div>
-                                </div>
-
-                                <div class="bundle-stats">
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-cart-check text-success"></i>
-                                        <span>289 sales</span>
-                                    </div>
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-eye text-info"></i>
-                                        <span>980 views</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-footer">
-              <span class="status-badge status-active">
-                <i class="bi bi-check-circle"></i> Active
-              </span>
-                            </div>
-                        </div>
-
-                        <!-- Bundle Card 3 -->
-                        <div class="bundle-card">
-                            <div class="bundle-card-header">
-                                <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                    <span class="network-initial">M</span>
-                                </div>
-                                <div class="bundle-actions">
-                                    <div class="dropdown">
-                                        <button class="btn-bundle-action" data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-files me-2"></i>Duplicate</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-body">
-                                <div class="bundle-size">5GB</div>
-                                <div class="bundle-validity">24 Hours</div>
-                                <div class="bundle-type-badge daily-badge">Daily</div>
-
-                                <div class="bundle-pricing">
-                                    <div class="price-main">GH₵ 20.00</div>
-                                    <div class="price-cost text-muted">Cost: GH₵ 17.00</div>
-                                </div>
-
-                                <div class="bundle-stats">
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-cart-check text-success"></i>
-                                        <span>456 sales</span>
-                                    </div>
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-eye text-info"></i>
-                                        <span>1.5k views</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-footer">
-              <span class="status-badge status-active">
-                <i class="bi bi-check-circle"></i> Active
-              </span>
-                                <div class="bundle-popularity">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span class="text-muted small">Popular</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bundle Card 4 - AirtelTigo -->
-                        <div class="bundle-card">
-                            <div class="bundle-card-header">
-                                <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FF0000 0%, #DC143C 100%);">
-                                    <span class="network-initial">A</span>
-                                </div>
-                                <div class="bundle-actions">
-                                    <div class="dropdown">
-                                        <button class="btn-bundle-action" data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-files me-2"></i>Duplicate</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-body">
-                                <div class="bundle-size">10GB</div>
-                                <div class="bundle-validity">7 Days</div>
-                                <div class="bundle-type-badge weekly-badge">Weekly</div>
-
-                                <div class="bundle-pricing">
-                                    <div class="price-main">GH₵ 32.00</div>
-                                    <div class="price-cost text-muted">Cost: GH₵ 27.00</div>
-                                </div>
-
-                                <div class="bundle-stats">
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-cart-check text-success"></i>
-                                        <span>198 sales</span>
-                                    </div>
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-eye text-info"></i>
-                                        <span>750 views</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-footer">
-              <span class="status-badge status-active">
-                <i class="bi bi-check-circle"></i> Active
-              </span>
-                            </div>
-                        </div>
-
-                        <!-- Bundle Card 5 - Telecel -->
-                        <div class="bundle-card">
-                            <div class="bundle-card-header">
-                                <div class="bundle-network-badge" style="background: linear-gradient(135deg, #00A650 0%, #008040 100%);">
-                                    <span class="network-initial">T</span>
-                                </div>
-                                <div class="bundle-actions">
-                                    <div class="dropdown">
-                                        <button class="btn-bundle-action" data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-files me-2"></i>Duplicate</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-body">
-                                <div class="bundle-size">50GB</div>
-                                <div class="bundle-validity">30 Days</div>
-                                <div class="bundle-type-badge monthly-badge">Monthly</div>
-
-                                <div class="bundle-pricing">
-                                    <div class="price-main">GH₵ 145.00</div>
-                                    <div class="price-cost text-muted">Cost: GH₵ 120.00</div>
-                                </div>
-
-                                <div class="bundle-stats">
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-cart-check text-success"></i>
-                                        <span>87 sales</span>
-                                    </div>
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-eye text-info"></i>
-                                        <span>420 views</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-footer">
-              <span class="status-badge status-active">
-                <i class="bi bi-check-circle"></i> Active
-              </span>
-                                <div class="bundle-popularity">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span class="text-muted small">Popular</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bundle Card 6 - Inactive Example -->
-                        <div class="bundle-card inactive-card">
-                            <div class="bundle-card-header">
-                                <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%);">
-                                    <span class="network-initial">M</span>
-                                </div>
-                                <div class="bundle-actions">
-                                    <div class="dropdown">
-                                        <button class="btn-bundle-action" data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-files me-2"></i>Duplicate</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-body">
-                                <div class="bundle-size">100GB</div>
-                                <div class="bundle-validity">30 Days</div>
-                                <div class="bundle-type-badge monthly-badge">Monthly</div>
-
-                                <div class="bundle-pricing">
-                                    <div class="price-main">GH₵ 250.00</div>
-                                    <div class="price-cost text-muted">Cost: GH₵ 210.00</div>
-                                </div>
-
-                                <div class="bundle-stats">
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-cart-check text-success"></i>
-                                        <span>12 sales</span>
-                                    </div>
-                                    <div class="bundle-stat-item">
-                                        <i class="bi bi-eye text-info"></i>
-                                        <span>156 views</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bundle-card-footer">
-                          <span class="status-badge status-inactive">
-                            <i class="bi bi-x-circle"></i> Inactive
-                          </span>
-                            </div>
-                        </div>
-
+                        @endif
                     </div>
 
                     <!-- List View (Hidden by default) -->
@@ -485,38 +144,21 @@
                                     <th>Type</th>
                                     <th>Price</th>
                                     <th>Cost</th>
-                                    <th>Sales</th>
+{{--                                    <th>Sales</th>--}}
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="bundle-network-badge" style="background: linear-gradient(135deg, #FFCC00 0%, #FFA500 100%); width: 35px; height: 35px;">
-                                                <span class="network-initial" style="font-size: 1rem;">M</span>
-                                            </div>
-                                            <div>
-                                                <div class="fw-bold">1GB</div>
-                                                <small class="text-muted">24 Hours</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>MTN</td>
-                                    <td><span class="bundle-type-badge daily-badge">Daily</span></td>
-                                    <td class="fw-bold">GH₵ 5.00</td>
-                                    <td class="text-muted">GH₵ 4.20</td>
-                                    <td>342 sales</td>
-                                    <td><span class="status-badge status-active"><i class="bi bi-check-circle"></i> Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="btn-action btn-action-view"><i class="bi bi-eye"></i></button>
-                                            <button class="btn-action btn-action-edit"><i class="bi bi-pencil"></i></button>
-                                            <button class="btn-action btn-action-delete"><i class="bi bi-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    @if($packages->count() > 0)
+                                        @foreach($packages as $package)
+                                            <x-cms.package-list :package="$package" />
+                                        @endforeach
+                                    @else
+                                        <tr colspan="9" class="text-center">
+                                            No Package Found
+                                        </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -524,28 +166,8 @@
 
 
                     <!-- Pagination -->
-                    <div class="mt-4">
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <p class="mb-0 text-muted">Showing 1 to 6 of 48 bundles</p>
-                            </div>
-                            <div class="col-md-6">
-                                <nav>
-                                    <ul class="pagination justify-content-md-end mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                    <div class="mt-3">
+                        {{$packages->links()}}
                     </div>
                 </div>
             </div>

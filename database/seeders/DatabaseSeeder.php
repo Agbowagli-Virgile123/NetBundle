@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Agent;
 use App\Models\Network;
+use App\Models\Package;
 use App\Models\PackageTag;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -101,8 +102,8 @@ class DatabaseSeeder extends Seeder
                 'sort_order' => 1
             ],
             [
-                'name' => 'Best Value',
-                'slug' => 'best-value',
+                'name' => 'Best',
+                'slug' => 'best',
                 'color' => '#4ECDC4',
                 'icon' => 'lightning-charge-fill',
                 'description' => 'Great price for data amount',
@@ -133,8 +134,8 @@ class DatabaseSeeder extends Seeder
                 'sort_order' => 5
             ],
             [
-                'name' => 'Weekend Special',
-                'slug' => 'weekend-special',
+                'name' => 'Special',
+                'slug' => 'special',
                 'color' => '#FCBAD3',
                 'icon' => 'calendar-week',
                 'description' => 'Weekend only packages',
@@ -233,9 +234,13 @@ class DatabaseSeeder extends Seeder
                 'validity_days' => 30,
                 'package_code' => 'DATA_50GB_MONTHLY',
                 'is_active' => true,
-                'is_featured' => false,
                 'sort_order' => 6
             ],
         ];
+
+
+        foreach ($packages as $package) {
+            Package::create($package);
+        }
     }
 }

@@ -64,7 +64,7 @@
                 />
 
                 <x-cms.nav-item
-                    path="/admin/bundles"
+                    path="/admin/packages"
                     icon="box-seam"
                     title="Bundles"
                 />

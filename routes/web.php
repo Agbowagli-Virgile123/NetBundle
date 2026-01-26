@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NetworkController;
+use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
 
 //Auth Routes
@@ -89,9 +90,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::post('/admin/networks', [NetworkController::class, 'store']);
 
     //Bundles Routes
-    Route::get('/admin/bundles', function(){
-        return view('admin.packages');
-    });
+    Route::get('/admin/packages', [PackageController::class, 'index']);
 
 
 

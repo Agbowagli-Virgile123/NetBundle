@@ -53,14 +53,14 @@ function ShowModalOnValidationFailed(flag, modalId){
     }
 }
 
-function showViewLoader() {
-    document.getElementById('view-network-loader').classList.remove('d-none');
-    document.getElementById('view-network-content').classList.add('d-none');
+function showViewLoader(content, loader) {
+    document.getElementById(loader).classList.remove('d-none');
+    document.getElementById(content).classList.add('d-none');
 }
 
-function hideViewLoader() {
-    document.getElementById('view-network-loader').classList.add('d-none');
-    document.getElementById('view-network-content').classList.remove('d-none');
+function hideViewLoader(content, loader) {
+    document.getElementById(loader).classList.add('d-none');
+    document.getElementById(content).classList.remove('d-none');
 }
 
 
@@ -130,17 +130,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const networkId = btn.dataset.id;
 
-            showViewLoader();
+            showViewLoader('view-network-content', 'view-network-loader');
 
             fetch(`/admin/networks/${networkId}`)
                 .then(res => res.json())
                 .then(network => {
                     currentNetwork = network;
                     fillViewModal(network);
-                    hideViewLoader();
+                    hideViewLoader('view-network-content', 'view-network-loader');
                 })
                 .catch(() => {
-                    hideViewLoader();
+                    hideViewLoader('view-network-content', 'view-network-loader');
                     document.getElementById('view-network-content').innerHTML =
                     `<div class="alert alert-danger text-center">
                         Failed to load network details.
@@ -184,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         form.querySelector('[name="name"]').value = network.name;
         form.querySelector('[name="code"]').value = network.code;
-        form.querySelector('[name="sort_order"]').value = network.sort_order;
         form.querySelector('[name="short_description"]').value = network.short_description;
         form.querySelector('[name="description"]').value = network.description;
         form.querySelector('[name="primary_color"]').value = network.primary_color;
@@ -201,11 +200,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (btn && btn.classList.contains('btn-action-edit')) {
                 const networkId = btn.dataset.id;
 
+                showViewLoader('editNetworkForm', 'edit-network-loader');
+
                 fetch(`/admin/networks/${networkId}`)
                     .then(res => res.json())
                     .then(network => {
                         currentNetwork = network;
                         fillEditModal(network);
+                        hideViewLoader('editNetworkForm', 'edit-network-loader');
                     });
 
                 return;
@@ -214,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 🔹 Case 2: Edit clicked from VIEW modal
             if (currentNetwork) {
                 fillEditModal(currentNetwork);
+                hideViewLoader('editNetworkForm', 'edit-network-loader');
             }
         });
 
@@ -240,6 +243,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('view-network-content').classList.add('d-none');
         document.getElementById('view-network-loader').classList.remove('d-none');
+    });
+
+ document.getElementById('editNetworkModal')
+    .addEventListener('hidden.bs.modal', function () {
+
+        document.getElementById('editNetworkForm').classList.add('d-none');
+        document.getElementById('edit-network-loader').classList.remove('d-none');
     });
 
 });

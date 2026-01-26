@@ -41,6 +41,20 @@ class Package extends Model
         'created_at' => 'datetime',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($package) {
+
+            // If sort_order is already set, respect it
+            if (!is_null($package->sort_order)) {
+                return;
+            }
+
+            // Get next sort order safely
+            $package->sort_order = (self::max('sort_order') ?? 0) + 1;
+        });
+    }
+
 
     //Relationships
     public function network(){
