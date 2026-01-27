@@ -286,6 +286,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Search functionality
+    const searchInput = document.querySelector('.search-box input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    }
+
+
     // Edit Bundle - Populate form with data
     document.querySelectorAll('.edit-bundle-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {

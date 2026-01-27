@@ -90,7 +90,7 @@
                             <label class="form-label fw-bold">Search</label>
                             <div class="search-box">
                                 <i class="bi bi-search"></i>
-                                <input type="text" class="form-control" placeholder="Search bundles...">
+                                <input type="text" class="form-control" placeholder="Search packages...">
                             </div>
                         </div>
 
@@ -144,7 +144,7 @@
                                     <th>Type</th>
                                     <th>Price</th>
                                     <th>Cost</th>
-{{--                                    <th>Sales</th>--}}
+                                    <th>Tag</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>

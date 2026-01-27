@@ -9,21 +9,21 @@
                     <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <ul class="dropdown-menu  dropdown-menu-end">
-                    <li>
-                        <a class="dropdown-item view-bundle-btn" href="#" data-bundle-id="1">
-                            <i class="bi bi-eye me-2"></i>View
-                        </a>
-                    </li>
+{{--                    <li>--}}
+{{--                        <a class="dropdown-item view-bundle-btn" href="#" data-bundle-id="1">--}}
+{{--                            <i class="bi bi-eye me-2"></i>View--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li>
                         <a class="dropdown-item edit-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#editBundleModal" data-bundle-id="1">
                             <i class="bi bi-pencil me-2"></i>Edit
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item duplicate-bundle-btn" href="#" data-bundle-id="1">
-                            <i class="bi bi-files me-2"></i>Duplicate
-                        </a>
-                    </li>
+{{--                    <li>--}}
+{{--                        <a class="dropdown-item duplicate-bundle-btn" href="#" data-bundle-id="1">--}}
+{{--                            <i class="bi bi-files me-2"></i>Duplicate--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-bundle-id="1">

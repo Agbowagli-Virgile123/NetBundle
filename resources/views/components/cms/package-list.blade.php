@@ -32,13 +32,28 @@
 
     <td class="fw-bold">GH₵ {{$package->selling_price}}</td>
     <td class="text-muted">GH₵ {{$package->cost_price}}</td>
-{{--    <td>342 sales</td>--}}
+    <td>
+        <div class="bundle-popularity">
+            <i class="bi bi-{{$package->packageTag->icon ?? ''}}" style="color: {{$package->packageTag->color ?? ''}}" ></i>
+            <span class="text-muted small">{{$package->packageTag->name}}</span>
+        </div>
+    </td>
     <td><span class="status-badge {{$package->is_active ? 'status-active' : 'status-inactive'}}"><i class="bi {{$package->is_active ? 'bi-check-circle' : 'bi-x-circle'}} "></i> {{$package->is_active ? 'Active' : 'Inactive'}}</span></td>
     <td>
         <div class="action-buttons">
-            <button class="btn-action btn-action-view"><i class="bi bi-eye"></i></button>
-            <button class="btn-action btn-action-edit"><i class="bi bi-pencil"></i></button>
-            <button class="btn-action btn-action-delete"><i class="bi bi-trash"></i></button>
+{{--            <button class="btn-action btn-action-view"><i class="bi bi-eye"></i></button>--}}
+            <button class="btn-action btn-action-edit"
+                data-bs-target="#editBundleModal"
+                data-bs-toggle="modal"
+                title="Edit Package" >
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-action btn-action-delete"
+               data-bs-target="#deleteBundleModal"
+               title="Delete Package"
+                data-bs-toggle="modal">
+                <i class="bi bi-trash"></i>
+            </button>
         </div>
     </td>
 </tr>
