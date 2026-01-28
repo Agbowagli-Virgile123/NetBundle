@@ -89,9 +89,9 @@ Route::middleware(['auth:web'])->group(function () {
     Route::delete('/admin/networks/{network}', [NetworkController::class, 'destroy']);
     Route::post('/admin/networks', [NetworkController::class, 'store']);
 
-    //Bundles Routes
+    //Package Routes
     Route::get('/admin/packages', [PackageController::class, 'index']);
-
+    Route::post('/admin/packages', [PackageController::class, 'store']);
 
 
 });

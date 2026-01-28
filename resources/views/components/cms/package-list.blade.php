@@ -10,7 +10,7 @@
             </div>
         </div>
     </td>
-    <td>{{Str::upper($package->network->name)}}</td>
+    <td id="networkName" data-code="{{$package->network->code}}" >{{Str::upper($package->network->name)}}</td>
 
     @switch($package->validity_days)
         @case(1)

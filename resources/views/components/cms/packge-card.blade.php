@@ -1,7 +1,7 @@
 <div class="bundle-card {{$package->is_active ? '' : 'inactive-card'}} ">
     <div class="bundle-card-header">
-        <div class="bundle-network-badge" style="background: linear-gradient(135deg, {{$package->network->primary_color}} 0%, {{$package->network->secondary_color}} 100%);">
-            <span class="network-initial">{{Str::upper(Str::substr($package->network->name, 0, 1)) }}</span>
+        <div class="bundle-network-badge" id="networkName" data-code="{{$package->network->code}}"  style="background: linear-gradient(135deg, {{$package->network->primary_color}} 0%, {{$package->network->secondary_color}} 100%);">
+            <span class="network-initial"  >{{Str::upper(Str::substr($package->network->name, 0, 1)) }}</span>
         </div>
         <div class="bundle-actions">
             <div class="dropdown">

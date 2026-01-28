@@ -50,8 +50,8 @@
                 <x-cms.stats-card
                     bg-color="info"
                     icon="box-seam"
-                    stat-number="48"
-                    label="Total Bundles"
+                    stat-number="{{$totalPackages}}"
+                    label="Total Packages"
                 />
             </div>
 
@@ -71,7 +71,7 @@
                                 </div>
 
                                 <!-- Filter -->
-                                <select class="form-select" style="max-width: 150px;">
+                                <select class="form-select" id="statusFilter" style="max-width: 150px;">
                                     <option value="">All Status</option>
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>

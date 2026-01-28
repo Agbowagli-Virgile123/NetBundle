@@ -11,7 +11,7 @@
                     </div>
                     <div class="col-md-6 text-md-end">
                         <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addBundleModal">
-                            <i class="bi bi-plus-circle me-2"></i>Add New Bundle
+                            <i class="bi bi-plus-circle me-2"></i>Add New Package
                         </button>
                     </div>
                 </div>
@@ -23,21 +23,21 @@
                     bg-color="primary"
                     icon="box-seam"
                     stat-number="{{$packages->total()}}"
-                    label="Total Bundles"
+                    label="Total Packages"
                 />
 
                  <x-cms.stats-card
                     bg-color="success"
                     icon="check-circle"
                     stat-number="{{$activePackages}}"
-                    label="Actives Bundles"
+                    label="Actives Packages"
                 />
 
                 <x-cms.stats-card
                     bg-color="warning"
                     icon="star"
                     stat-number="{{$inactivePackages}}"
-                    label="Popular Bundles"
+                    label="Inactives Packages"
                 />
 
                 <x-cms.stats-card
@@ -58,15 +58,15 @@
                             <label class="form-label fw-bold">Network</label>
                             <select class="form-select" id="networkFilter">
                                 <option value="">All Networks</option>
-                                <option value="mtn">MTN</option>
-                                <option value="airteltigo">AirtelTigo</option>
-                                <option value="telecel">Telecel</option>
+                                @foreach($networks as $network)
+                                    <option value="{{$network->code}}">{{$network->name}}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <!-- Bundle Type Filter -->
                         <div class="col-md-3">
-                            <label class="form-label fw-bold">Bundle Type</label>
+                            <label class="form-label fw-bold">Package Type</label>
                             <select class="form-select" id="typeFilter">
                                 <option value="">All Types</option>
                                 <option value="daily">Daily</option>
@@ -155,8 +155,8 @@
                                             <x-cms.package-list :package="$package" />
                                         @endforeach
                                     @else
-                                        <tr colspan="9" class="text-center">
-                                            No Package Found
+                                        <tr class="text-center">
+                                            <td colspan="9">No Package Found</td>
                                         </tr>
                                     @endif
                                 </tbody>
@@ -180,83 +180,140 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-plus-circle me-2"></i>Add New Bundle
+                        <i class="bi bi-plus-circle me-2"></i>Add New Package
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addBundleForm">
+                    <form method="POST" action="/admin/packages" id="addPackageForm">
+                        @csrf
                         <div class="row g-3">
 
                             <!-- Network Selection -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Network <span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg" name="network_id" required>
+                                <select class="form-select" name="network_id">
                                     <option value="">Select Network</option>
-                                    <option value="1">MTN</option>
-                                    <option value="2">AirtelTigo</option>
-                                    <option value="3">Telecel</option>
+                                    @foreach($networks as $network)
+                                        <option value="{{$network->id}}" {{old('network_id', true) ? 'selected' : ''}} >{{$network->name}}</option>
+                                    @endforeach
                                 </select>
+                                @error('network_id', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Bundle Type -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Bundle Type <span class="text-danger">*</span></label>
-                                <select class="form-select form-select-lg" name="type" required>
+                                <label class="form-label fw-bold">Package Type <span class="text-danger">*</span></label>
+                                <select class="form-select" name="type">
                                     <option value="">Select Type</option>
-                                    <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
+                                    <option value="daily" {{old('type', true) ? 'selected' : ''}}>Daily</option>
+                                    <option value="weekly" {{old('type', true) ? 'selected' : ''}}>Weekly</option>
+                                    <option value="monthly" {{old('type', true) ? 'selected' : ''}}>Monthly</option>
                                 </select>
+                                @error('type', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Package Tag -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Package Tag <span class="text-danger">*</span></label>
+                                <select class="form-select" name="type">
+                                    <option value="">Select Tag</option>
+                                    @foreach($tags as $tag)
+                                        <option value="{{$tag->id}}" {{old('tag', true) ? 'selected' : ''}}>{{$tag->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('tag', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Data Size -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Data Size <span class="text-danger">*</span></label>
-                                <div class="input-group input-group-lg">
-                                    <input type="number" class="form-control" name="data_size" placeholder="5" required>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="data_size" value="{{old('data_size')}}" placeholder="5">
                                     <select class="form-select" name="data_unit" style="max-width: 100px;">
-                                        <option value="MB">MB</option>
-                                        <option value="GB" selected>GB</option>
+                                        <option value="MB" {{old('data_unit', true) ? 'selected' : ''}}>MB</option>
+                                        <option value="GB" {{old('data_unit', true) ? 'selected' : ''}}>GB</option>
                                     </select>
                                 </div>
+                                @error('data_size', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Validity Period -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Validity Period <span class="text-danger">*</span></label>
-                                <div class="input-group input-group-lg">
-                                    <input type="number" class="form-control" name="validity_value" placeholder="7" required>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="validity_value" value="{{old('validity_value')}}" placeholder="7">
                                     <select class="form-select" name="validity_unit" style="max-width: 120px;">
-                                        <option value="hours">Hours</option>
-                                        <option value="days" selected>Days</option>
-                                        <option value="months">Months</option>
+                                        <option value="hours" {{old('validity_unit', true) ? 'selected' : ''}}>Hours</option>
+                                        <option value="days" {{old('validity_unit', true) ? 'selected' : ''}}>Days</option>
+                                        <option value="months" {{old('validity_unit', true) ? 'selected' : ''}}>Months</option>
                                     </select>
                                 </div>
+                                @error('validity_value', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Selling Price -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Selling Price (GH₵) <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control form-control-lg" name="price" placeholder="20.00" step="0.01" required>
+                                <input type="number" class="form-control" name="price" value="{{old('price')}}"  placeholder="20.00" step="0.01">
+                                @error('price', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Agent Price -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Agent Price (GH₵)</label>
+                                <input type="number" class="form-control" name="agent_cost" value="{{old('agent_cost')}}" placeholder="18.00" step="0.01">
+                                @error('agent_cost', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Cost Price -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Cost Price (GH₵) <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control form-control-lg" name="cost" placeholder="17.00" step="0.01" required>
+                                <input type="number" class="form-control" name="cost" value="{{old('cost')}}" placeholder="17.00" step="0.01">
+                                @error('cost', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Package Code -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Package Code</label>
+                                <input type="text" class="form-control" name="code" value="{{old('code')}}">
+                                @error('code', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Stock Limit -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Stock Limit</label>
+                                <input type="number" class="form-control" name="limit" value="{{old('limit')}}" placeholder="100" step="1">
+                                @error('limit', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Description -->
                             <div class="col-12">
                                 <label class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" name="description" rows="3" placeholder="Bundle description..."></textarea>
-                            </div>
-
-                            <!-- Features -->
-                            <div class="col-12">
-                                <label class="form-label fw-bold">Features (One per line)</label>
-                                <textarea class="form-control" name="features" rows="3" placeholder="All Networks&#10;Instant Activation&#10;24/7 Support"></textarea>
+                                <textarea class="form-control" name="description" rows="3" placeholder="Package description...">{{old('description')}}</textarea>
+                                @error('description', 'addPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Checkboxes -->
@@ -270,22 +327,6 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" name="is_popular" id="addIsPopular">
-                                            <label class="form-check-label fw-bold" for="addIsPopular">
-                                                Popular
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" name="is_featured" id="addIsFeatured">
-                                            <label class="form-check-label fw-bold" for="addIsFeatured">
-                                                Featured
-                                            </label>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -294,9 +335,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="addBundleForm" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-2"></i>Add Bundle
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-primary"
+                        icon-class="check-circle me-2"
+                        btn-text="Add Package"
+                        form="addPackageForm"
+                    />
                 </div>
             </div>
         </div>
@@ -363,3 +407,11 @@
         </div>
     </div>
 </x-layouts.admin-cms>
+
+@if ($errors->addPackage->any())
+    <div id="openAddPackageModal"></div>
+@endif
+
+@if ($errors->editPackage->any())
+    <div id="openEditPackageModal"></div>
+@endif

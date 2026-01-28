@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Network;
+use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -16,11 +17,11 @@ class NetworkController
     public function index()
     {
         $networks = Network::paginate(5);
-
         $activecount = Network::where('is_active', "=",1)->count();
         $inactivecount = Network::where('is_active',"=", 0)->count();
+        $totalPackages = Package::count();
 
-        return view('admin.networks', compact(['networks', 'activecount', 'inactivecount']));
+        return view('admin.networks', compact(['networks', 'activecount', 'inactivecount', 'totalPackages']));
     }
 
     /**

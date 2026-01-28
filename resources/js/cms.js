@@ -64,7 +64,6 @@ function hideViewLoader(content, loader) {
 }
 
 
-// Networks Management JavaScript
 document.addEventListener('DOMContentLoaded', function() {
 
     //Network Add Modal
@@ -73,6 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
     //Network Edit Modal
     ShowModalOnValidationFailed("openEditNetworkModal", "editNetworkModal");
 
+    //Packages Add Modal
+    ShowModalOnValidationFailed("openAddPackageModal", "addBundleModal");
+
+    //Packages Edit Modal
+    ShowModalOnValidationFailed("openEditPackageModal", "editBundleModal");
+
 
     // Search functionality
     const searchInput = document.querySelector('.search-box input');
@@ -80,22 +85,30 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             const rows = document.querySelectorAll('.custom-table tbody tr');
+            const cards = document.querySelectorAll('.bundle-card')
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+
         });
     }
 
     // Filter by status
-    const statusFilter = document.querySelector('select.form-select');
+    const statusFilter = document.getElementById('statusFilter');
     if (statusFilter) {
         statusFilter.addEventListener('change', function () {
             const filterValue = this.value;
             const rows = document.querySelectorAll('.custom-table tbody tr');
-
+            const cards = document.querySelectorAll('.bundles-grid >.bundle-card');
             rows.forEach(row => {
+
                 if (filterValue === '') {
                     row.style.display = '';
                 } else {
@@ -111,10 +124,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             });
+
+            cards.forEach(card => {
+
+                if (filterValue === '') {
+                    card.style.display = '';
+                } else {
+                    const statusBadge = card.querySelector('.status-badge');
+                    const isActive = statusBadge.classList.contains('status-active');
+
+                    if (filterValue === 'active' && isActive) {
+                        card.style.display = '';
+                    } else if (filterValue === 'inactive' && !isActive) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
         });
     }
 
 
+    // Networks Management JavaScript
     //When View Modal Opens, store the network object globally
     let currentNetwork = null;
 
@@ -255,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-//Bundles Management JavaScript
+//Packages Management JavaScript
 document.addEventListener('DOMContentLoaded', function() {
 
     // View Toggle (Grid/List)
@@ -286,16 +318,80 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Search functionality
-    const searchInput = document.querySelector('.search-box input');
-    if (searchInput) {
-        searchInput.addEventListener('input', function () {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('.custom-table tbody tr');
 
+    //Filter Based on network
+    const networkFilter = document.getElementById('networkFilter');
+    if (networkFilter) {
+        networkFilter.addEventListener('change', function () {
+            const filterValue = this.value;
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+            const cards = document.querySelectorAll('.bundles-grid >.bundle-card');
             rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+
+                if (filterValue === '') {
+                    row.style.display = '';
+                } else {
+                    const networkData = row.querySelector('#networkName');
+                    const networkValue = networkData.dataset.code;
+                    if (filterValue === networkValue) {
+                        row.style.display = '';
+                    }else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+            cards.forEach(card => {
+
+                if (filterValue === '') {
+                    card.style.display = '';
+                } else {
+                    const networkData = card.querySelector('#networkName');
+                    const networkValue = networkData.dataset.code;
+                    if (filterValue === networkValue) {
+                        card.style.display = '';
+                    }else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        });
+    }
+
+
+    //Filter Based on type
+    const packageTypeFilter = document.getElementById('typeFilter');
+    if (packageTypeFilter) {
+        packageTypeFilter.addEventListener('change', function () {
+            const filterValue = this.value;
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+            const cards = document.querySelectorAll('.bundles-grid >.bundle-card');
+            rows.forEach(row => {
+
+                if (filterValue === '') {
+                    row.style.display = '';
+                } else {
+                    const typeValue = row.querySelector('.bundle-type-badge').innerText;
+                    if (filterValue === typeValue.toLowerCase()) {
+                        row.style.display = '';
+                    }else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+            cards.forEach(card => {
+
+                if (filterValue === '') {
+                    card.style.display = '';
+                } else {
+                    const typeValue = card.querySelector('.bundle-type-badge').innerText;
+                    if (filterValue === typeValue.toLowerCase()) {
+                        card.style.display = '';
+                    }else {
+                        card.style.display = 'none';
+                    }
+                }
             });
         });
     }
@@ -315,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-// Delete Bundle - Show bundle name
+    // Delete Bundle - Show bundle name
     document.querySelectorAll('.delete-bundle-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
