@@ -2,6 +2,13 @@
     <!-- Bundles Management Content -->
     <div class="dashboard-content">
         <div class="container-fluid">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
             <!-- Page Header -->
             <div class="page-header">
@@ -195,7 +202,7 @@
                                 <select class="form-select" name="network_id">
                                     <option value="">Select Network</option>
                                     @foreach($networks as $network)
-                                        <option value="{{$network->id}}" {{old('network_id', true) ? 'selected' : ''}} >{{$network->name}}</option>
+                                        <option value="{{$network->id}}" @selected(old('network_id') == $network->id) >{{$network->name}}</option>
                                     @endforeach
                                 </select>
                                 @error('network_id', 'addPackage')
@@ -208,9 +215,9 @@
                                 <label class="form-label fw-bold">Package Type <span class="text-danger">*</span></label>
                                 <select class="form-select" name="type">
                                     <option value="">Select Type</option>
-                                    <option value="daily" {{old('type', true) ? 'selected' : ''}}>Daily</option>
-                                    <option value="weekly" {{old('type', true) ? 'selected' : ''}}>Weekly</option>
-                                    <option value="monthly" {{old('type', true) ? 'selected' : ''}}>Monthly</option>
+                                    <option value="Daily" @selected(old('type') == 'Daily')>Daily</option>
+                                    <option value="Weekly" @selected(old('type') == 'Weekly')>Weekly</option>
+                                    <option value="Monthly" @selected(old('type') == 'Monthly')>Monthly</option>
                                 </select>
                                 @error('type', 'addPackage')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
@@ -220,10 +227,10 @@
                             <!-- Package Tag -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Package Tag <span class="text-danger">*</span></label>
-                                <select class="form-select" name="type">
+                                <select class="form-select" name="tag">
                                     <option value="">Select Tag</option>
                                     @foreach($tags as $tag)
-                                        <option value="{{$tag->id}}" {{old('tag', true) ? 'selected' : ''}}>{{$tag->name}}</option>
+                                        <option value="{{$tag->id}}" @selected(old('tag') == $tag->id)>{{$tag->name}}</option>
                                     @endforeach
                                 </select>
                                 @error('tag', 'addPackage')
@@ -237,8 +244,8 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="data_size" value="{{old('data_size')}}" placeholder="5">
                                     <select class="form-select" name="data_unit" style="max-width: 100px;">
-                                        <option value="MB" {{old('data_unit', true) ? 'selected' : ''}}>MB</option>
-                                        <option value="GB" {{old('data_unit', true) ? 'selected' : ''}}>GB</option>
+                                        <option value="MB" @selected(old('data_unit') == 'MB')>MB</option>
+                                        <option value="GB" @selected(old('data_unit') == 'GB')>GB</option>
                                     </select>
                                 </div>
                                 @error('data_size', 'addPackage')
@@ -252,9 +259,9 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="validity_value" value="{{old('validity_value')}}" placeholder="7">
                                     <select class="form-select" name="validity_unit" style="max-width: 120px;">
-                                        <option value="hours" {{old('validity_unit', true) ? 'selected' : ''}}>Hours</option>
-                                        <option value="days" {{old('validity_unit', true) ? 'selected' : ''}}>Days</option>
-                                        <option value="months" {{old('validity_unit', true) ? 'selected' : ''}}>Months</option>
+                                        <option value="Hours" @selected(old('validity_unit') == 'Hours')>Hours</option>
+                                        <option value="Days" @selected(old('validity_unit') == 'Days')>Days</option>
+                                        <option value="Months" @selected(old('validity_unit') == 'Months')>Months</option>
                                     </select>
                                 </div>
                                 @error('validity_value', 'addPackage')
@@ -274,8 +281,8 @@
                             <!-- Agent Price -->
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Agent Price (GH₵)</label>
-                                <input type="number" class="form-control" name="agent_cost" value="{{old('agent_cost')}}" placeholder="18.00" step="0.01">
-                                @error('agent_cost', 'addPackage')
+                                <input type="number" class="form-control" name="agent_price" value="{{old('agent_price')}}" placeholder="18.00" step="0.01">
+                                @error('agent_price', 'addPackage')
                                     <small class="text-danger fst-italic">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -321,11 +328,15 @@
                                 <div class="row g-3">
                                     <div class="col-md-4">
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" name="is_active" id="addIsActive" checked>
+                                            <input class="form-check-input" type="checkbox" name="is_active" id="addIsActive" value="1" @checked(old('is_active', true))>
                                             <label class="form-check-label fw-bold" for="addIsActive">
                                                 Active
                                             </label>
                                         </div>
+
+                                        @error('is_active', 'addPackage')
+                                            <small class="text-danger fst-italic">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -357,20 +368,176 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editBundleForm">
-                        <input type="hidden" name="bundle_id" value="1">
 
+                    <!-- Loading Spinner -->
+                    <div id="edit-package-loader" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-3">Loading package details...</div>
+                    </div>
+
+                    <form method="POST"  id="editBundleForm">
+                        @csrf
+                        @method('PATCH')
                         <div class="row g-3">
-                            <!-- Same form fields as Add Bundle -->
-                            <!-- Copy all fields from addBundleModal -->
+
+                            <!-- Network Selection -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Network <span class="text-danger">*</span></label>
+                                <select class="form-select" name="network_id">
+                                    <option value="">Select Network</option>
+                                    @foreach($networks as $network)
+                                        <option value="{{$network->id}}" @selected(old('network_id') == $network->id) >{{$network->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('network_id', 'editPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Bundle Type -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Package Type <span class="text-danger">*</span></label>
+                                <select class="form-select" name="type">
+                                    <option value="">Select Type</option>
+                                    <option value="Daily" @selected(old('type') == 'Daily')>Daily</option>
+                                    <option value="Weekly" @selected(old('type') == 'Weekly')>Weekly</option>
+                                    <option value="Monthly" @selected(old('type') == 'Monthly')>Monthly</option>
+                                </select>
+                                @error('type', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Package Tag -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Package Tag <span class="text-danger">*</span></label>
+                                <select class="form-select" name="tag">
+                                    <option value="">Select Tag</option>
+                                    @foreach($tags as $tag)
+                                        <option value="{{$tag->id}}" @selected(old('tag') == $tag->id)>{{$tag->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('tag', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Data Size -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Data Size <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="data_size" value="{{old('data_size')}}" placeholder="5">
+                                    <select class="form-select" name="data_unit" style="max-width: 100px;">
+                                        <option value="MB" @selected(old('data_unit') == 'MB')>MB</option>
+                                        <option value="GB" @selected(old('data_unit') == 'GB')>GB</option>
+                                    </select>
+                                </div>
+                                @error('data_size', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Validity Period -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Validity Period <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="validity_value" value="{{old('validity_value')}}" placeholder="7">
+                                    <select class="form-select" name="validity_unit" style="max-width: 120px;">
+                                        <option value="Hours" @selected(old('validity_unit') == 'Hours')>Hours</option>
+                                        <option value="Days" @selected(old('validity_unit') == 'Days')>Days</option>
+                                        <option value="Months" @selected(old('validity_unit') == 'Months')>Months</option>
+                                    </select>
+                                </div>
+                                @error('validity_value', 'editPackage')
+                                    <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Selling Price -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Selling Price (GH₵) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="price" value="{{old('price')}}"  placeholder="20.00" step="0.01">
+                                @error('price', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Agent Price -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Agent Price (GH₵)</label>
+                                <input type="number" class="form-control" name="agent_price" value="{{old('agent_price')}}" placeholder="18.00" step="0.01">
+                                @error('agent_price', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Cost Price -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Cost Price (GH₵) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="cost" value="{{old('cost')}}" placeholder="17.00" step="0.01">
+                                @error('cost', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Package Code -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Package Code</label>
+                                <input type="text" class="form-control" name="code" value="{{old('code')}}">
+                                @error('code', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Stock Limit -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Stock Limit</label>
+                                <input type="number" class="form-control" name="limit" value="{{old('limit')}}" placeholder="100" step="1">
+                                @error('limit', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Description</label>
+                                <textarea class="form-control" name="description" rows="3" placeholder="Package description...">{{old('description')}}</textarea>
+                                @error('description', 'editPackage')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Checkboxes -->
+                            <div class="col-12">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" name="is_active" id="addIsActive" value="1" @checked(old('is_active', true))>
+                                            <label class="form-check-label fw-bold" for="addIsActive">
+                                                Active
+                                            </label>
+                                        </div>
+
+                                        @error('is_active', 'editPackage')
+                                        <small class="text-danger fst-italic">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="editBundleForm" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-2"></i>Update Bundle
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-primary"
+                        icon-class="check-circle me-2"
+                        btn-text="Update Package"
+                        form="editBundleForm"
+                    />
                 </div>
             </div>
         </div>
@@ -391,7 +558,7 @@
                         <i class="bi bi-trash"></i>
                     </div>
                     <h5 class="mb-3">Delete Bundle?</h5>
-                    <p class="text-muted mb-0">Are you sure you want to delete <strong id="deleteBundleName">1GB MTN Daily</strong>? This action cannot be undone.</p>
+                    <p class="text-muted mb-0">Are you sure you want to delete <strong id="deleteBundleName"></strong>? This action cannot be undone.</p>
                     <div class="alert alert-warning mt-3" role="alert">
                         <i class="bi bi-exclamation-circle me-2"></i>
                         <strong>Warning:</strong> All related data will be permanently removed.
@@ -399,9 +566,20 @@
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                        <i class="bi bi-trash me-2"></i>Yes, Delete
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-danger"
+                        icon-class="bi-trash me-2"
+                        btn-text="Yes, Delete"
+                        form="deleteBundleForm"
+                    />
+                </div>
+
+                {{--                Delete form--}}
+                <div class="visually-hidden">
+                    <form method="POST" id="deleteBundleForm" >
+                        @csrf
+                        @method('DELETE')
+                    </form>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@
 {{--                        </a>--}}
 {{--                    </li>--}}
                     <li>
-                        <a class="dropdown-item edit-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#editBundleModal" data-bundle-id="1">
+                        <a class="dropdown-item edit-bundle-btn btn-action-edit"  data-bs-toggle="modal" data-bs-target="#editBundleModal" data-id="{{$package->id}}">
                             <i class="bi bi-pencil me-2"></i>Edit
                         </a>
                     </li>
@@ -26,7 +26,7 @@
 {{--                    </li>--}}
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-bundle-id="1">
+                        <a class="dropdown-item text-danger delete-bundle-btn" href="#" data-bs-toggle="modal" data-bs-target="#deleteBundleModal" data-id="{{$package->id}}" data-name="{{$package->name}}">
                             <i class="bi bi-trash me-2"></i>Delete
                         </a>
                     </li>

@@ -45,11 +45,14 @@
             <button class="btn-action btn-action-edit"
                 data-bs-target="#editBundleModal"
                 data-bs-toggle="modal"
+                data-id="{{$package->id}}"
                 title="Edit Package" >
                 <i class="bi bi-pencil"></i>
             </button>
             <button class="btn-action btn-action-delete"
                data-bs-target="#deleteBundleModal"
+                data-id="{{$package->id}}"
+                data-name="{{$package->name}}"
                title="Delete Package"
                 data-bs-toggle="modal">
                 <i class="bi bi-trash"></i>

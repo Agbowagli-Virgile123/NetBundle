@@ -91,6 +91,9 @@ Route::middleware(['auth:web'])->group(function () {
 
     //Package Routes
     Route::get('/admin/packages', [PackageController::class, 'index']);
+    Route::get('/admin/packages/{package}', [PackageController::class, 'show']);
+    Route::patch('/admin/packages/{package}', [PackageController::class, 'update']);
+    Route::delete('/admin/packages/{package}', [PackageController::class, 'destroy']);
     Route::post('/admin/packages', [PackageController::class, 'store']);
 
 

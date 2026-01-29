@@ -149,8 +149,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Networks Management JavaScript
     //When View Modal Opens, store the network object globally
     let currentNetwork = null;
+    const viewNetworkModal = document.getElementById('viewNetworkModal');
 
-    document.getElementById('viewNetworkModal')
+    if(!viewNetworkModal){
+        return;
+    }
+
+    viewNetworkModal
         .addEventListener('show.bs.modal', function (event) {
 
             const btn = event.relatedTarget;
@@ -398,62 +403,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Edit Bundle - Populate form with data
-    document.querySelectorAll('.edit-bundle-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const bundleId = this.getAttribute('data-bundle-id');
+    function fillPackageEditModal(bundle){
+        const form = document.getElementById('editBundleForm');
 
-            // Here you would fetch bundle data and populate the form
-            console.log('Editing bundle:', bundleId);
+        form.action = `/admin/packages/${bundle.id}`;
 
-            // Example: populate form (you'd get this data from your backend)
-            // document.querySelector('#editBundleForm input[name="bundle_id"]').value = bundleId;
+        const name = bundle.name;
+
+        // extract data size + unit
+        const dataMatch = name.match(/(\d+(?:\.\d+)?)(MB|GB|TB)/i);
+        const dataSize = dataMatch ? dataMatch[1] : '';
+        const dataUnit = dataMatch ? dataMatch[2].toUpperCase() : '';
+
+        // extract type
+        const typeMatch = name.match(/\b(Daily|Weekly|Monthly|Yearly)\b/i);
+        const type = typeMatch ? typeMatch[1] : '';
+
+        const validity = (bundle.validity || '').trim();
+
+        const match = validity.match(/^(\d+)?\s*(.+)$/);
+
+        const validityValue = match && match[1] ? match[1] : '';
+        const validityUnit  = match && match[2] ? match[2].trim() : '';
+
+
+        form.querySelector('[name="network_id"]').value = bundle.network_id;
+        form.querySelector('[name="tag"]').value = bundle.package_tag_id;
+        form.querySelector('[name="type"]').value = type;
+        form.querySelector('[name="data_size"]').value = dataSize;
+        form.querySelector('[name="data_unit"]').value = dataUnit;
+        form.querySelector('[name="validity_value"]').value = validityValue;
+        form.querySelector('[name="validity_unit"]').value = validityUnit;
+        form.querySelector('[name="price"]').value = bundle.selling_price;
+        form.querySelector('[name="agent_price"]').value = bundle.agent_price;
+        form.querySelector('[name="cost"]').value = bundle.cost_price;
+        form.querySelector('[name="code"]').value = bundle.package_code;
+        form.querySelector('[name="limit"]').value = bundle.stock_limit;
+        form.querySelector('[name="description"]').value = bundle.description;
+        form.querySelector('[name="is_active"]').checked = bundle.is_active;
+
+    }
+
+    document.getElementById('editBundleModal')
+        .addEventListener('show.bs.modal', function (event){
+            const btn = event.relatedTarget;
+
+            if (btn && btn.classList.contains('btn-action-edit')) {
+                const packageId = btn.dataset.id;
+
+                showViewLoader('editBundleForm', 'edit-package-loader');
+
+                fetch(`/admin/packages/${packageId}`)
+                    .then(res => res.json())
+                    .then(bundle => {
+                        fillPackageEditModal(bundle);
+                        hideViewLoader('editBundleForm', 'edit-package-loader');
+                    });
+            }
+
         });
-    });
 
     // Delete Bundle - Show bundle name
-    document.querySelectorAll('.delete-bundle-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const bundleId = this.getAttribute('data-bundle-id');
+    document.getElementById('deleteBundleModal')
+        .addEventListener('show.bs.modal', function (event) {
 
-            // Update modal with bundle info
-            document.getElementById('deleteBundleName').textContent = '1GB MTN Daily'; // Get from data
-            document.getElementById('confirmDeleteBtn').setAttribute('data-bundle-id', bundleId);
+            const btn = event.relatedTarget;
+
+            if (!btn) {
+                console.error('View modal opened without a trigger button');
+                return;
+            }
+
+            document.getElementById('deleteBundleForm').action= `/admin/packages/${btn.dataset.id}`;
+            document.getElementById('deleteBundleName').innerText= btn.dataset.name;
         });
-    });
-
-// Confirm Delete
-//     document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
-//         const bundleId = this.getAttribute('data-bundle-id');
-//
-//         console.log('Deleting bundle:', bundleId);
-//
-//         // Here you would send delete request to backend
-//         // After successful delete, close modal and remove card from view
-//
-//         alert('Bundle deleted successfully!');
-//         bootstrap.Modal.getInstance(document.getElementById('deleteBundleModal')).hide();
-//     });
-
-// View Bundle
-    document.querySelectorAll('.view-bundle-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const bundleId = this.getAttribute('data-bundle-id');
-            console.log('Viewing bundle:', bundleId);
-            // Open view modal or redirect to detail page
-        });
-    });
-
-// Duplicate Bundle
-    document.querySelectorAll('.duplicate-bundle-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const bundleId = this.getAttribute('data-bundle-id');
-            console.log('Duplicating bundle:', bundleId);
-            // Copy bundle data and open add modal with pre-filled data
-        });
-    });
 
 });
