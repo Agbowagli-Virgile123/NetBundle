@@ -96,6 +96,10 @@ Route::middleware(['auth:web'])->group(function () {
     Route::delete('/admin/packages/{package}', [PackageController::class, 'destroy']);
     Route::post('/admin/packages', [PackageController::class, 'store']);
 
+    //Agents Routes
+    Route::get('/admin/agents', function(){
+        return view('admin.agents');
+    });
 
 });
 
