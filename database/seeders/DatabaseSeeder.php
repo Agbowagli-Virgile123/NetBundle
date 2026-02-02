@@ -36,22 +36,21 @@ class DatabaseSeeder extends Seeder
             'last_name' => 'Agbowagli',
             'email' => 'virgile@gmail.com',
             'password' => '123',
-
+            'date_of_birth' => '2002-11-25',
             'phone_number' => '22990000000',
             'whatsapp_number' => '22990000000',
-            'birth_date' => '1998-05-12',
+            'mobile_money_network' => 'MTN',
+            'mobile_money_number' => '22990000000',
             'gender' => 'male',
+            'is_active' => true,
+            'is_verified' => true,
             'region' => 'Littoral',
             'city' => 'Cotonou',
             'address' => 'Zongo Street',
-            'id_type' => 'National ID',
+            'id_type' => 'Ghana Card',
             'id_number' => 'ID12345678',
-
-            'mobile_money_network' => 'MTN',
-            'mobile_money_number' => '22990000000',
             'reason' => 'Interested in sales opportunities',
-
-            'have_sale_experience' => true,
+            'have_sales_experience' => true,
             'way_of_hearing_us' => 'website'
         ]);
 

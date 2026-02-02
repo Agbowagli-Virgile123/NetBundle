@@ -67,4 +67,9 @@ class Package extends Model
         return $this->belongsTo(PackageTag::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

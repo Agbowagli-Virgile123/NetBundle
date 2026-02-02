@@ -47,14 +47,14 @@
                     path="/admin/users"
                     icon="people"
                     title="Users"
-                    badge="24"
+                    :badge="$sidebarCounts['users']"
                 />
 
                 <x-cms.nav-item
                     path="/admin/agents"
                     icon="person-badge"
                     title="Agents"
-                    badge="156"
+                    :badge="$sidebarCounts['agents']"
                 />
 
                 <x-cms.nav-item

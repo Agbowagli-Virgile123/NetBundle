@@ -49,4 +49,10 @@ class Network extends Model
         return $this->hasMany(Package::class);
     }
 
+    // Relationship: A network has many orders (through packages)
+    public function orders()
+    {
+        return $this->hasManyThrough(Order::class, Package::class);
+    }
+
 }

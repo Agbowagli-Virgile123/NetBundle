@@ -39,7 +39,7 @@
     <td>
         <div class="date-info">
             <div class="date-primary">{{ $network->created_at->format('M d, Y') }}</div>
-            <small class="date-time">{{  (string)$network->created_at->format('h:i A') }}</small>
+            <small class="date-time">{{(string)$network->created_at->format('h:i A') }}</small>
         </div>
     </td>
     <td>
