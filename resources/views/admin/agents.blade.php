@@ -209,7 +209,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="dropdown">
+                                        <div class="dropdown dropdown-toggle">
                                             <button class="btn-action-menu" data-bs-toggle="dropdown">
                                                 <i class="bi bi-three-dots-vertical"></i>
                                             </button>

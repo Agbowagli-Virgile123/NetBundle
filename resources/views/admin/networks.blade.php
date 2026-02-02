@@ -14,7 +14,8 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-
+{{--                        <h2 class="page-heading">Networks Management</h2>--}}
+                        <p class="page-subheading text-muted">Manage telecom networks and their settings</p>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addNetworkModal">

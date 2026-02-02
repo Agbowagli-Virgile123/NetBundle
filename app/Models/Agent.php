@@ -137,20 +137,6 @@ class Agent extends Authenticatable
     }
 
     // Helper methods
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-
-    public function isAgent()
-    {
-        return $this->role === 'agent';
-    }
-
-    public function isCustomer()
-    {
-        return $this->role === 'customer';
-    }
 
     public function canPlaceOrder()
     {

@@ -46,8 +46,8 @@
     </td>
     <td>
         <div class="sales-info">
-            <div class="fw-bold text-success">GH₵ 12,450.00</div>
-            <small class="text-muted">{{$agent->orders()->count()}} orders</small>
+            <div class="fw-bold text-success">GH₵ {{$agent->wallet->balance + $agent->wallet->commission_balance}}</div>
+            <small class="text-muted">{{$agent->getTotalOrdersAttribute()}} orders</small>
         </div>
     </td>
     <td>
@@ -55,7 +55,7 @@
             <span class="status-badge {{$agent->is_active ? 'status-active' : 'status-inactive'}} ">
                <i class="bi {{ $agent->is_active ? 'bi-check-circle' : 'bi-x-circle' }}"></i> {{$agent->is_active ? 'Active' : 'Inactive'}}
             </span>
-            <span class="verified-badge verified">
+            <span class="verified-badge {{$agent->is_verified ? 'verified' : 'unverified'}} ">
                 <i class="bi {{ $agent->is_verified ? 'bi-patch-check-fill' : 'bi-clock-history' }}"></i> {{$agent->is_verified ? 'Verified' : 'Pending'}}
             </span>
         </div>
@@ -67,7 +67,7 @@
         </div>
     </td>
     <td>
-        <div class="dropdown">
+        <div class="dropdown dropdown-toggle">
             <button class="btn-action-menu" data-bs-toggle="dropdown">
                 <i class="bi bi-three-dots-vertical"></i>
             </button>
@@ -134,7 +134,7 @@
                                                 <i class="bi bi-cart-check"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">342</div>
+                                                <div class="mini-stat-value">{{$agent->getTotalOrdersAttribute()}}</div>
                                                 <div class="mini-stat-label">Total Orders</div>
                                             </div>
                                         </div>
@@ -145,7 +145,7 @@
                                                 <i class="bi bi-currency-dollar"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">GH₵ 12,450</div>
+                                                <div class="mini-stat-value">GH₵ {{$agent->wallet->balance + $agent->wallet->commission_balance}}</div>
                                                 <div class="mini-stat-label">Total Sales</div>
                                             </div>
                                         </div>
@@ -156,7 +156,7 @@
                                                 <i class="bi bi-star"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">GH₵ 855.50</div>
+                                                <div class="mini-stat-value">GH₵ {{$agent->wallet->commission_balance}}</div>
                                                 <div class="mini-stat-label">Commission Earned</div>
                                             </div>
                                         </div>
@@ -167,7 +167,7 @@
                                                 <i class="bi bi-arrow-down-circle"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">GH₵ 3,200</div>
+                                                <div class="mini-stat-value">GH₵ {{$agent->wallet->total_deposited}}</div>
                                                 <div class="mini-stat-label">Total Deposited</div>
                                             </div>
                                         </div>
@@ -181,27 +181,27 @@
                                 <div class="info-list">
                                     <div class="info-item">
                                         <span class="info-label">Full Name:</span>
-                                        <span class="info-value">Kwame Asante</span>
+                                        <span class="info-value">{{$agent->last_name.' '.$agent->first_name }}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Email:</span>
-                                        <span class="info-value">kwame@email.com</span>
+                                        <span class="info-value">{{$agent->email}}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Phone:</span>
-                                        <span class="info-value">+233 24 123 4567</span>
+                                        <span class="info-value">+233 {{$agent->phone_number}}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">WhatsApp:</span>
-                                        <span class="info-value">+233 24 123 4567</span>
+                                        <span class="info-value">+233 {{$agent->whatsapp_number}}</span>
                                     </div>
                                     <div class="info-item">
-                                        <span class="info-label">Ghana Card:</span>
-                                        <span class="info-value">GHA-123456789-0</span>
+                                        <span class="info-label">{{$agent->id_type}}:</span>
+                                        <span class="info-value">{{$agent->id_number}}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Address:</span>
-                                        <span class="info-value">Kumasi, Ashanti Region</span>
+                                        <span class="info-value">{{$agent->city.', '.$agent->region}} Kumasi, Ashanti Region</span>
                                     </div>
                                 </div>
                             </div>
@@ -212,33 +212,33 @@
                                 <div class="info-list">
                                     <div class="info-item">
                                         <span class="info-label">Agent ID:</span>
-                                        <span class="info-value">AG001</span>
+                                        <span class="info-value">AG{{$agent->id}}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Referral Code:</span>
-                                        <span class="info-value"><code>AG-KW789</code></span>
+                                        <span class="info-value"><code>{{$agent->referral_code}}</code></span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Commission Rate:</span>
-                                        <span class="info-value"><span class="commission-badge">10%</span></span>
+                                        <span class="info-value"><span class="commission-badge">{{$agent->commission_rate}}%</span></span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Joined Date:</span>
-                                        <span class="info-value">January 15, 2026</span>
+                                        <span class="info-value">{{ $agent->created_at->format('M d, Y') }}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Verification Status:</span>
                                         <span class="info-value">
-                                            <span class="verified-badge verified">
-                                              <i class="bi bi-patch-check-fill"></i> Verified
+                                            <span class="verified-badge {{$agent->is_verified ? 'verified' : 'unverified'}}">
+                                                <i class="bi {{ $agent->is_verified ? 'bi-patch-check-fill' : 'bi-clock-history' }}"></i> {{$agent->is_verified ? 'Verified' : 'Pending'}}
                                             </span>
                                           </span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Account Status:</span>
                                         <span class="info-value">
-                                            <span class="status-badge status-active">
-                                              <i class="bi bi-check-circle"></i> Active
+                                            <span class="status-badge {{$agent->is_active ? 'status-active' : 'status-inactive'}}">
+                                              <i class="bi {{ $agent->is_active ? 'bi-check-circle' : 'bi-x-circle' }}"></i> {{$agent->is_active ? 'Active' : 'Inactive'}}
                                             </span>
                                           </span>
                                     </div>
