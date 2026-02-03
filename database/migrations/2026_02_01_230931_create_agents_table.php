@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->default(now());
             $table->string('gender');
             $table->string('phone_number')->unique();
             $table->string('email')->unique();
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('commission_rate', 5, 2)->default(0); // Agent commission percentage (e.g., 5.00 for 5%)
             $table->boolean('is_active')->default(true);
             $table->boolean('is_verified')->default(false); // KYC verification status
-            $table->enum('id_type',['Ghana Card', 'Voter\'s Id', 'Passport', 'Driver\'s Licence']);
+            $table->string('id_type');
             $table->string('id_number')->unique(); // For KYC
             $table->string('region');
             $table->string('city');
@@ -75,7 +75,7 @@ return new class extends Migration
             $table->string('payment_method')->nullable(); // paystack, bank_transfer, etc.
             $table->string('payment_reference')->nullable(); // Paystack reference
             $table->text('description')->nullable();
-            $table->foreignId('related_order_id')->nullable()->constrained('orders')->nullOnDelete();
+            //$table->foreignId('related_order_id')->nullable()->constrained('orders')->nullOnDelete();
             $table->enum('status', ['pending', 'completed', 'failed', 'cancelled'])->default('pending');
             $table->timestamps();
         });

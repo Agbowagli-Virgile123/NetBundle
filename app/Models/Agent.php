@@ -12,6 +12,7 @@ class Agent extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
+        'password',
         'date_of_birth',
         'gender',
         'phone_number',
@@ -31,7 +32,7 @@ class Agent extends Authenticatable
         'address',
         'reason',
         'have_sales_experience',
-        'way_of_hearing',
+        'way_of_hearing_us',
         'image',
         'verified_at',
         'last_login_at'
@@ -51,32 +52,38 @@ class Agent extends Authenticatable
         'is_active' => 'boolean',
         'is_verified' => 'boolean',
         'commission_rate' => 'decimal:2',
+        'password' => 'hashed',
     ];
 
 
-    protected static function booted():void
+    protected static function booted()
     {
-        static::created(fn () => cache()->forget('admin_sidebar_counts'));
-        static::deleted(fn () => cache()->forget('admin_sidebar_counts'));
-    }
-
-
-    // Auto-generate referral code for agents
-    protected static function boot()
-    {
-        parent::boot();
+        //parent::boot();
 
         static::creating(function ($agent) {
             if (empty($agent->referral_code)) {
-                $agent->referral_code = 'AG-' . strtoupper(Str::random(5));
+                $agent->referral_code = 'AG-'. strtoupper(Str::random(5));
             }
         });
 
         static::created(function ($agent) {
-            //Wallet::create(['agent_id' => $model->id]);
-            $agent->wallet()->create();
+            $agent->wallet()->create([
+                'balance' => 0,
+                'commission_balance' => 0,
+                'total_deposited' => 0,
+                'total_spent' => 0,
+                'total_commission_earned' => 0,
+                'total_withdrawn' => 0,
+            ]);
+
+            cache()->forget('admin_sidebar_counts');
+        });
+
+        static::deleted(function () {
+            cache()->forget('admin_sidebar_counts');
         });
     }
+
 
     // Relationships
     public function wallet()

@@ -28,105 +28,12 @@ class Wallet extends Model
 
     public function agent()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Agent::class);
     }
 
-//    public function transactions()
-//    {
-//        return $this->hasMany(WalletTransaction::class);
-//    }
-
-    // Credit wallet
-    public function credit($amount, $category, $description = null, $relatedOrderId = null, $paymentReference = null)
+    public function transactions()
     {
-        $balanceBefore = $this->balance;
-        $this->balance += $amount;
-        $this->save();
-
-        return $this->transactions()->create([
-            'agent_id' => $this->agent_id,
-            'transaction_reference' => $this->generateReference(),
-            'type' => 'credit',
-            'category' => $category,
-            'amount' => $amount,
-            'balance_before' => $balanceBefore,
-            'balance_after' => $this->balance,
-            'description' => $description,
-            'related_order_id' => $relatedOrderId,
-            'payment_reference' => $paymentReference,
-            'status' => 'completed'
-        ]);
-    }
-
-    // Debit wallet
-    public function debit($amount, $category, $description = null, $relatedOrderId = null)
-    {
-        if ($this->balance < $amount) {
-            throw new \Exception('Insufficient wallet balance');
-        }
-
-        $balanceBefore = $this->balance;
-        $this->balance -= $amount;
-        $this->save();
-
-        return $this->transactions()->create([
-            'user_id' => $this->user_id,
-            'transaction_reference' => $this->generateReference(),
-            'type' => 'debit',
-            'category' => $category,
-            'amount' => $amount,
-            'balance_before' => $balanceBefore,
-            'balance_after' => $this->balance,
-            'description' => $description,
-            'related_order_id' => $relatedOrderId,
-            'status' => 'completed'
-        ]);
-    }
-
-    // Add commission
-    public function addCommission($amount, $orderId, $description = null)
-    {
-        $this->commission_balance += $amount;
-        $this->total_commission_earned += $amount;
-        $this->save();
-
-        return $this->transactions()->create([
-            'user_id' => $this->user_id,
-            'transaction_reference' => $this->generateReference(),
-            'type' => 'credit',
-            'category' => 'commission',
-            'amount' => $amount,
-            'balance_before' => $this->commission_balance - $amount,
-            'balance_after' => $this->commission_balance,
-            'description' => $description ?? 'Commission earned',
-            'related_order_id' => $orderId,
-            'status' => 'completed'
-        ]);
-    }
-
-    // Transfer commission to main balance
-    public function transferCommissionToBalance()
-    {
-        if ($this->commission_balance > 0) {
-            $amount = $this->commission_balance;
-            $this->balance += $amount;
-            $this->commission_balance = 0;
-            $this->save();
-
-             $trans  = $this->transactions()->create([
-                'user_id' => $this->user_id,
-                'transaction_reference' => $this->generateReference(),
-                'type' => 'credit',
-                'category' => 'deposit',
-                'amount' => $amount,
-                'balance_before' => $this->balance - $amount,
-                'balance_after' => $this->balance,
-                'description' => 'Commission transferred to main wallet',
-                'status' => 'completed'
-            ]);
-        }
-
-        return $trans;
+        return $this->hasMany(WalletTransaction::class);
     }
 
     private function generateReference()

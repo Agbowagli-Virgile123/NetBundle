@@ -284,7 +284,7 @@
                                             </div>
                                             <div>
                                                 <div class="wallet-summary-label">Main Balance</div>
-                                                <div class="wallet-summary-value">GH₵ 1,250.00</div>
+                                                <div class="wallet-summary-value">GH₵ {{$agent->wallet->balance}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -295,7 +295,7 @@
                                             </div>
                                             <div>
                                                 <div class="wallet-summary-label">Commission Balance</div>
-                                                <div class="wallet-summary-value">GH₵ 85.50</div>
+                                                <div class="wallet-summary-value">GH₵ {{$agent->wallet->commission_balance}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -306,7 +306,7 @@
                                             </div>
                                             <div>
                                                 <div class="wallet-summary-label">Total Earned</div>
-                                                <div class="wallet-summary-value">GH₵ 855.50</div>
+                                                <div class="wallet-summary-value">GH₵ {{$agent->wallet->balance + $agent->wallet->commission_balance}}</div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\PackageController;
@@ -97,9 +98,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::post('/admin/packages', [PackageController::class, 'store']);
 
     //Agents Routes
-    Route::get('/admin/agents', function(){
-        return view('admin.agents');
-    });
+    Route::get('/admin/agents', [AgentController::class, 'index']);
 
 });
 
