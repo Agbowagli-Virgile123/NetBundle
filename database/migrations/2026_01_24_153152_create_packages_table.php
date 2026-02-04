@@ -28,8 +28,8 @@ return new class extends Migration
 
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('network_id')->constrained()->onDelete('cascade');
-            $table->foreignId('package_tag_id')->constrained()->onDelete('cascade');
+            $table->foreignId('network_id')->constrained('networks')->onDelete('cascade');
+            $table->foreignId('package_tag_id')->constrained('package_tags')->onDelete('cascade');
             $table->string('name'); // e.g., "1GB Daily", "5GB Weekly"
             $table->string('data_amount'); // e.g., "1GB", "500MB", "10GB"
             $table->decimal('cost_price', 10, 2); // What you pay to API provider

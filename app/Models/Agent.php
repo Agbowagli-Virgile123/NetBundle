@@ -9,6 +9,37 @@ class Agent extends Authenticatable
 {
     public $timestamps = false;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($agent) {
+            // Generate referral code if not provided
+            if (empty($agent->referral_code)) {
+                $agent->referral_code = 'AG-' . strtoupper(Str::random(5));
+            }
+        });
+
+        static::created(function ($agent) {
+            // Create wallet after agent is created
+            Wallet::create([
+                'agent_id' => $agent->id, // IMPORTANT: Use agent_id, not user_id
+                'balance' => 0,
+                'commission_balance' => 0,
+                'total_deposited' => 0,
+                'total_spent' => 0,
+                'total_commission_earned' => 0,
+                'total_withdrawn' => 0,
+            ]);
+
+            cache()->forget('admin_sidebar_counts');
+        });
+
+        static::deleted(function () {
+            cache()->forget('admin_sidebar_counts');
+        });
+    }
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -56,35 +87,6 @@ class Agent extends Authenticatable
     ];
 
 
-    protected static function booted()
-    {
-        //parent::boot();
-
-        static::creating(function ($agent) {
-            if (empty($agent->referral_code)) {
-                $agent->referral_code = 'AG-'. strtoupper(Str::random(5));
-            }
-        });
-
-        static::created(function ($agent) {
-            $agent->wallet()->create([
-                'balance' => 0,
-                'commission_balance' => 0,
-                'total_deposited' => 0,
-                'total_spent' => 0,
-                'total_commission_earned' => 0,
-                'total_withdrawn' => 0,
-            ]);
-
-            cache()->forget('admin_sidebar_counts');
-        });
-
-        static::deleted(function () {
-            cache()->forget('admin_sidebar_counts');
-        });
-    }
-
-
     // Relationships
     public function wallet()
     {
@@ -113,12 +115,12 @@ class Agent extends Authenticatable
 
     public function referredAgents()
     {
-        return $this->hasMany(User::class, 'referred_by');
+        return $this->hasMany(Agent::class, 'referred_by');
     }
 
     public function referrer()
     {
-        return $this->belongsTo(User::class, 'referred_by');
+        return $this->belongsTo(Agent::class, 'referred_by');
     }
 
     public function customers()
@@ -144,10 +146,13 @@ class Agent extends Authenticatable
     }
 
     // Helper methods
-
     public function canPlaceOrder()
     {
-        return $this->is_active && ($this->role === 'agent' ? $this->is_verified : true);
+        return $this->is_active && $this->is_verified;
+    }
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getTotalSalesAttribute()

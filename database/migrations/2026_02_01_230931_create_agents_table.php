@@ -44,7 +44,7 @@ return new class extends Migration
 
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agent_id')->constrained()->onDelete('cascade');
+            $table->foreignId('agent_id')->constrained('agents')->onDelete('cascade');
             $table->decimal('balance', 15, 2)->default(0); // Main wallet balance
             $table->decimal('commission_balance', 15, 2)->default(0); // Earned commission (separate)
             $table->decimal('total_deposited', 15, 2)->default(0); // Lifetime deposits
@@ -56,8 +56,8 @@ return new class extends Migration
 
         Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wallet_id')->constrained()->onDelete('cascade');
-            $table->foreignId('agent_id')->constrained()->onDelete('cascade');
+            $table->foreignId('wallet_id')->constrained('wallets')->onDelete('cascade');
+            $table->foreignId('agent_id')->constrained('agents')->onDelete('cascade');
             $table->string('transaction_reference')->unique(); // e.g., TXN-20260131-001
             $table->enum('type', ['credit', 'debit']); // Money in or out
             $table->enum('category', [
@@ -82,7 +82,7 @@ return new class extends Migration
 
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agent_id')->constrained()->onDelete('cascade');
+            $table->foreignId('agent_id')->constrained('agents')->onDelete('cascade');
             $table->string('bank_name');
             $table->string('account_number');
             $table->string('account_name');
@@ -94,8 +94,8 @@ return new class extends Migration
 
         Schema::create('withdrawal_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agent_id')->constrained()->onDelete('cascade');
-            $table->foreignId('bank_account_id')->constrained()->onDelete('cascade');
+            $table->foreignId('agent_id')->constrained('agents')->onDelete('cascade');
+            $table->foreignId('bank_account_id')->constrained('bank_accounts')->onDelete('cascade');
             $table->string('request_reference')->unique(); // e.g., WDR-20260131-001
             $table->decimal('amount', 15, 2);
             $table->decimal('charges', 15, 2)->default(0); // Processing fee
