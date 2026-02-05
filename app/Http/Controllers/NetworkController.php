@@ -16,7 +16,7 @@ class NetworkController
      */
     public function index()
     {
-        $networks = Network::paginate(5);
+        $networks = Network::with(['wallet','walletTransactions'])->paginate(5);
         $activecount = Network::where('is_active', "=",1)->count();
         $inactivecount = Network::where('is_active',"=", 0)->count();
         $totalPackages = Package::count();

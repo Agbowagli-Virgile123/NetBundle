@@ -57,8 +57,8 @@
 
 
         <div class="bundle-pricing">
-            <div class="price-main">GH₵ {{$package->selling_price}}</div>
-            <div class="price-cost text-muted">Cost: GH₵ {{$package->cost_price}}</div>
+            <div class="price-main">{{currencyFormat($package->selling_price)}}</div>
+            <div class="price-cost text-muted">Cost: {{currencyFormat($package->cost_price)}}</div>
         </div>
 
 {{--        <div class="bundle-stats">--}}

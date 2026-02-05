@@ -9,7 +9,7 @@ class AgentController
 {
     public function index(){
 
-        $agents = Agent::all();
+        $agents = Agent::paginate(5);
 
         $stats = [
             'total' => Agent::count(),
@@ -17,6 +17,8 @@ class AgentController
             'verified' => Agent::verified()->count(),
             'unverified' => Agent::unverified()->count(),
         ];
+
+
 
         return view('admin.agents', compact('agents', 'stats'));
     }

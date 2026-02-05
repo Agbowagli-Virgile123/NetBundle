@@ -40,14 +40,15 @@
     </td>
     <td>
         <div class="wallet-info">
-            <div class="balance-main">GH₵ {{$agent->wallet->balance}}</div>
-            <small class="commission-balance">+GH₵ {{$agent->wallet->commission_balance}}</small>
+            <div class="balance-main">{{currencyFormat($agent->wallet->balance)}}</div>
+            <small class="commission-balance">+{{currencyFormat($agent->wallet->commission_balance)}}</small>
         </div>
     </td>
     <td>
         <div class="sales-info">
-            <div class="fw-bold text-success">GH₵ {{$agent->wallet->balance + $agent->wallet->commission_balance}}</div>
-            <small class="text-muted">{{$agent->getTotalOrdersAttribute()}} orders</small>
+            <div class="fw-bold text-success">{{currencyFormat($agent->wallet->balance + $agent->wallet->commission_balance)}}</div>
+{{--            <small class="text-muted">{{$agent->getTotalOrdersAttribute()}} orders</small>--}}
+            <small class="text-muted">0 orders</small>
         </div>
     </td>
     <td>
@@ -134,7 +135,8 @@
                                                 <i class="bi bi-cart-check"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">{{$agent->getTotalOrdersAttribute()}}</div>
+{{--                                                <div class="mini-stat-value">{{$agent->getTotalOrdersAttribute()}}</div>--}}
+                                                <div class="mini-stat-value">0</div>
                                                 <div class="mini-stat-label">Total Orders</div>
                                             </div>
                                         </div>
@@ -145,7 +147,7 @@
                                                 <i class="bi bi-currency-dollar"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">GH₵ {{$agent->wallet->balance + $agent->wallet->commission_balance}}</div>
+                                                <div class="mini-stat-value">{{currencyFormat($agent->wallet->balance)}}</div>
                                                 <div class="mini-stat-label">Total Sales</div>
                                             </div>
                                         </div>
@@ -156,7 +158,7 @@
                                                 <i class="bi bi-star"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">GH₵ {{$agent->wallet->commission_balance}}</div>
+                                                <div class="mini-stat-value">{{currencyFormat($agent->wallet->commission_balance)}}</div>
                                                 <div class="mini-stat-label">Commission Earned</div>
                                             </div>
                                         </div>
@@ -167,7 +169,7 @@
                                                 <i class="bi bi-arrow-down-circle"></i>
                                             </div>
                                             <div>
-                                                <div class="mini-stat-value">GH₵ {{$agent->wallet->total_deposited}}</div>
+                                                <div class="mini-stat-value">{{currencyFormat($agent->wallet->total_deposited)}}</div>
                                                 <div class="mini-stat-label">Total Deposited</div>
                                             </div>
                                         </div>
@@ -181,7 +183,7 @@
                                 <div class="info-list">
                                     <div class="info-item">
                                         <span class="info-label">Full Name:</span>
-                                        <span class="info-value">{{$agent->last_name.' '.$agent->first_name }}</span>
+                                        <span class="info-value">{{$agent->getFullNameAttribute() }}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Email:</span>
@@ -201,7 +203,7 @@
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Address:</span>
-                                        <span class="info-value">{{$agent->city.', '.$agent->region}} Kumasi, Ashanti Region</span>
+                                        <span class="info-value">{{$agent->city.', '.$agent->region}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +214,7 @@
                                 <div class="info-list">
                                     <div class="info-item">
                                         <span class="info-label">Agent ID:</span>
-                                        <span class="info-value">AG{{$agent->id}}</span>
+                                        <span class="info-value">AG-{{$agent->id}}</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Referral Code:</span>
@@ -284,7 +286,7 @@
                                             </div>
                                             <div>
                                                 <div class="wallet-summary-label">Main Balance</div>
-                                                <div class="wallet-summary-value">GH₵ {{$agent->wallet->balance}}</div>
+                                                <div class="wallet-summary-value">{{currencyFormat($agent->wallet->balance)}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -295,7 +297,7 @@
                                             </div>
                                             <div>
                                                 <div class="wallet-summary-label">Commission Balance</div>
-                                                <div class="wallet-summary-value">GH₵ {{$agent->wallet->commission_balance}}</div>
+                                                <div class="wallet-summary-value">{{currencyFormat($agent->wallet->commission_balance)}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -306,7 +308,7 @@
                                             </div>
                                             <div>
                                                 <div class="wallet-summary-label">Total Earned</div>
-                                                <div class="wallet-summary-value">GH₵ {{$agent->wallet->balance + $agent->wallet->commission_balance}}</div>
+                                                <div class="wallet-summary-value">{{currencyFormat($agent->wallet->balance + $agent->wallet->commission_balance)}}</div>
                                             </div>
                                         </div>
                                     </div>

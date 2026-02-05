@@ -30,8 +30,8 @@
 
     @endswitch
 
-    <td class="fw-bold">GH₵ {{$package->selling_price}}</td>
-    <td class="text-muted">GH₵ {{$package->cost_price}}</td>
+    <td class="fw-bold">{{currencyFormat($package->selling_price)}}</td>
+    <td class="text-muted">{{currencyFormat($package->cost_price)}}</td>
     <td>
         <div class="bundle-popularity">
             <i class="bi bi-{{$package->packageTag->icon ?? ''}}" style="color: {{$package->packageTag->color ?? ''}}" ></i>
