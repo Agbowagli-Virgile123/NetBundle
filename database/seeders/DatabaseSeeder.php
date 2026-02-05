@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
+    //use WithoutModelEvents;
 
     /**
      * Seed the application's database.
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        Agent::create([
+        $agent = Agent::create([
             'first_name' => 'Virgile',
             'last_name' => 'Agbowagli',
             'email' => 'virgile@gmail.com',
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             'whatsapp_number' => '22990000000',
             'mobile_money_network' => 'MTN',
             'mobile_money_number' => '22990000000',
-            'referral_code' => "AG-AG023",
+            //'referral_code' => "AG-AG023",
             'gender' => 'male',
             'is_active' => true,
             'is_verified' => true,
@@ -54,15 +54,6 @@ class DatabaseSeeder extends Seeder
             'have_sales_experience' => true,
             'way_of_hearing_us' => 'website'
         ]);
-
-        // You can verify it was created
-        $agent = Agent::where('email', 'virgile@gmail.com')->first();
-        dump('Agent created with referral code: ' . $agent->referral_code);
-        dump('Wallet created: ' . ($agent->wallet ? 'Yes' : 'No'));
-        if ($agent->wallet) {
-            dump('Wallet balance: ' . $agent->wallet->balance);
-        }
-
 
         $networks = [
             [

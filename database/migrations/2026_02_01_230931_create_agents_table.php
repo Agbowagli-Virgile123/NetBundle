@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('mobile_money_network');
             $table->string('mobile_money_number')->unique();
             $table->string('password')->nullable()->default('123');
-            $table->string('referral_code')->unique()->nullable(); // Agent's unique referral code
+            $table->string('referral_code')->unique(); // Agent's unique referral code
             $table->foreignId('referred_by')->nullable()->constrained('agents')->nullOnDelete(); // Who referred this agent
             $table->decimal('commission_rate', 5, 2)->default(0); // Agent commission percentage (e.g., 5.00 for 5%)
             $table->boolean('is_active')->default(true);

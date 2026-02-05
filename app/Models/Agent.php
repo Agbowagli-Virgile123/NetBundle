@@ -3,10 +3,12 @@
 namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 class Agent extends Authenticatable
 {
+    use Notifiable;
     public $timestamps = false;
 
     protected static function boot()
@@ -15,22 +17,22 @@ class Agent extends Authenticatable
 
         static::creating(function ($agent) {
             // Generate referral code if not provided
-            if (empty($agent->referral_code)) {
+            if (!$agent->referral_code) {
                 $agent->referral_code = 'AG-' . strtoupper(Str::random(5));
             }
         });
 
         static::created(function ($agent) {
             // Create wallet after agent is created
-            Wallet::create([
-                'agent_id' => $agent->id, // IMPORTANT: Use agent_id, not user_id
-                'balance' => 0,
-                'commission_balance' => 0,
-                'total_deposited' => 0,
-                'total_spent' => 0,
-                'total_commission_earned' => 0,
-                'total_withdrawn' => 0,
-            ]);
+             Wallet::create([
+                 'agent_id' => $agent->id, // IMPORTANT: Use agent_id, not user_id
+                 'balance' => 0,
+                 'commission_balance' => 0,
+                 'total_deposited' => 0,
+                 'total_spent' => 0,
+                 'total_commission_earned' => 0,
+                 'total_withdrawn' => 0,
+             ]);
 
             cache()->forget('admin_sidebar_counts');
         });

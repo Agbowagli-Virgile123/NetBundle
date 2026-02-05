@@ -126,7 +126,7 @@
                         <table class="table custom-table agents-table">
                             <thead>
                             <tr>
-                                <th width="50">#</th>
+                                <th style="width: 50px">#</th>
                                 <th>Agent</th>
                                 <th>Contact</th>
                                 <th>Referral Code</th>
@@ -135,7 +135,7 @@
                                 <th>Total Sales</th>
                                 <th>Status</th>
                                 <th>Joined</th>
-                                <th width="80">Actions</th>
+                                <th style="width: 80px">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
