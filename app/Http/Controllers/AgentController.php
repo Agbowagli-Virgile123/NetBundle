@@ -9,7 +9,7 @@ class AgentController
 {
     public function index(){
 
-        $agents = Agent::paginate(5);
+        $agents = Agent::with(['walletTransactions'])->paginate(5);
 
         $stats = [
             'total' => Agent::count(),

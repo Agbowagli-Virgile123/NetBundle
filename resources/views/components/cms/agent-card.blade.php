@@ -257,7 +257,7 @@
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#debitWalletModal">
                                         <i class="bi bi-dash-circle me-1"></i>Debit Wallet
                                     </button>
-                                    <button class="btn btn-sm btn-info">
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editCommissionRateModal">
                                         <i class="bi bi-pencil me-1"></i>Edit Commission Rate
                                     </button>
                                     <button class="btn btn-sm btn-secondary">
@@ -319,6 +319,14 @@
                             <div class="col-md-12">
                                 <h6 class="section-subtitle">Recent Transactions</h6>
                                 <div class="transactions-list">
+
+                                    @if($agent->walletTransactions->count() > 0)
+                                        @foreach($agent->walletTransactions as $transaction)
+
+                                        @endforeach
+                                    @else
+
+                                    @endif
 
                                     <div class="transaction-item credit-transaction">
                                         <div class="transaction-icon">
@@ -389,6 +397,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
+
+
                                 <tr>
                                     <td><a href="#">#1234</a></td>
                                     <td>MTN 5GB Daily</td>
