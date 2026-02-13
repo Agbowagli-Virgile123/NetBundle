@@ -418,12 +418,12 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control form-control-lg" placeholder="024XXXXXXX" required>
+                  <input type="tel" class="form-control form-control-lg" placeholder="24XXXXXXX" required>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">WhatsApp Number</label>
-                  <input type="tel" class="form-control form-control-lg" placeholder="024XXXXXXX">
+                  <input type="tel" class="form-control form-control-lg" placeholder="24XXXXXXX">
                 </div>
 
                 <div class="col-12">
@@ -490,7 +490,7 @@
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Mobile Money Number <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control form-control-lg" placeholder="024XXXXXXX" required>
+                  <input type="tel" class="form-control form-control-lg" placeholder="24XXXXXXX" required>
                 </div>
               </div>
             </div>

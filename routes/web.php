@@ -99,7 +99,7 @@ Route::middleware(['auth:web'])->group(function () {
 
     //Agents Routes
     Route::get('/admin/agents', [AgentController::class, 'index']);
-
+    Route::post('/admin/agents', [AgentController::class, 'store']);
 });
 
 
