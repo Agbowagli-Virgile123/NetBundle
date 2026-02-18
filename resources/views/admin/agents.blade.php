@@ -11,9 +11,9 @@
                         <p class="page-subheading text-muted">Manage agents, wallets, and commissions</p>
                     </div>
                     <div class="col-md-6 text-md-end">
-                        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addAgentModal">
-                            <i class="bi bi-plus-circle me-2"></i>Add New Agent
-                        </button>
+{{--                        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addAgentModal">--}}
+{{--                            <i class="bi bi-plus-circle me-2"></i>Add New Agent--}}
+{{--                        </button>--}}
                     </div>
                 </div>
             </div>

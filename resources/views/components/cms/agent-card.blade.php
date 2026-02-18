@@ -1,6 +1,6 @@
 <tr class="expandable-row">
     <td>
-        <button class="btn-expand" data-bs-toggle="collapse" data-bs-target="#agentDetails1">
+        <button class="btn-expand" data-bs-toggle="collapse" data-bs-target="#agentDetails{{$agent->id}}">
             <i class="bi bi-chevron-right"></i>
         </button>
     </td>
@@ -86,7 +86,7 @@
 <!-- Expandable Details Row -->
 <tr class="collapse-row">
     <td colspan="10" class="p-0">
-        <div class="collapse agent-details-collapse" id="agentDetails1">
+        <div class="collapse agent-details-collapse" id="agentDetails{{$agent->id}}">
             <div class="agent-details-panel">
 
                 <!-- Tabs Navigation -->

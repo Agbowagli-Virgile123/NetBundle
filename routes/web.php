@@ -72,6 +72,7 @@ Route::get('/refund', function () {
     return view('pages.refund');
 });
 
+Route::post('/apply-agents', [AgentController::class, 'store']);
 
 //Admin Cms Routes
 Route::middleware(['auth:web'])->group(function () {
@@ -99,7 +100,6 @@ Route::middleware(['auth:web'])->group(function () {
 
     //Agents Routes
     Route::get('/admin/agents', [AgentController::class, 'index']);
-    Route::post('/admin/agents', [AgentController::class, 'store']);
 });
 
 

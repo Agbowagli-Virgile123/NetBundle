@@ -10,7 +10,7 @@ class AgentController
 {
     public function index(){
 
-        $agents = Agent::with(['walletTransactions'])->paginate(5);
+        $agents = Agent::with(['wallet','walletTransactions'])->paginate(5);
 
         $stats = [
             'total' => Agent::count(),
@@ -63,7 +63,7 @@ class AgentController
             'id_number' => $request->id_number,
             'region' => $request->region,
             'city' => $request->city,
-            'address' => $request->addrress,
+            'address' => $request->address,
             'reason' => $request->reason,
             'have_sales_experience' => $request->boolean('have_sales_experience'),
         ]);

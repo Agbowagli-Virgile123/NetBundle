@@ -382,32 +382,52 @@
             <p class="text-muted">Fill out the form below to start your journey as a Net Bundle agent</p>
           </div>
 
-          <form class="agent-application-form">
+          <form method="POST" action="/apply-agents" class="agent-application-form">
+             @csrf
+              @if (session('success'))
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <i class="bi bi-check-circle me-2"></i>
+                      {{ session('success') }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  </div>
+              @endif
             <div class="form-section">
               <h5 class="form-section-title">Personal Information</h5>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label fw-bold">First Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control form-control-lg" placeholder="John" required>
+                    <label class="form-label fw-bold">First Name <span class="text-danger">*</span></label>
+                    <input type="text" name="first_name" value="{{old('first_name')}}" class="form-control form-control-lg" placeholder="John">
+                    @error('first_name')
+                        <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Last Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control form-control-lg" placeholder="Doe" required>
+                  <input type="text" name="last_name" value="{{old('last_name')}}" class="form-control form-control-lg" placeholder="Doe">
+                    @error('last_name')
+                        <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Date of Birth <span class="text-danger">*</span></label>
-                  <input type="date" class="form-control form-control-lg" required>
+                  <input type="date" name="date_of_birth" value="{{old('date_of_birth')}}" class="form-control form-control-lg">
+                    @error('date_of_birth')
+                        <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Gender <span class="text-danger">*</span></label>
-                  <select class="form-select form-select-lg" required>
+                  <select class="form-select form-select-lg" name="gender">
                     <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="male" @selected(old('gender') == 'male')>Male</option>
+                    <option value="female" @selected(old('gender') == 'female')>Female</option>
+                    <option value="other" @selected(old('gender') == 'other')>Other</option>
+                      @error('gander')
+                      <small class="text-danger fst-italic">{{ $message }}</small>
+                      @enderror
                   </select>
                 </div>
               </div>
@@ -418,43 +438,61 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control form-control-lg" placeholder="24XXXXXXX" required>
+                  <input type="tel" name="phone_number" value="{{old('phone_number')}}" class="form-control form-control-lg" placeholder="24XXXXXXX">
+                    @error('phone_number')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">WhatsApp Number</label>
-                  <input type="tel" class="form-control form-control-lg" placeholder="24XXXXXXX">
+                  <input type="tel" name="whatsapp_number" value="{{old('whatsapp_number')}}" class="form-control form-control-lg" placeholder="24XXXXXXX">
+                    @error('whatsapp_number')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-12">
                   <label class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
-                  <input type="email" class="form-control form-control-lg" placeholder="john@example.com" required>
+                  <input type="email"  name="email" value="{{old('email')}}" class="form-control form-control-lg" placeholder="john@example.com">
+                    @error('email')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Region <span class="text-danger">*</span></label>
-                  <select class="form-select form-select-lg" required>
+                  <select class="form-select form-select-lg" name="region">
                     <option value="">Select region</option>
-                    <option value="greater-accra">Greater Accra</option>
-                    <option value="ashanti">Ashanti</option>
-                    <option value="western">Western</option>
-                    <option value="central">Central</option>
-                    <option value="eastern">Eastern</option>
-                    <option value="volta">Volta</option>
-                    <option value="northern">Northern</option>
-                    <option value="upper-east">Upper East</option>
-                    <option value="upper-west">Upper West</option>
+                    <option value="greater-accra" @selected(old('region') == 'greater-accra' )>Greater Accra</option>
+                    <option value="ashanti" @selected(old('region') == 'ashanti' )>Ashanti</option>
+                    <option value="western" @selected(old('region') == 'western' )>Western</option>
+                    <option value="central" @selected(old('region') == 'central' )>Central</option>
+                    <option value="eastern" @selected(old('region') == 'eastern' )>Eastern</option>
+                    <option value="volta" @selected(old('region') == 'volta' )>Volta</option>
+                    <option value="northern" @selected(old('region') == 'northern' )>Northern</option>
+                    <option value="upper-east" @selected(old('region') == 'upper-east' )>Upper East</option>
+                    <option value="upper-west" @selected(old('region') == 'upper-west' )>Upper West</option>
                   </select>
+                    @error('region')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">City/Town <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control form-control-lg" placeholder="e.g. Kumasi" required>
+                  <input type="text"  name="city"  value="{{old('city')}}" class="form-control form-control-lg" placeholder="e.g. Kumasi">
+                    @error('city')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-12">
                   <label class="form-label fw-bold">Residential Address <span class="text-danger">*</span></label>
-                  <textarea class="form-control" rows="3" placeholder="Enter your full address" required></textarea>
+                  <textarea name="address" class="form-control" rows="3" placeholder="Enter your full address" >{{old('address')}}</textarea>
+                    @error('address')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
               </div>
             </div>
@@ -464,33 +502,45 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label fw-bold">ID Type <span class="text-danger">*</span></label>
-                  <select class="form-select form-select-lg" required>
+                  <select class="form-select form-select-lg" name="id_type" >
                     <option value="">Select ID type</option>
-                    <option value="ghana-card">Ghana Card</option>
-                    <option value="voters-id">Voter's ID</option>
-                    <option value="passport">Passport</option>
-                    <option value="drivers-license">Driver's License</option>
+                    <option value="Ghana Card" @selected(old('id_type') == 'Ghana Card' )>Ghana Card</option>
+                    <option value="Voter's ID" @selected(old('id_type') == 'Voter\'s ID' )>Voter's ID</option>
+                    <option value="Passport" @selected(old('id_type') == 'Passport' )>Passport</option>
+                    <option value="Driver's License" @selected(old('id_type') == 'Driver\'s License' )>Driver's License</option>
                   </select>
+                    @error('id_type')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">ID Number <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control form-control-lg" placeholder="GHA-XXXXXXXXX-X" required>
+                  <input type="text" name="id_number" value="{{old('id_number')}}" class="form-control form-control-lg" placeholder="GHA-XXXXXXXXX-X">
+                    @error('id_number')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Mobile Money Network <span class="text-danger">*</span></label>
-                  <select class="form-select form-select-lg" required>
+                  <select class="form-select form-select-lg" name="mobile_money_network">
                     <option value="">Select network</option>
-                    <option value="mtn">MTN Mobile Money</option>
-                    <option value="vodafone">Vodafone Cash</option>
-                    <option value="airteltigo">AirtelTigo Money</option>
+                    <option value="Mtn" @selected(old('mobile_money_network') == 'Mtn' )>MTN Mobile Money</option>
+                    <option value="Vodafone" @selected(old('mobile_money_network') == 'Vodafone' )>Vodafone Cash</option>
+                    <option value="Airteltigo" @selected(old('mobile_money_network') == 'Airteltigo' )>AirtelTigo Money</option>
                   </select>
+                    @error('mobile_money_network')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Mobile Money Number <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control form-control-lg" placeholder="24XXXXXXX" required>
+                  <input type="tel" name="mobile_money_number" value="{{old('mobile_money_network')}}" class="form-control form-control-lg" placeholder="24XXXXXXX">
+                    @error('mobile_money_number')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
               </div>
             </div>
@@ -500,28 +550,37 @@
               <div class="row g-3">
                 <div class="col-12">
                   <label class="form-label fw-bold">Why do you want to become an agent? <span class="text-danger">*</span></label>
-                  <textarea class="form-control" rows="4" placeholder="Tell us about your motivation..." required></textarea>
+                  <textarea class="form-control" name="reason" rows="4" placeholder="Tell us about your motivation..." >{{old('reason')}}</textarea>
+                    @error('reason')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Do you have sales experience?</label>
-                  <select class="form-select form-select-lg">
+                  <select class="form-select form-select-lg" name="have_sales_experience">
                     <option value="">Select option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="1" @selected(old('have_sales_experience') == '1')>Yes</option>
+                    <option value="0" @selected(old('have_sales_experience') == '0')>No</option>
                   </select>
+                    @error('have_sales_experience')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">How did you hear about us?</label>
-                  <select class="form-select form-select-lg">
+                  <select class="form-select form-select-lg" name="way_of_hearing_us">
                     <option value="">Select option</option>
-                    <option value="friend">Friend/Family</option>
-                    <option value="social-media">Social Media</option>
-                    <option value="website">Website</option>
-                    <option value="agent">Current Agent</option>
-                    <option value="other">Other</option>
+                    <option value="friend" @selected(old('way_of_hearing_us') == 'friend' )>Friend/Family</option>
+                    <option value="social-media" @selected(old('way_of_hearing_us') == 'social-media' )>Social Media</option>
+                    <option value="website" @selected(old('way_of_hearing_us') == 'website' )>Website</option>
+                    <option value="agent" @selected(old('way_of_hearing_us') == 'agent' )>Current Agent</option>
+                    <option value="other" @selected(old('way_of_hearing_us') == 'other' )>Other</option>
                   </select>
+                    @error('way_of_hearing_us')
+                    <small class="text-danger fst-italic">{{ $message }}</small>
+                    @enderror
                 </div>
               </div>
             </div>
