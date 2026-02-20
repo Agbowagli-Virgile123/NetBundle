@@ -519,13 +519,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // ==========================================
         // 2. COPY REFERRAL CODE
         // ==========================================
-
         const copyButtons = document.querySelectorAll('.btn-copy-code');
-
         copyButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
-                const code = this.getAttribute('data-code');
+                // const code = this.getAttribute('data-code');
+                const btn = event.relatedTarget;
+
+                const code = btn.dataset.code;
 
                 // Copy to clipboard
                 navigator.clipboard.writeText(code).then(() => {

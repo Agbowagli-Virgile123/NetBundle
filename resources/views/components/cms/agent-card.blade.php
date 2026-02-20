@@ -30,7 +30,7 @@
     <td>
         <div class="referral-code-box">
             <code>{{$agent->referral_code}}</code>
-            <button class="btn-copy-code" data-code="AG-KW789">
+            <button class="btn-copy-code"  data-code="{{$agent->referral_code}}">
                 <i class="bi bi-clipboard"></i>
             </button>
         </div>
