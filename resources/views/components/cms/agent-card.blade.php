@@ -73,11 +73,26 @@
                 <i class="bi bi-three-dots-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View Details</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-wallet2 me-2"></i>Manage Wallet</a></li>
+{{--                <li><a class="dropdown-item btn-expand" data-bs-toggle="collapse" data-bs-target="#agentDetails{{$agent->id}}"><i class="bi bi-eye me-2"></i>View Details</a></li>--}}
+{{--                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>--}}
+{{--                <li><a class="dropdown-item" href="#"><i class="bi bi-wallet2 me-2"></i>Manage Wallet</a></li>--}}
+                <li>
+                    <a class="dropdown-item text-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#creditWalletModal"
+                            data-id="{{$agent->id}}"
+                    >
+                        <i class="bi bi-plus-circle me-1"></i>Credit Wallet
+                    </a>
+                </li>
+
+                <li>
+                    <button class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-target="#debitWalletModal">
+                        <i class="bi bi-dash-circle me-1"></i>Debit Wallet
+                    </button>
+                </li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-x-circle me-2"></i>Deactivate</a></li>
+                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-x-circle me-2"></i>Unverify Agent</a></li>
             </ul>
         </div>
     </td>
@@ -251,7 +266,11 @@
                             <div class="col-md-12">
                                 <h6 class="section-subtitle">Quick Actions</h6>
                                 <div class="d-flex gap-2 flex-wrap">
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#creditWalletModal">
+                                    <button class="btn btn-sm btn-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#creditWalletModal"
+                                            data-id="{{$agent->id}}"
+                                    >
                                         <i class="bi bi-plus-circle me-1"></i>Credit Wallet
                                     </button>
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#debitWalletModal">
@@ -543,7 +562,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
             </div>

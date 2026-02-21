@@ -1,4 +1,15 @@
 <x-layouts.admin-cms title="Agents Management">
+    @if(session('success'))
+        <div class="flash-success d-none">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="flash-error d-none">
+            {{ session('error') }}
+        </div>
+    @endif
     <!-- Agents Management Content -->
     <div class="dashboard-content">
         <div class="container-fluid">
@@ -174,22 +185,48 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="creditWalletForm">
+                    <!-- Loading Spinner -->
+                    <div id="credit-wallet-loader" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-3">Loading...</div>
+                    </div>
+
+                    <form id="creditWalletForm" method="POST" action="/admin/creditwallet">
+                        @csrf
+                        <input type="hidden" name="agent_id" value="{{ old('agent_id') }}">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Amount (GH₵) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control form-control-lg" name="amount" step="0.01" required>
+                            <label class="form-label fw-bold">Referral Code <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" name="referral_code" value="{{old('referral_code')}}">
+                            @error('referral_code', 'creditWallet')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="description" rows="3" placeholder="e.g., Performance bonus for January" required></textarea>
+                            <label class="form-label fw-bold">Amount (GH₵) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control form-control-lg" name="amount" value="{{old('amount')}}"  step="0.01">
+                            @error('amount', 'creditWallet')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" name="description" rows="3" placeholder="e.g., Performance bonus for January">{{old('description')}}</textarea>
+                            @error('description', 'creditWallet')
+                                <small class="text-danger fst-italic">{{ $message }}</small>
+                            @enderror
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="creditWalletForm" class="btn btn-success">
-                        <i class="bi bi-check-circle me-2"></i>Credit Wallet
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-success"
+                        icon-class="check-circle me-2"
+                        btn-text="Credit Wallet"
+                        form="creditWalletForm"
+                    />
                 </div>
             </div>
         </div>
@@ -260,3 +297,6 @@
     </div>
 </x-layouts.admin-cms>
 
+@if ($errors->creditWallet->any())
+    <div id="openCreditWalletModal"></div>
+@endif

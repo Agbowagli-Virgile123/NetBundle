@@ -70,4 +70,44 @@ class AgentController
 
         return redirect('/apply-agent')->with('success', 'Agent Created Successfully!');
     }
+
+    public function creditWallet(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'agent_id' => ['required', 'exists:agents,id'],
+            'referral_code' => ['required', 'regex:/^AG\-[A-Za-z0-9]{5}$/', 'exists:agents,referral_code'],
+            'amount' => ['required', 'numeric', 'min:1'],
+            'description' => ['nullable', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'creditWallet')->withInput();
+        }
+
+        $agent = Agent::findOrFail($request->agent_id);
+
+        // 🔥 Compare referral codes
+        if ($agent->referral_code !== $request->referral_code) {
+
+            return back()
+                ->withErrors([
+                    'referral_code' => 'Referral code does not match the selected agent.'
+                ], 'creditWallet')
+                ->withInput();
+        }
+
+        //Check if the Agent is valid to receive bonus
+        if (!$agent->is_active || !$agent->is_verified) {
+
+            return  back()->with('error', 'Select Agent is not Eligible for Bonus!');
+        }
+
+        $agent->wallet->credit(
+            $request->amount,
+            'bonus',
+            $request->description ?? "Admin Bonus"
+        );
+
+        return back()->with('success', 'Wallet Credited Successfully!');
+    }
 }

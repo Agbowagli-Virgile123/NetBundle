@@ -64,7 +64,64 @@ function hideViewLoader(content, loader) {
 }
 
 
+// ==========================================
+// 7. TOAST NOTIFICATION HELPER
+// ==========================================
+
+function showToast(message, type = 'success') {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '9999';
+        document.body.appendChild(toastContainer);
+    }
+
+    // Create toast
+    const toastId = 'toast-' + Date.now();
+    const bgClass = type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : 'bg-warning';
+    const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'exclamation-circle';
+
+    const toastHTML = `
+              <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    <i class="bi bi-${icon} me-2"></i>${message}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+              </div>
+            `;
+
+    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+    const toastElement = document.getElementById(toastId);
+    const toast = new bootstrap.Toast(toastElement, {
+        autohide: true,
+        delay: 3000
+    });
+
+    toast.show();
+
+    // Remove toast after it's hidden
+    toastElement.addEventListener('hidden.bs.toast', function() {
+        toastElement.remove();
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
+    const successFlash = document.querySelector('.flash-success');
+    if (successFlash) {
+        showToast(successFlash.textContent.trim(), 'success');
+    }
+
+    const ErrorFlash = document.querySelector('.flash-error');
+    if (ErrorFlash) {
+        showToast(ErrorFlash.textContent.trim(), 'error');
+    }
+
 
     //Network Add Modal
     ShowModalOnValidationFailed("openAddNetworkModal", "addNetworkModal");
@@ -78,6 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
     //Packages Edit Modal
     ShowModalOnValidationFailed("openEditPackageModal", "editBundleModal");
 
+    //Admin Crediting Agent Wallet Modal
+    ShowModalOnValidationFailed("openCreditWalletModal", "creditWalletModal");
 
     // Search functionality
     const searchInput = document.querySelector('.search-box input');
@@ -101,49 +160,49 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Filter by status
-    const statusFilter = document.getElementById('statusFilter');
-    if (statusFilter) {
-        statusFilter.addEventListener('change', function () {
-            const filterValue = this.value;
-            const rows = document.querySelectorAll('.custom-table tbody tr');
-            const cards = document.querySelectorAll('.bundles-grid >.bundle-card');
-            rows.forEach(row => {
-
-                if (filterValue === '') {
-                    row.style.display = '';
-                } else {
-                    const statusBadge = row.querySelector('.status-badge');
-                    const isActive = statusBadge.classList.contains('status-active');
-
-                    if (filterValue === 'active' && isActive) {
-                        row.style.display = '';
-                    } else if (filterValue === 'inactive' && !isActive) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                }
-            });
-
-            cards.forEach(card => {
-
-                if (filterValue === '') {
-                    card.style.display = '';
-                } else {
-                    const statusBadge = card.querySelector('.status-badge');
-                    const isActive = statusBadge.classList.contains('status-active');
-
-                    if (filterValue === 'active' && isActive) {
-                        card.style.display = '';
-                    } else if (filterValue === 'inactive' && !isActive) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                }
-            });
-        });
-    }
+    // const statusFilter = document.getElementById('statusFilter');
+    // if (statusFilter) {
+    //     statusFilter.addEventListener('change', function () {
+    //         const filterValue = this.value;
+    //         const rows = document.querySelectorAll('.custom-table tbody tr');
+    //         const cards = document.querySelectorAll('.bundles-grid >.bundle-card');
+    //         rows.forEach(row => {
+    //
+    //             if (filterValue === '') {
+    //                 row.style.display = '';
+    //             } else {
+    //                 const statusBadge = row.querySelector('.status-badge');
+    //                 const isActive = statusBadge.classList.contains('status-active');
+    //
+    //                 if (filterValue === 'active' && isActive) {
+    //                     row.style.display = '';
+    //                 } else if (filterValue === 'inactive' && !isActive) {
+    //                     row.style.display = '';
+    //                 } else {
+    //                     row.style.display = 'none';
+    //                 }
+    //             }
+    //         });
+    //
+    //         cards.forEach(card => {
+    //
+    //             if (filterValue === '') {
+    //                 card.style.display = '';
+    //             } else {
+    //                 const statusBadge = card.querySelector('.status-badge');
+    //                 const isActive = statusBadge.classList.contains('status-active');
+    //
+    //                 if (filterValue === 'active' && isActive) {
+    //                     card.style.display = '';
+    //                 } else if (filterValue === 'inactive' && !isActive) {
+    //                     card.style.display = '';
+    //                 } else {
+    //                     card.style.display = 'none';
+    //                 }
+    //             }
+    //         });
+    //     });
+    // }
 
 
     // Networks Management JavaScript
@@ -483,15 +542,14 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('deleteBundleName').innerText= btn.dataset.name;
     });
 
+});
 
 
-    //Agents Management
-    /* ========================================
-    AGENTS MANAGEMENT PAGE JAVASCRIPT
-    ======================================== */
-
-    document.addEventListener('DOMContentLoaded', function() {
-
+//Agents Management
+/* ========================================
+AGENTS MANAGEMENT PAGE JAVASCRIPT
+======================================== */
+document.addEventListener('DOMContentLoaded', function() {
         // ==========================================
         // 1. EXPANDABLE ROWS FUNCTIONALITY
         // ==========================================
@@ -506,7 +564,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add event listeners for collapse events
                 targetCollapse.addEventListener('show.bs.collapse', function() {
                     button.classList.remove('collapsed');
-                    console.log('Expanding agent details:', targetId);
                 });
 
                 targetCollapse.addEventListener('hide.bs.collapse', function() {
@@ -523,10 +580,9 @@ document.addEventListener('DOMContentLoaded', function() {
         copyButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
-                // const code = this.getAttribute('data-code');
-                const btn = event.relatedTarget;
+                const code = this.getAttribute('data-code');
 
-                const code = btn.dataset.code;
+                console.log(code);
 
                 // Copy to clipboard
                 navigator.clipboard.writeText(code).then(() => {
@@ -563,7 +619,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (statusFilter) {
             statusFilter.addEventListener('change', function() {
                 const filterValue = this.value;
-                console.log('Status filter changed:', filterValue);
+                // console.log('Status filter changed:', filterValue);
                 filterAgents();
             });
         }
@@ -572,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (verificationFilter) {
             verificationFilter.addEventListener('change', function() {
                 const filterValue = this.value;
-                console.log('Verification filter changed:', filterValue);
+                //console.log('Verification filter changed:', filterValue);
                 filterAgents();
             });
         }
@@ -590,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (searchInput) {
             searchInput.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
-                console.log('Search term:', searchTerm);
+                //console.log('Search term:', searchTerm);
                 filterAgents();
             });
         }
@@ -643,65 +699,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // ==========================================
         // 4. FORM SUBMISSIONS
         // ==========================================
-
-        // Add Agent Form
-        const addAgentForm = document.getElementById('addAgentForm');
-        if (addAgentForm) {
-            addAgentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(this);
-                const data = Object.fromEntries(formData);
-
-                console.log('Adding agent:', data);
-
-                // Here you would send data to backend
-                // Example:
-                /*
-                fetch('/admin/agents', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                  },
-                  body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                  console.log('Success:', data);
-                  showToast('Agent created successfully!', 'success');
-                  bootstrap.Modal.getInstance(document.getElementById('addAgentModal')).hide();
-                  location.reload(); // Or update table dynamically
-                })
-                .catch((error) => {
-                  console.error('Error:', error);
-                  showToast('Failed to create agent', 'error');
-                });
-                */
-
-                // Temporary success message
-                showToast('Agent created successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('addAgentModal')).hide();
-                this.reset();
-            });
+       //Function to prepare the agent modal action forms
+        function fillAgentRelatedModalForm(formId,agentId){
+            const form = document.getElementById(formId);
+            if (form) {
+                form.querySelector('input[name="agent_id"]').value = agentId;
+            }
         }
 
-        // Credit Wallet Form
-        const creditWalletForm = document.getElementById('creditWalletForm');
-        if (creditWalletForm) {
-            creditWalletForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(this);
-                const data = Object.fromEntries(formData);
-
-                console.log('Crediting wallet:', data);
-
-                showToast('Wallet credited successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('creditWalletModal')).hide();
-                this.reset();
-            });
+        //Show Credit wallet Modal
+        const  creditWalletModal = document.getElementById('creditWalletModal');
+        if (creditWalletModal) {
+            creditWalletModal.addEventListener('shown.bs.modal', (event) => {
+                const btn = event.relatedTarget;
+                if(btn){
+                    const id = btn.dataset.id;
+                    showViewLoader('creditWalletForm', 'credit-wallet-loader')
+                    fillAgentRelatedModalForm('creditWalletForm',id);
+                    hideViewLoader('creditWalletForm', 'credit-wallet-loader')
+                }
+            })
         }
+
 
         // Debit Wallet Form
         const debitWalletForm = document.getElementById('debitWalletForm');
@@ -820,52 +839,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // ==========================================
-        // 7. TOAST NOTIFICATION HELPER
-        // ==========================================
-
-        function showToast(message, type = 'success') {
-            // Create toast container if it doesn't exist
-            let toastContainer = document.querySelector('.toast-container');
-            if (!toastContainer) {
-                toastContainer = document.createElement('div');
-                toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
-                toastContainer.style.zIndex = '9999';
-                document.body.appendChild(toastContainer);
-            }
-
-            // Create toast
-            const toastId = 'toast-' + Date.now();
-            const bgClass = type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : 'bg-warning';
-            const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'exclamation-circle';
-
-            const toastHTML = `
-      <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
-        <div class="d-flex">
-          <div class="toast-body">
-            <i class="bi bi-${icon} me-2"></i>${message}
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-      </div>
-    `;
-
-            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-
-            const toastElement = document.getElementById(toastId);
-            const toast = new bootstrap.Toast(toastElement, {
-                autohide: true,
-                delay: 3000
-            });
-
-            toast.show();
-
-            // Remove toast after it's hidden
-            toastElement.addEventListener('hidden.bs.toast', function() {
-                toastElement.remove();
-            });
-        }
-
-        // ==========================================
         // 8. INITIALIZE TOOLTIPS
         // ==========================================
 
@@ -888,4 +861,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Agents page JavaScript initialized successfully');
     });
-});

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class WalletTransaction extends Model
 {
+    protected $table = 'wallet_transactions';
+
     protected $fillable = [
         'wallet_id',
         'agent_id',

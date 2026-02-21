@@ -38,12 +38,36 @@ class Wallet extends Model
 
     private function generateReference()
     {
-        return 'TXN-' . date('Ymd') . '-' . strtoupper(Str::random(6));
+        //return 'TXN-' . date('Ymd') . '-' . strtoupper(Str::random(6));
+        return 'TXN-' . now()->format('dymHis');
     }
 
     public function getTotalBalanceAttribute()
     {
         return $this->balance + $this->commission_balance;
+    }
+
+    // Credit wallet
+    public function credit($amount, $category, $description = null, $relatedOrderId = null, $paymentReference = null)
+    {
+        $balanceBefore = $this->balance;
+        $this->balance += $amount;
+        $this->save();
+
+        return $this->transactions()->create([
+            'agent_id' => $this->agent_id,
+            'transaction_reference' => $this->generateReference(),
+            'type' => 'credit',
+            'category' => $category,
+            'amount' => $amount,
+            'balance_before' => $balanceBefore,
+            'balance_after' => $this->balance,
+            'description' => $description,
+            'payment_method' => "Admin Payment",
+//            'related_order_id' => $relatedOrderId,
+            'payment_reference' => $paymentReference,
+            'status' => 'completed'
+        ]);
     }
 
 }

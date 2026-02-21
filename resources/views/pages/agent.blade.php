@@ -1,4 +1,9 @@
 <x-layouts.app title="Agent">
+    @if(session('success'))
+        <div class="flash-success d-none">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- Agent Hero Section -->
 <section class="agent-hero-section">
   <div class="container">
@@ -384,13 +389,6 @@
 
           <form method="POST" action="/apply-agents" class="agent-application-form">
              @csrf
-              @if (session('success'))
-                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                      <i class="bi bi-check-circle me-2"></i>
-                      {{ session('success') }}
-                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                  </div>
-              @endif
             <div class="form-section">
               <h5 class="form-section-title">Personal Information</h5>
               <div class="row g-3">
@@ -537,7 +535,7 @@
 
                 <div class="col-md-6">
                   <label class="form-label fw-bold">Mobile Money Number <span class="text-danger">*</span></label>
-                  <input type="tel" name="mobile_money_number" value="{{old('mobile_money_network')}}" class="form-control form-control-lg" placeholder="24XXXXXXX">
+                  <input type="tel" name="mobile_money_number" value="{{old('mobile_money_number')}}" class="form-control form-control-lg" placeholder="24XXXXXXX">
                     @error('mobile_money_number')
                     <small class="text-danger fst-italic">{{ $message }}</small>
                     @enderror
