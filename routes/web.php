@@ -101,6 +101,10 @@ Route::middleware(['auth:web'])->group(function () {
     //Agents Routes
     Route::get('/admin/agents', [AgentController::class, 'index']);
     Route::post('/admin/creditwallet', [AgentController::class, 'creditWallet']);
+    Route::post('/admin/debitWallet', [AgentController::class, 'debitWallet']);
+    Route::patch('/admin/editCommissionRate', [AgentController::class, 'editCommissionRate']);
+    Route::patch('/admin/unverifyAgentAcount/{agent}', [AgentController::class, 'unverifyAgentAccount']);
+    Route::patch('/admin/verifyAgentAccount/{agent}', [AgentController::class, 'verifyAgentAccount']);
 });
 
 

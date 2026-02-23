@@ -63,11 +63,39 @@ class Wallet extends Model
             'balance_before' => $balanceBefore,
             'balance_after' => $this->balance,
             'description' => $description,
-            'payment_method' => "Admin Payment",
-//            'related_order_id' => $relatedOrderId,
+            'payment_method' => "Through Admin",
+            //'related_order_id' => $relatedOrderId,
             'payment_reference' => $paymentReference,
             'status' => 'completed'
         ]);
     }
+
+    // Debit wallet
+    public function debit($amount, $category, $description = null, $relatedOrderId = null)
+    {
+        if ($this->balance < $amount) {
+            throw new \Exception('Insufficient wallet balance');
+        }
+
+        $balanceBefore = $this->balance;
+        $this->balance -= $amount;
+        $this->save();
+
+        return WalletTransaction::create([
+            'wallet_id' => $this->id,
+            'agent_id' => $this->agent_id,
+            'transaction_reference' => $this->generateReference(),
+            'type' => 'debit',
+            'category' => $category,
+            'amount' => $amount,
+            'balance_before' => $balanceBefore,
+            'balance_after' => $this->balance,
+            'description' => $description,
+            //'related_order_id' => $relatedOrderId,
+            'status' => 'completed'
+        ]);
+    }
+
+
 
 }

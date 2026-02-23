@@ -243,26 +243,54 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+
+                    <!-- Loading Spinner -->
+                    <div id="debit-wallet-loader" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-3">Loading...</div>
+                    </div>
+
                     <div class="alert alert-warning">
                         <i class="bi bi-exclamation-triangle me-2"></i>
                         This will deduct money from the agent's wallet balance.
                     </div>
-                    <form id="debitWalletForm">
+                    <form method="POST" action="/admin/debitWallet" id="debitWalletForm">
+                        @csrf
+                        <input type="hidden" name="agent_id" value="{{old('agent_id')}}">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Referral Code <span class="text-danger">*</span></label>
+                            <input type="text" name="referral_code" class="form-control form-control-lg" value="{{old('referral_code')}}">
+                            @error('referral_code', 'debitWallet')
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label fw-bold">Amount (GH₵) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control form-control-lg" name="amount" step="0.01" required>
+                            <input type="number" class="form-control form-control-lg" name="amount" value="{{old('amount')}}">
+                            @error('amount', 'debitWallet')
+                                <span class="text-danger fst-italic">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Reason <span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="description" rows="3" placeholder="e.g., Penalty for violation" required></textarea>
+                            <label class="form-label fw-bold">Reason</label>
+                            <textarea class="form-control" name="description" rows="3" placeholder="e.g., Penalty for violation">{{old('description')}}</textarea>
+                            @error('description', 'debitWallet')
+                                <span class="text-danger fst-italic">{{$message}}</span>
+                            @enderror
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="debitWalletForm" class="btn btn-warning">
-                        <i class="bi bi-check-circle me-2"></i>Debit Wallet
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-warning"
+                        icon-class="bi-check-circle me-2"
+                        btn-text="Debit Wallet"
+                        form="debitWalletForm"
+                    />
                 </div>
             </div>
         </div>
@@ -279,24 +307,57 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="debitWalletForm">
+                    <!--Loading Spinner -->
+                    <div id="edit-commission-rate-loader" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-3">Loading...</div>
+                    </div>
+
+                    <form method="POST" action="/admin/editCommissionRate" id="editCommissionRateForm">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="agent_id" value="{{old('agent_id')}}"/>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Referral Code  <span class="text-danger">*</span> </label>
+                            <input type="text" class="form-control form-control-lg" name="referral_code" value="{{old('referral_code')}}"  />
+                            @error('referral_code', 'editCommissionRate')
+                                <span class="text-danger fst-italic">{{$message}}</span>
+                            @enderror
+                        </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Rate (%)<span class="text-danger">*</span></label>
-                            <input type="number" class="form-control form-control-lg" name="amount" step="0.01" required>
+                            <input type="number" class="form-control form-control-lg" name="rate" value="{{old('rate')}}" >
+                            @error('rate', 'editCommissionRate')
+                                <span class="text-danger fst-italic">{{ $message }}</span>
+                            @enderror
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="debitWalletForm" class="btn btn-info">
-                        <i class="bi bi-check-circle me-2"></i>Edit Rate
-                    </button>
+                    <x-submit-btn
+                        class-name="btn-info"
+                        icon-class="bi-check-circle me-2"
+                        btn-text="Edit Rate"
+                        form="editCommissionRateForm"
+                    />
                 </div>
             </div>
         </div>
     </div>
+
 </x-layouts.admin-cms>
 
 @if ($errors->creditWallet->any())
     <div id="openCreditWalletModal"></div>
+@endif
+
+@if($errors->debitWallet->any())
+    <div id="openDebitWalletModal"></div>
+@endif
+
+@if($errors->editCommissionRate->any())
+    <div id="openEditCommissionRateModal"></div>
 @endif

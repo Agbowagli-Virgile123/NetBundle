@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +21,7 @@ class Agent extends Authenticatable
             if (!$agent->referral_code) {
                 $agent->referral_code = 'AG-' . strtoupper(Str::random(5));
             }
+            $agent->password = Hash::make('123');
         });
 
         static::created(function ($agent) {

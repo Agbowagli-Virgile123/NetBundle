@@ -87,12 +87,27 @@
                 </li>
 
                 <li>
-                    <button class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-target="#debitWalletModal">
+                    <button class="dropdown-item text-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#debitWalletModal"
+                            data-id="{{$agent->id}}"
+                    >
                         <i class="bi bi-dash-circle me-1"></i>Debit Wallet
                     </button>
                 </li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-x-circle me-2"></i>Unverify Agent</a></li>
+                <li>
+                    @if($agent->is_verified)
+                        <button type="submit" class="dropdown-item text-danger" form="unverifyAgentAccountForm">
+                            <i class="bi bi-x-circle me-1"></i>Unverify Agent
+                        </button>
+                    @else
+                        <button type="submit"  class="dropdown-item text-success" form="verifyAgentAccountForm" >
+                            <i class="bi bi-check-circle me-1"></i>Verify Agent
+                        </button>
+                    @endif
+
+                </li>
             </ul>
         </div>
     </td>
@@ -273,18 +288,40 @@
                                     >
                                         <i class="bi bi-plus-circle me-1"></i>Credit Wallet
                                     </button>
-                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#debitWalletModal">
+                                    <button class="btn btn-sm btn-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#debitWalletModal"
+                                            data-id="{{$agent->id}}"
+                                    >
                                         <i class="bi bi-dash-circle me-1"></i>Debit Wallet
                                     </button>
-                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editCommissionRateModal">
+                                    <button class="btn btn-sm btn-info"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editCommissionRateModal"
+                                            data-id="{{$agent->id}}"
+                                    >
                                         <i class="bi bi-pencil me-1"></i>Edit Commission Rate
                                     </button>
-                                    <button class="btn btn-sm btn-secondary">
-                                        <i class="bi bi-key me-1"></i>Reset Password
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-x-circle me-1"></i>Unverify Agent
-                                    </button>
+{{--                                    <button class="btn btn-sm btn-secondary">--}}
+{{--                                        <i class="bi bi-key me-1"></i>Reset Password--}}
+{{--                                    </button>--}}
+
+                                    @if($agent->is_verified)
+                                        <x-submit-btn
+                                            class-name="btn-sm btn-danger"
+                                            icon-class="bi-x-circle me-1"
+                                            btn-text="Unverify Agent"
+                                            form="unverifyAgentAccountForm"
+                                        />
+                                    @else
+                                        <x-submit-btn
+                                            class-name="btn-sm btn-success"
+                                            icon-class="bi-check-circle me-1"
+                                            btn-text="Verify Agent"
+                                            form="verifyAgentAccountForm"
+                                        />
+                                    @endif
+
                                 </div>
                             </div>
 
@@ -565,6 +602,22 @@
                 </div>
 
             </div>
+
         </div>
     </td>
 </tr>
+
+
+<!--VERIFY AGENT ACCOUNT-->
+<form method="POST" action="/admin/verifyAgentAccount/{{$agent->id}}" id="verifyAgentAccountForm" class="visually-hidden">
+    @csrf
+    @method('PATCH')
+</form>
+
+<!--UNVERIFY AGENT ACCOUNT-->
+<form method="POST" action="/admin/unverifyAgentAcount/{{$agent->id}}" id="unverifyAgentAccountForm" class="visually-hidden">
+    @csrf
+    @method('PATCH')
+</form>
+
+

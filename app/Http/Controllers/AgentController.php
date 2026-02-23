@@ -99,7 +99,7 @@ class AgentController
         //Check if the Agent is valid to receive bonus
         if (!$agent->is_active || !$agent->is_verified) {
 
-            return  back()->with('error', 'Select Agent is not Eligible for Bonus!');
+            return  back()->with('error', 'Selected Agent is not Eligible for Bonus!');
         }
 
         $agent->wallet->credit(
@@ -110,4 +110,88 @@ class AgentController
 
         return back()->with('success', 'Wallet Credited Successfully!');
     }
+
+    public function debitWallet(Request $request){
+        $validator = Validator::make($request->all(), [
+           'agent_id' => ['required', 'exists:agents,id'],
+           'amount' => ['required', 'numeric', 'min:1'],
+            'referral_code' => ['required', 'regex:/^AG\-[A-Za-z0-9]{5}$/', 'exists:agents,referral_code'],
+            'description' => ['nullable','string'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'debitWallet')->withInput();
+        }
+
+        $agent = Agent::findOrFail($request->agent_id);
+
+        //Compare the user referral code to db referral_code
+        if ($agent->referral_code !== $request->referral_code) {
+            return back()->withErrors([
+                'referral_code' => 'Referral code does not match the selected agent.'
+            ])->withInput();
+        }
+
+        if (!$agent->is_active || !$agent->is_verified) {
+            return  back()->with('error', 'Selected Agent is not Eligible for debiting!');
+        }
+
+        if($agent->wallet->balance < $request->amount){
+            return back()->with('error', 'Insufficient Balance!');
+        }
+
+
+        $agent->wallet->debit(
+            $request->amount,
+            'penalty',
+            $request->description ?? "Penalty"
+        );
+
+        return back()->with('success', 'Wallet Debited Successfully!');
+
+    }
+
+    public function editCommissionRate(Request $request){
+        $validator = Validator::make($request->all(), [
+            'agent_id' => ['required', 'exists:agents,id'],
+            'referral_code' => ['required', 'regex:/^AG\-[A-Za-z0-9]{5}$/','exists:agents,referral_code'],
+            'rate' => ['required', 'numeric', 'min:0.01'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'editCommissionRate')->withInput();
+        }
+
+        $agent = Agent::findOrFail($request->agent_id);
+        if ($agent->referral_code !== $request->referral_code) {
+            return back()->withErrors([
+                'referral_code' => 'Referral code does not match the selected agent.'
+            ]);
+        }
+
+        $agent->update([
+            'commission_rate' => $request->rate,
+        ]);
+
+        return back()->with('success', 'Commission Rate Updated Successfully!');
+    }
+
+    public function unverifyAgentAccount(Agent $agent)
+    {
+        $agent->update([
+            'is_verified' => false,
+        ]);
+
+        return back()->with('success', 'Agent Account Unverified Successfully!');
+
+    }
+    public function verifyAgentAccount(Agent $agent)
+    {
+        $agent->update([
+            'is_verified' => true,
+        ]);
+        return back()->with('success', 'Agent Account Verified Successfully!');
+    }
+
 }
+

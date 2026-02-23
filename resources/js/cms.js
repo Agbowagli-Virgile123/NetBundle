@@ -138,6 +138,12 @@ document.addEventListener('DOMContentLoaded', function() {
     //Admin Crediting Agent Wallet Modal
     ShowModalOnValidationFailed("openCreditWalletModal", "creditWalletModal");
 
+    //Admin Debiting Agent Wallet Modal
+    ShowModalOnValidationFailed('openDebitWalletModal', 'debitWalletModal');
+
+    //Admin Editing Commission Rate Modal
+    ShowModalOnValidationFailed('openEditCommissionRateModal', 'editCommissionRateModal');
+
     // Search functionality
     const searchInput = document.querySelector('.search-box input');
     if (searchInput) {
@@ -707,6 +713,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+
+
+
         //Show Credit wallet Modal
         const  creditWalletModal = document.getElementById('creditWalletModal');
         if (creditWalletModal) {
@@ -721,68 +730,35 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }
 
+        //Show Debit Wallet Modal
+        const debitWalletModal = document.getElementById('debitWalletModal');
+        if(debitWalletModal){
+            debitWalletModal.addEventListener('shown.bs.modal', (event)=>{
+                const btn = event.relatedTarget;
 
-        // Debit Wallet Form
-        const debitWalletForm = document.getElementById('debitWalletForm');
-        if (debitWalletForm) {
-            debitWalletForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+                if(btn){
+                    const id = btn.dataset.id;
+                    showViewLoader('debitWalletModal', 'debit-wallet-loader');
+                    fillAgentRelatedModalForm('debitWalletForm', id);
+                    hideViewLoader('debitWalletModal', 'debit-wallet-loader');
 
-                const formData = new FormData(this);
-                const data = Object.fromEntries(formData);
-
-                console.log('Debiting wallet:', data);
-
-                showToast('Wallet debited successfully!', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('debitWalletModal')).hide();
-                this.reset();
-            });
+                }
+            })
         }
 
-        // ==========================================
-        // 5. DROPDOWN ACTIONS
-        // ==========================================
-
-        // Handle dropdown menu clicks
-        document.addEventListener('click', function(e) {
-            // Verify Agent
-            if (e.target.closest('.dropdown-item') && e.target.textContent.includes('Verify')) {
-                e.preventDefault();
-                const agentRow = e.target.closest('.expandable-row');
-                const agentId = agentRow ? agentRow.getAttribute('data-agent-id') : null;
-
-                if (confirm('Are you sure you want to verify this agent?')) {
-                    console.log('Verifying agent:', agentId);
-                    showToast('Agent verified successfully!', 'success');
-
-                    // Update UI
-                    const verifiedBadge = agentRow.querySelector('.verified-badge');
-                    if (verifiedBadge) {
-                        verifiedBadge.className = 'verified-badge verified';
-                        verifiedBadge.innerHTML = '<i class="bi bi-patch-check-fill"></i> Verified';
-                    }
+        //Show Edit Commission Rate Modal
+        const editCommssionRateModal = document.getElementById('editCommissionRateModal');
+        if(editCommssionRateModal){
+            editCommssionRateModal.addEventListener('shown.bs.modal', (event)=>{
+                const btn = event.relatedTarget;
+                if(btn){
+                    const id = btn.dataset.id;
+                    showViewLoader('editCommissionRateModal', 'edit-commission-rate-loader');
+                    fillAgentRelatedModalForm('editCommissionRateForm', id);
+                    hideViewLoader('editCommissionRateModal', 'edit-commission-rate-loader')
                 }
-            }
-
-            // Deactivate Agent
-            if (e.target.closest('.dropdown-item') && e.target.textContent.includes('Deactivate')) {
-                e.preventDefault();
-                const agentRow = e.target.closest('.expandable-row');
-                const agentId = agentRow ? agentRow.getAttribute('data-agent-id') : null;
-
-                if (confirm('Are you sure you want to deactivate this agent?')) {
-                    console.log('Deactivating agent:', agentId);
-                    showToast('Agent deactivated successfully!', 'success');
-
-                    // Update UI
-                    const statusBadge = agentRow.querySelector('.status-badge');
-                    if (statusBadge) {
-                        statusBadge.className = 'status-badge status-inactive';
-                        statusBadge.innerHTML = '<i class="bi bi-x-circle"></i> Inactive';
-                    }
-                }
-            }
-        });
+            })
+        }
 
         // ==========================================
         // 6. WITHDRAWAL APPROVAL/REJECTION
