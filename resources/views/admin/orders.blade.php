@@ -19,7 +19,7 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h2 class="page-heading">Orders Management</h2>
+{{--                        <h2 class="page-heading">Orders Management</h2>--}}
                         <p class="page-subheading text-muted">Manage and process all orders</p>
                     </div>
                     <div class="col-md-6 text-md-end">
@@ -32,53 +32,33 @@
 
             <!-- Stats Cards -->
             <div class="row g-4 mb-4">
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-primary">
-                            <i class="bi bi-cart-check"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">1,245</h3>
-                            <p class="stat-label">Total Orders</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="primary"
+                    icon="cart-check"
+                    stat-number="1,245"
+                    label="Total Orders"
+                />
 
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-warning">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">23</h3>
-                            <p class="stat-label">Pending Orders</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="warning"
+                    icon="clock-history"
+                    stat-number="23"
+                    label="Pending Orders"
+                />
 
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-success">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">1,198</h3>
-                            <p class="stat-label">Completed</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="success"
+                    icon="check-circle"
+                    stat-number="1,198"
+                    label="Completed"
+                />
 
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-danger">
-                            <i class="bi bi-x-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3 class="stat-number">24</h3>
-                            <p class="stat-label">Failed</p>
-                        </div>
-                    </div>
-                </div>
+                <x-cms.stats-card
+                    bg-color="danger"
+                    icon="x-circle"
+                    stat-number="23"
+                    label="Failed"
+                />
             </div>
 
             <!-- Filters -->
@@ -142,7 +122,6 @@
                                 <input type="text" class="form-control" placeholder="Order #, Phone...">
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -482,7 +461,7 @@
                                 </td>
                                 <td>
                   <span class="order-status-badge status-processing">
-                    <i class="bi bi-arrow-repeat"></i> Processing
+                    <i class="bi bi-x-circle"></i> Failed
                   </span>
                                 </td>
                                 <td>

@@ -82,7 +82,7 @@
                     path="/admin/orders"
                     icon="cart-check"
                     title="Orders"
-                    badge="12"
+                    badge="{{$sidebarCounts['orders']}}"
                     badgeClass="badge-success"
                 />
 
