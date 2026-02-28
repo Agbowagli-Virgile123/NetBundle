@@ -79,7 +79,7 @@
                 <x-cms.side-bar-nav-section title="Sales" />
 
                 <x-cms.nav-item
-                    path="/orders"
+                    path="/admin/orders"
                     icon="cart-check"
                     title="Orders"
                     badge="12"

@@ -760,6 +760,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }
 
+
         // ==========================================
         // 6. WITHDRAWAL APPROVAL/REJECTION
         // ==========================================
@@ -834,6 +835,503 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-
-        console.log('Agents page JavaScript initialized successfully');
     });
+
+
+
+/* ========================================
+   ORDERS MANAGEMENT PAGE JAVASCRIPT
+======================================== */
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ==========================================
+    // 1. EXPANDABLE ROWS FUNCTIONALITY
+    // ==========================================
+
+    const expandButtons = document.querySelectorAll('.btn-expand');
+
+    expandButtons.forEach(button => {
+        const targetId = button.getAttribute('data-bs-target');
+        const targetCollapse = document.querySelector(targetId);
+
+        if (targetCollapse) {
+            targetCollapse.addEventListener('show.bs.collapse', function() {
+                button.classList.remove('collapsed');
+                console.log('Expanding order details:', targetId);
+            });
+
+            targetCollapse.addEventListener('hide.bs.collapse', function() {
+                button.classList.add('collapsed');
+                console.log('Collapsing order details:', targetId);
+            });
+        }
+    });
+
+    // ==========================================
+    // 2. FILTERS FUNCTIONALITY
+    // ==========================================
+
+    const statusFilter = document.getElementById('statusFilter');
+    const networkFilter = document.getElementById('networkFilter');
+    const agentFilter = document.getElementById('agentFilter');
+    const dateFromFilter = document.getElementById('dateFromFilter');
+    const dateToFilter = document.getElementById('dateToFilter');
+    const searchInput = document.querySelector('.search-box input');
+
+    // Attach filter event listeners
+    [statusFilter, networkFilter, agentFilter, dateFromFilter, dateToFilter].forEach(filter => {
+        if (filter) {
+            filter.addEventListener('change', filterOrders);
+        }
+    });
+
+    if (searchInput) {
+        searchInput.addEventListener('input', filterOrders);
+    }
+
+    // Filter Orders Function
+    function filterOrders() {
+        const rows = document.querySelectorAll('.expandable-row');
+        const statusValue = statusFilter ? statusFilter.value : '';
+        const networkValue = networkFilter ? networkFilter.value : '';
+        const agentValue = agentFilter ? agentFilter.value : '';
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+
+        rows.forEach(row => {
+            let showRow = true;
+
+            // Status Filter
+            if (statusValue) {
+                const statusBadge = row.querySelector('.order-status-badge');
+                const statusClass = 'status-' + statusValue;
+                if (!statusBadge || !statusBadge.classList.contains(statusClass)) {
+                    showRow = false;
+                }
+            }
+
+            // Network Filter (check network badge background color or text)
+            if (networkValue) {
+                const networkBadge = row.querySelector('.network-mini-badge');
+                // This is simplified - you'd want to add data attributes for better filtering
+                if (!networkBadge) showRow = false;
+            }
+
+            // Agent Filter
+            if (agentValue) {
+                const agentInfo = row.querySelector('.agent-mini-info');
+                // Add data-agent-id attribute to agent info div for better filtering
+                if (!agentInfo) showRow = false;
+            }
+
+            // Search Filter
+            if (searchTerm) {
+                const rowText = row.textContent.toLowerCase();
+                if (!rowText.includes(searchTerm)) showRow = false;
+            }
+
+            // Show/Hide Row
+            row.style.display = showRow ? '' : 'none';
+
+            // Also hide the collapse row
+            const collapseRow = row.nextElementSibling;
+            if (collapseRow && collapseRow.classList.contains('collapse-row')) {
+                collapseRow.style.display = showRow ? '' : 'none';
+            }
+        });
+
+        console.log('Orders filtered');
+    }
+
+    // ==========================================
+    // 3. PLACE ORDER MODAL
+    // ==========================================
+
+    const orderForSelect = document.querySelector('select[name="order_for"]');
+    const agentSelectDiv = document.getElementById('agentSelectDiv');
+    const networkSelect = document.getElementById('networkSelect');
+    const packageSelect = document.getElementById('packageSelect');
+    const packagePreview = document.getElementById('packagePreview');
+
+    // Toggle agent selector based on "Order For" selection
+    if (orderForSelect) {
+        orderForSelect.addEventListener('change', function() {
+            if (this.value === 'agent') {
+                agentSelectDiv.style.display = 'block';
+                agentSelectDiv.querySelector('select').required = true;
+            } else {
+                agentSelectDiv.style.display = 'none';
+                agentSelectDiv.querySelector('select').required = false;
+            }
+        });
+    }
+
+    // Populate packages based on network selection
+    if (networkSelect) {
+        networkSelect.addEventListener('change', function() {
+            const networkId = this.value;
+
+            // Clear current packages
+            packageSelect.innerHTML = '<option value="">Select Package</option>';
+            packagePreview.style.display = 'none';
+
+            if (!networkId) return;
+
+            // Mock data - replace with actual API call
+            const mockPackages = {
+                '1': [ // MTN
+                    { id: 1, name: 'MTN 1GB Daily', size: '1GB', validity: '24 Hours', price: 5.00, commission: 0.50 },
+                    { id: 2, name: 'MTN 2GB Daily', size: '2GB', validity: '24 Hours', price: 9.00, commission: 0.90 },
+                    { id: 3, name: 'MTN 5GB Daily', size: '5GB', validity: '24 Hours', price: 20.00, commission: 2.00 },
+                    { id: 4, name: 'MTN 10GB Weekly', size: '10GB', validity: '7 Days', price: 35.00, commission: 3.50 },
+                ],
+                '2': [ // AirtelTigo
+                    { id: 5, name: 'AirtelTigo 1GB Daily', size: '1GB', validity: '24 Hours', price: 4.50, commission: 0.45 },
+                    { id: 6, name: 'AirtelTigo 2GB Weekly', size: '2GB', validity: '7 Days', price: 12.00, commission: 1.20 },
+                ],
+                '3': [ // Telecel
+                    { id: 7, name: 'Telecel 1GB Daily', size: '1GB', validity: '24 Hours', price: 5.00, commission: 0.50 },
+                    { id: 8, name: 'Telecel 5GB Weekly', size: '5GB', validity: '7 Days', price: 22.00, commission: 2.20 },
+                ]
+            };
+
+            const packages = mockPackages[networkId] || [];
+
+            packages.forEach(pkg => {
+                const option = document.createElement('option');
+                option.value = pkg.id;
+                option.textContent = pkg.name;
+                option.dataset.size = pkg.size;
+                option.dataset.validity = pkg.validity;
+                option.dataset.price = pkg.price;
+                option.dataset.commission = pkg.commission;
+                packageSelect.appendChild(option);
+            });
+
+            console.log('Packages loaded for network:', networkId);
+        });
+    }
+
+    // Show package preview when package is selected
+    if (packageSelect) {
+        packageSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+
+            if (!this.value) {
+                packagePreview.style.display = 'none';
+                return;
+            }
+
+            // Update preview
+            document.getElementById('previewDataSize').textContent = selectedOption.dataset.size || '-';
+            document.getElementById('previewValidity').textContent = selectedOption.dataset.validity || '-';
+            document.getElementById('previewPrice').textContent = 'GH₵ ' + (selectedOption.dataset.price || '0.00');
+            document.getElementById('previewCommission').textContent = 'GH₵ ' + (selectedOption.dataset.commission || '0.00');
+
+            packagePreview.style.display = 'block';
+        });
+    }
+
+    // Place Order Form Submission
+    const placeOrderForm = document.getElementById('placeOrderForm');
+    if (placeOrderForm) {
+        placeOrderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            console.log('Placing order:', data);
+
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="processing-spinner"></span>Processing...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Success
+                showToast('Order placed successfully!', 'success');
+
+                // Reset form
+                this.reset();
+                packagePreview.style.display = 'none';
+                agentSelectDiv.style.display = 'none';
+
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('placeOrderModal')).hide();
+
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                // Reload orders (in production, you'd add the new order to the table dynamically)
+                // location.reload();
+            }, 2000);
+
+            /* Production code:
+            fetch('/admin/orders', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+              showToast('Order placed successfully!', 'success');
+              bootstrap.Modal.getInstance(document.getElementById('placeOrderModal')).hide();
+              // Add new order to table or reload
+            })
+            .catch(error => {
+              showToast('Failed to place order', 'error');
+              console.error('Error:', error);
+            })
+            .finally(() => {
+              submitBtn.innerHTML = originalText;
+              submitBtn.disabled = false;
+            });
+            */
+        });
+    }
+
+    // ==========================================
+    // 4. ORDER ACTIONS (Process, Retry, Cancel, Refund)
+    // ==========================================
+
+    // Process Order
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.process-order-btn')) {
+            e.preventDefault();
+            const orderId = e.target.closest('.process-order-btn').dataset.orderId;
+
+            if (confirm('Process this order now?')) {
+                console.log('Processing order:', orderId);
+
+                const btn = e.target.closest('.process-order-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="processing-spinner"></span>Processing...';
+                btn.disabled = true;
+
+                // Simulate API call
+                setTimeout(() => {
+                    showToast('Order processed successfully!', 'success');
+
+                    // Update order status badge
+                    const orderRow = document.querySelector(`[data-order-id="${orderId}"]`);
+                    if (orderRow) {
+                        const statusBadge = orderRow.querySelector('.order-status-badge');
+                        if (statusBadge) {
+                            statusBadge.className = 'order-status-badge status-processing';
+                            statusBadge.innerHTML = '<i class="bi bi-arrow-repeat"></i> Processing';
+                        }
+                    }
+
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+    });
+
+    // Retry Order
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.retry-order-btn')) {
+            e.preventDefault();
+            const orderId = e.target.closest('.retry-order-btn').dataset.orderId;
+
+            if (confirm('Retry this order?')) {
+                console.log('Retrying order:', orderId);
+                showToast('Retrying order...', 'info');
+
+                // Simulate API call
+                setTimeout(() => {
+                    showToast('Order retry initiated!', 'success');
+                }, 1500);
+            }
+        }
+    });
+
+    // Cancel Order
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.cancel-order-btn')) {
+            e.preventDefault();
+            const orderId = e.target.closest('.cancel-order-btn').dataset.orderId;
+
+            if (confirm('Are you sure you want to cancel this order?')) {
+                console.log('Cancelling order:', orderId);
+
+                // Simulate API call
+                setTimeout(() => {
+                    showToast('Order cancelled successfully!', 'success');
+
+                    // Update order status badge
+                    const orderRow = document.querySelector(`[data-order-id="${orderId}"]`);
+                    if (orderRow) {
+                        const statusBadge = orderRow.querySelector('.order-status-badge');
+                        if (statusBadge) {
+                            statusBadge.className = 'order-status-badge status-cancelled';
+                            statusBadge.innerHTML = '<i class="bi bi-x-circle"></i> Cancelled';
+                        }
+                    }
+                }, 1000);
+            }
+        }
+    });
+
+    // Refund Order
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.refund-order-btn')) {
+            e.preventDefault();
+            const orderId = e.target.closest('.refund-order-btn').dataset.orderId;
+
+            // Open refund modal
+            const refundModal = new bootstrap.Modal(document.getElementById('refundOrderModal'));
+            document.querySelector('#refundOrderForm input[name="order_id"]').value = orderId;
+            refundModal.show();
+        }
+    });
+
+    // Refund Form Submission
+    const refundOrderForm = document.getElementById('refundOrderForm');
+    if (refundOrderForm) {
+        refundOrderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            console.log('Processing refund:', data);
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="processing-spinner"></span>Processing...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                showToast('Refund processed successfully!', 'success');
+
+                // Update order status
+                const orderRow = document.querySelector(`[data-order-id="${data.order_id}"]`);
+                if (orderRow) {
+                    const statusBadge = orderRow.querySelector('.order-status-badge');
+                    if (statusBadge) {
+                        statusBadge.className = 'order-status-badge status-refunded';
+                        statusBadge.innerHTML = '<i class="bi bi-arrow-counterclockwise"></i> Refunded';
+                    }
+
+                    const paymentStatusBadge = orderRow.querySelector('.payment-status-badge');
+                    if (paymentStatusBadge) {
+                        paymentStatusBadge.className = 'payment-status-badge refunded';
+                        paymentStatusBadge.textContent = 'Refunded';
+                    }
+                }
+
+                // Reset and close modal
+                this.reset();
+                bootstrap.Modal.getInstance(document.getElementById('refundOrderModal')).hide();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+
+    // ==========================================
+    // 5. REFRESH ORDERS
+    // ==========================================
+
+    const refreshBtn = document.getElementById('refreshOrdersBtn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            this.classList.add('refreshing');
+
+            console.log('Refreshing orders...');
+            showToast('Refreshing orders...', 'info');
+
+            // Simulate API call
+            setTimeout(() => {
+                this.classList.remove('refreshing');
+                showToast('Orders refreshed!', 'success');
+            }, 1500);
+        });
+    }
+
+    // ==========================================
+    // 6. TOAST NOTIFICATION HELPER
+    // ==========================================
+
+    function showToast(message, type = 'success') {
+        // Create toast container if it doesn't exist
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+            toastContainer.style.zIndex = '9999';
+            document.body.appendChild(toastContainer);
+        }
+
+        // Create toast
+        const toastId = 'toast-' + Date.now();
+        const bgClass = type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : type === 'info' ? 'bg-info' : 'bg-warning';
+        const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : type === 'info' ? 'info-circle' : 'exclamation-circle';
+
+        const toastHTML = `
+      <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-${icon} me-2"></i>${message}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      </div>
+    `;
+
+        toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+        const toastElement = document.getElementById(toastId);
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 3000
+        });
+
+        toast.show();
+
+        // Remove toast after it's hidden
+        toastElement.addEventListener('hidden.bs.toast', function() {
+            toastElement.remove();
+        });
+    }
+
+    // ==========================================
+    // 7. INITIALIZE TOOLTIPS
+    // ==========================================
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+    // ==========================================
+    // 8. PHONE NUMBER FORMATTING
+    // ==========================================
+
+    const phoneInputs = document.querySelectorAll('input[name="recipient_phone"]');
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Remove non-digits
+            let value = this.value.replace(/\D/g, '');
+
+            // Format as Ghana number (024 123 4567)
+            if (value.length > 3 && value.length <= 6) {
+                value = value.slice(0, 3) + ' ' + value.slice(3);
+            } else if (value.length > 6) {
+                value = value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6, 10);
+            }
+
+            this.value = value;
+        });
+    });
+
+    console.log('Orders page JavaScript initialized successfully');
+});

@@ -178,8 +178,15 @@ class AgentController
 
     public function unverifyAgentAccount(Agent $agent)
     {
+        $exists = Agent::find($agent->id);
+
+        if(!$exists){
+            return back()->with('error', 'Invalid Agent!');
+        }
+
         $agent->update([
             'is_verified' => false,
+            'verified_at' => null,
         ]);
 
         return back()->with('success', 'Agent Account Unverified Successfully!');
@@ -187,8 +194,16 @@ class AgentController
     }
     public function verifyAgentAccount(Agent $agent)
     {
+        $exists = Agent::find($agent->id);
+
+        if(!$exists){
+            return back()->with('error', 'Invalid Agent!');
+        }
+
+
         $agent->update([
             'is_verified' => true,
+            'verified_at' => now(),
         ]);
         return back()->with('success', 'Agent Account Verified Successfully!');
     }

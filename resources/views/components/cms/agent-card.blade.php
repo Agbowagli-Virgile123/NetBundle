@@ -98,11 +98,11 @@
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     @if($agent->is_verified)
-                        <button type="submit" class="dropdown-item text-danger" form="unverifyAgentAccountForm">
+                        <button type="submit" class="dropdown-item text-danger" form="unverifyAgentAccountForm{{$agent->id}}">
                             <i class="bi bi-x-circle me-1"></i>Unverify Agent
                         </button>
                     @else
-                        <button type="submit"  class="dropdown-item text-success" form="verifyAgentAccountForm" >
+                        <button type="submit"  class="dropdown-item text-success" form="verifyAgentAccountForm{{$agent->id}}" >
                             <i class="bi bi-check-circle me-1"></i>Verify Agent
                         </button>
                     @endif
@@ -311,14 +311,14 @@
                                             class-name="btn-sm btn-danger"
                                             icon-class="bi-x-circle me-1"
                                             btn-text="Unverify Agent"
-                                            form="unverifyAgentAccountForm"
+                                            form="unverifyAgentAccountForm{{$agent->id}}"
                                         />
                                     @else
                                         <x-submit-btn
                                             class-name="btn-sm btn-success"
                                             icon-class="bi-check-circle me-1"
                                             btn-text="Verify Agent"
-                                            form="verifyAgentAccountForm"
+                                            form="verifyAgentAccountForm{{$agent->id}}"
                                         />
                                     @endif
 
@@ -609,13 +609,13 @@
 
 
 <!--VERIFY AGENT ACCOUNT-->
-<form method="POST" action="/admin/verifyAgentAccount/{{$agent->id}}" id="verifyAgentAccountForm" class="visually-hidden">
+<form method="POST" action="/admin/verifyAgentAccount/{{$agent->id}}" id="verifyAgentAccountForm{{$agent->id}}" class="visually-hidden">
     @csrf
     @method('PATCH')
 </form>
 
 <!--UNVERIFY AGENT ACCOUNT-->
-<form method="POST" action="/admin/unverifyAgentAcount/{{$agent->id}}" id="unverifyAgentAccountForm" class="visually-hidden">
+<form method="POST" action="/admin/unverifyAgentAcount/{{$agent->id}}" id="unverifyAgentAccountForm{{$agent->id}}" class="visually-hidden">
     @csrf
     @method('PATCH')
 </form>

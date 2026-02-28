@@ -105,6 +105,12 @@ Route::middleware(['auth:web'])->group(function () {
     Route::patch('/admin/editCommissionRate', [AgentController::class, 'editCommissionRate']);
     Route::patch('/admin/unverifyAgentAcount/{agent}', [AgentController::class, 'unverifyAgentAccount']);
     Route::patch('/admin/verifyAgentAccount/{agent}', [AgentController::class, 'verifyAgentAccount']);
+
+    //Orders Routes
+    Route::get('/admin/orders', function(){
+        return view('admin.orders');
+    });
+
 });
 
 
