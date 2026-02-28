@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Agent;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
@@ -29,6 +30,7 @@ class ViewServiceProvider extends ServiceProvider
                 return [
                     'agents' => Agent::count(),
                     'users' => User::count(),
+                    'orders' => Order::count(),
                 ];
             });
 
