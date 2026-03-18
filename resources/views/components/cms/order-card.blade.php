@@ -139,23 +139,23 @@
                         <div class="info-list">
                             <div class="info-item">
                                 <span class="info-label">Order Number:</span>
-                                <span class="info-value"><code>ORD-20260227-ABC123</code></span>
+                                <span class="info-value"><code>{{$order->order_number}}</code></span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Package:</span>
-                                <span class="info-value">MTN 5GB Daily Bundle</span>
+                                <span class="info-value">{{$order->network->name}} {{$order->package->data_amount}} {{$order->package->validity}}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Recipient Phone:</span>
-                                <span class="info-value">024 123 4567</span>
+                                <span class="info-value">{{$order->receipient_phone}}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Recipient Name:</span>
-                                <span class="info-value">John Doe</span>
+                                <span class="info-value">{{$order->receipient_name}}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Agent:</span>
-                                <span class="info-value">Kwame Asante (AG-KW789)</span>
+                                <span class="info-value">{{$order->agent->first_name." ".$order->agent->last_name}} ({{$order->agent->referral_code}})</span>
                             </div>
                         </div>
 
@@ -163,7 +163,7 @@
                         <div class="info-list">
                             <div class="info-item">
                                 <span class="info-label">Package Price:</span>
-                                <span class="info-value">GH₵ 20.00</span>
+                                <span class="info-value">{{currencyFormat($order->total_amount)}}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Cost Price:</span>
@@ -171,11 +171,11 @@
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Commission:</span>
-                                <span class="info-value text-success">GH₵ 2.00</span>
+                                <span class="info-value text-success">{{currencyFormat($order->commission_amount)}}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label fw-bold">Total Amount:</span>
-                                <span class="info-value fw-bold">GH₵ 20.00</span>
+                                <span class="info-value fw-bold">{{currencyFormat($order->total_amount)}}</span>
                             </div>
                         </div>
                     </div>
