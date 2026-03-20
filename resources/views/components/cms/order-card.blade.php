@@ -93,16 +93,33 @@
         </div>
     </td>
     <td>
-        @switch($order->ststus)
-            @case('')
-        @endswitch
+        @switch($order->status)
+            @case('processing')
+                <span class="order-status-badge status-processing"><i class="bi bi-x-circle"></i> Processing</span>
+            @break
+            @case('paid')
+                <span class="order-status-badge status-completed"><i class="bi bi-check-circle"></i> Paid</span>
+            @break
+            @case('completed')
+                <span class="order-status-badge status-completed"><i class="bi bi-check-circle"></i> Completed</span>
+            @break
+            @case('failed')
+                <span class="order-status-badge status-failed"><i class="bi bi-x-circle"></i> Failed</span>
+            @break
+            @case('refunded')
+                <span class="order-status-badge status-failed"><i class="bi bi-x-circle"></i> Refunded</span>
+            @break
+            @case('cancelled')
+                <span class="order-status-badge status-failed"><i class="bi bi-x-circle"></i> Cancelled</span>
+            @break
+            @case('pending')
+                <span class="order-status-badge status-pending"><i class="bi bi-clock-history"></i> Pending</span>
+            @break
+            @default
+                <span class="order-status-badge status-pending"><i class="bi bi-clock-history"></i> Pending</span>
+            @break
 
-      <span class="order-status-badge status-failed status-completed status-processing status-pending">
-        <i class="bi bi-clock-history"></i> Pending
-        <i class="bi bi-check-circle"></i> Completed
-        <i class="bi bi-x-circle"></i> Failed
-        <i class="bi bi-x-circle"></i> Failed
-      </span>
+        @endswitch
     </td>
     <td>
         <div class="date-info">
@@ -187,28 +204,87 @@
                             <div class="info-item">
                                 <span class="info-label">Order Status:</span>
                                 <span class="info-value">
-                                <span class="order-status-badge status-pending">
-                                  <i class="bi bi-clock-history"></i> Pending
-                                </span>
+                                @switch($order->status)
+                                    @case('processing')
+                                        <span class="order-status-badge status-processing"><i class="bi bi-x-circle"></i> Processing</span>
+                                    @break
+                                    @case('paid')
+                                        <span class="order-status-badge status-completed"><i class="bi bi-check-circle"></i> Paid</span>
+                                    @break
+                                    @case('completed')
+                                        <span class="order-status-badge status-completed"><i class="bi bi-check-circle"></i> Completed</span>
+                                    @break
+                                    @case('failed')
+                                        <span class="order-status-badge status-failed"><i class="bi bi-x-circle"></i> Failed</span>
+                                    @break
+                                    @case('refunded')
+                                        <span class="order-status-badge status-failed"><i class="bi bi-x-circle"></i> Refunded</span>
+                                    @break
+                                    @case('cancelled')
+                                        <span class="order-status-badge status-failed"><i class="bi bi-x-circle"></i> Cancelled</span>
+                                    @break
+                                    @case('pending')
+                                        <span class="order-status-badge status-pending"><i class="bi bi-clock-history"></i> Pending</span>
+                                    @break
+                                    @default
+                                        <span class="order-status-badge status-pending"><i class="bi bi-clock-history"></i> Pending</span>
+                                    @break
+
+                                @endswitch
                               </span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Payment Method:</span>
                                 <span class="info-value">
-                                <span class="payment-badge wallet-payment">
-                                  <i class="bi bi-wallet2"></i> Wallet
-                                </span>
+                                    @switch($order->payment_method)
+                                        @case('wallet')
+                                            <span class="payment-badge wallet-payment">
+                                            <i class="bi bi-wallet2"></i> Wallet
+                                            </span>
+                                            @break
+                                        @case('paystack')
+                                            <span class="payment-badge paystack-payment">
+                                            <i class="bi bi-credit-card"></i> Paystack
+                                            </span>
+                                            @break
+                                        @case('cash')
+                                            <span class="payment-badge cash-payment">
+                                            <i class="bi bi-cash"></i> Cash
+                                            </span>
+                                            @break
+                                        @default
+                                            <span class="payment-badge wallet-payment">
+                                            <i class="bi bi-wallet2"></i> Wallet
+                                            </span>
+                                    @endswitch
                               </span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Payment Status:</span>
                                 <span class="info-value">
-                                <span class="payment-status-badge paid">Paid</span>
-                              </span>
+                                    @switch($order->payment_status)
+                                        @case('paid')
+                                                <span class="payment-status-badge paid">Paid</span>
+                                                @break
+                                        @case('pending')
+                                                <span class="payment-status-badge pending">Pending</span>
+                                                @break
+                                        @case('failed')
+                                                <span class="payment-status-badge failed">Failed</span>
+                                                @break
+                                        @case('refunded')
+                                                <span class="payment-status-badge refunded">Refunded</span>
+                                                @break
+                                        @default
+                                            <span class="payment-status-badge pending">Pending</span>
+                                            @break
+
+                                    @endswitch
+                                </span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Payment Reference:</span>
-                                <span class="info-value"><code>PAY-123456</code></span>
+                                <span class="info-value"><code>{{$order->payment_reference ?? "N/A" }}</code></span>
                             </div>
                         </div>
 
@@ -216,15 +292,15 @@
                         <div class="info-list">
                             <div class="info-item">
                                 <span class="info-label">API Reference:</span>
-                                <span class="info-value"><code>API-REF-789</code></span>
+                                <span class="info-value"><code>{{ fill($order->api_reference) ? $order->api_reference : "N/A" }}</code></span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Retry Count:</span>
-                                <span class="info-value">0</span>
+                                <span class="info-value">{{ $order->retry_count }}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Failure Reason:</span>
-                                <span class="info-value text-muted">N/A</span>
+                                <span class="info-value text-muted"> {{$order->failure_reason}} </span>
                             </div>
                         </div>
 
@@ -232,19 +308,44 @@
                         <div class="info-list">
                             <div class="info-item">
                                 <span class="info-label">Created:</span>
-                                <span class="info-value">Jan 29, 2026 at 10:30 AM</span>
+                                <span class="info-value">
+                                    @if($order->created_at)
+                                        {{ $order->created_at->format('M d, Y h:i A') }}
+                                    @else
+                                        Not Yet
+                                    @endif
+                                </span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Paid At:</span>
-                                <span class="info-value">Jan 29, 2026 at 10:31 AM</span>
+                                <span class="info-value">
+                                    @if($order->paid_at)
+                                        {{ $order->paid_at->format('M d, Y h:i A') }}
+                                    @else
+                                        Not Yet
+                                    @endif
+                                </span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Processed At:</span>
-                                <span class="info-value text-muted">Not yet</span>
+                                {{-- To come back --}}
+                                <span class="info-value text-muted">
+                                    @if($order->processed_at)
+    {{ $order->processed_at->format('M d, Y h:i A') }}
+@else
+    Not Yet
+@endif
+                                </span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Completed At:</span>
-                                <span class="info-value text-muted">Not yet</span>
+                                <span class="info-value text-muted">
+                                    @if($order-completted_at)
+    {{ $order->completed_at->format('M d, Y h:i A') }}
+@else
+    Not Yet
+@endif
+                                </span>
                             </div>
                         </div>
                     </div>
