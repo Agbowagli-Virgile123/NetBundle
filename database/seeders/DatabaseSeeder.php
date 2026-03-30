@@ -7,9 +7,11 @@ use App\Models\Network;
 use App\Models\Package;
 use App\Models\PackageTag;
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -149,6 +151,8 @@ class DatabaseSeeder extends Seeder
 
         $network = Network::where('is_active', true)->pluck('id');
         $tag = PackageTag::where('is_active', true)->pluck('id');
+        $dbPackages = Package::where('is_active', true)->get(['*']);
+        $dbAgents = Agent::where('is_active', true)->findOrFail(1);
 
         $packages = [
             [
@@ -240,6 +244,67 @@ class DatabaseSeeder extends Seeder
 
         foreach ($packages as $package) {
             Package::create($package);
+        }
+
+
+        $orders = [];
+
+        if ($dbPackages->isEmpty() || $network->isEmpty()) {
+            $this->command->error('Missing required data. Seed packages and networks first.');
+            //show count
+            $this->command->info('Packages count: ' . $dbPackages->count());
+            $this->command->info('Networks count: ' . $network->count());
+            return;
+        }
+
+        for ($i = 0; $i < 5; $i++) {
+
+            $package = $dbPackages->random();
+            $price = $package->selling_price;
+            $cost = $price * 0.8;
+            $commission = $price - $cost;
+
+            $orders[] = [
+                'agent_id' => $dbAgents->isNotEmpty() ? $dbAgents->random() : null,
+                'package_id' => $package->id,
+                'network_id' => $networks->random(),
+
+                'recipient_phone' => '05' . rand(10000000, 99999999),
+                'recipient_name' => fake()->name(),
+
+                'package_price' => $price,
+                'cost_price' => $cost,
+                'commission_amount' => $commission,
+                'total_amount' => $price,
+
+                'status' => 'completed',
+
+                'payment_method' => 'wallet',
+                'payment_reference' => 'PAY-' . Str::random(10),
+                'payment_status' => 'paid',
+
+                'api_reference' => 'API-' . Str::random(10),
+                'api_response' => json_encode(['status' => 'success']),
+                'failure_reason' => null,
+                'retry_count' => 0,
+
+                'paid_at' => now(),
+                'processed_at' => now(),
+                'completed_at' => now(),
+                'failed_at' => null,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+
+        //show the generated orders in the console for verification
+
+        $this->command->info('Generated Orders: ' . count($orders));
+
+        foreach ($orders as $order) {
+            Order::create($order);
         }
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NetworkController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
 
@@ -107,9 +108,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::patch('/admin/verifyAgentAccount/{agent}', [AgentController::class, 'verifyAgentAccount']);
 
     //Orders Routes
-    Route::get('/admin/orders', function(){
-        return view('admin.orders');
-    });
+    Route::get('/admin/orders', [OrderController::class, 'index']);
 
 });
 

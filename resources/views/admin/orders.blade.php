@@ -51,7 +51,7 @@
                     icon="check-circle"
                     stat-number="{{$stats['completed']}}"
                     label="Completed"
-                />  
+                />
 
                 <x-cms.stats-card
                     bg-color="danger"
@@ -177,30 +177,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="table-footer">
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <p class="mb-0 text-muted">Showing 1 to 4 of 1,245 orders</p>
-                            </div>
-                            <div class="col-md-6">
-                                <nav>
-                                    <ul class="pagination justify-content-md-end mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">25</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
+                    {{ $orders->links() }}
 
                 </div>
             </div>

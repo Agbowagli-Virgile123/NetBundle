@@ -75,7 +75,7 @@ return new class extends Migration
             $table->string('payment_method')->nullable(); // paystack, bank_transfer, etc.
             $table->string('payment_reference')->nullable(); // Paystack reference
             $table->text('description')->nullable();
-            $table->foreignId('related_order_id')->nullable()->constrained('orders')->nullOnDelete();
+            //$table->foreignId('related_order_id')->nullable()->constrained('orders')->nullOnDelete();
             $table->enum('status', ['pending', 'completed', 'failed', 'cancelled'])->default('pending');
             $table->timestamps();
         });

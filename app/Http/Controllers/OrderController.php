@@ -16,10 +16,10 @@ class OrderController
             'total' => Order::count(),
             'pending' => Order::Pending()->count(),
             'completed' => Order::Completed()->count(),
-            'failed' => Order::Failed()->count()            
+            'failed' => Order::Failed()->count()
 
         ];
 
-        return view('admin.orders', conpact('orders', 'stats'));
+        return view('admin.orders', compact('orders', 'stats'));
     }
 }
